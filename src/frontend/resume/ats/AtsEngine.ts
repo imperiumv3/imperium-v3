@@ -107,9 +107,10 @@ export function analyzeAts(resume: ResumeJSON, jd: string): AtsReport {
   const keywords = extractKeywords(jd);
   const matched = keywords.filter((k) => text.includes(k));
   const missing = keywords.filter((k) => !text.includes(k));
-  const keywordMatch = keywords.length
+  const hasJd = keywords.length > 0;
+  const keywordMatch = hasJd
     ? Math.round((matched.length / keywords.length) * 100)
-    : 70;
+    : 0;
 
   const required = [
     !!resume.summary,
@@ -141,14 +142,25 @@ export function analyzeAts(resume: ResumeJSON, jd: string): AtsReport {
   const charCount = text.length;
   const pageEstimate = Math.max(1, Math.ceil(charCount / 3200));
 
-  const atsScore = Math.round(
-    keywordMatch * 0.35 +
-    sectionCompleteness * 0.15 +
-    Math.max(experienceQuality, projectQuality) * 0.20 +
-    contactCompleteness * 0.10 +
-    formattingSafety * 0.10 +
-    Math.min(100, readability) * 0.10,
-  );
+  // When JD is present: heavily weight keyword match (real ATS behaviour).
+  // When JD missing: score the resume on its own merits (no flat 70 fallback).
+  const atsScore = hasJd
+    ? Math.round(
+        keywordMatch * 0.40 +
+        sectionCompleteness * 0.15 +
+        Math.max(experienceQuality, projectQuality) * 0.20 +
+        contactCompleteness * 0.10 +
+        formattingSafety * 0.08 +
+        Math.min(100, readability) * 0.07,
+      )
+    : Math.round(
+        sectionCompleteness * 0.30 +
+        Math.max(experienceQuality, projectQuality) * 0.30 +
+        contactCompleteness * 0.15 +
+        formattingSafety * 0.15 +
+        Math.min(100, readability) * 0.10,
+      );
+
 
   const recommendations: string[] = [];
   if (missing.length) recommendations.push(`Add missing keywords: ${missing.slice(0, 5).join(", ")}.`);

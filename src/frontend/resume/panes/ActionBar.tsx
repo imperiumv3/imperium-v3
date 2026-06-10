@@ -1,4 +1,4 @@
-/** Sticky bottom action bar — saved indicator, version history, exports, AI, Apply. */
+/** Sticky bottom action bar — template picker, saved indicator, exports, AI, Apply. */
 import { useApplicationsStore } from "@frontend/applications/state/useApplicationsStore";
 import { aiGenerateSummary } from "@frontend/resume/ai/resume-ai.functions";
 import { useAiRunner } from "@frontend/resume/ai/useAi";
@@ -9,10 +9,19 @@ import { exportResumeToDocx } from "@frontend/resume/export/docx";
 import { exportResumeToPdf } from "@frontend/resume/export/pdf";
 import type { PrintHandle } from "@frontend/resume/export/PrintRenderer";
 import { useResumeStore } from "@frontend/resume/state/useResumeStore";
-import { getTemplate } from "@frontend/resume/templates/registry";
+import { getTemplate, TEMPLATES } from "@frontend/resume/templates/registry";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
+import {
+  Check,
+  FileDown,
+  FileText,
+  LayoutTemplate,
+  Save,
+  Send,
+  Sparkles,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export function ActionBar({
@@ -25,6 +34,7 @@ export function ActionBar({
   const versions = useResumeStore((s) => s.versions);
   const saveVersion = useResumeStore((s) => s.saveVersion);
   const patch = useResumeStore((s) => s.patch);
+  const setTemplate = useResumeStore((s) => s.setTemplate);
   const create = useApplicationsStore((s) => s.createFromResumeStudio);
   const navigate = useNavigate();
 
@@ -40,7 +50,18 @@ export function ActionBar({
   const [exporting, setExporting] = useState<null | "pdf" | "docx">(null);
   const [aiBusy, setAiBusy] = useState(false);
   const [applied, setApplied] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
+  const [tplOpen, setTplOpen] = useState(false);
+  const tplRef = useRef<HTMLDivElement | null>(null);
+
+  // Close template picker on outside click
+  useEffect(() => {
+    if (!tplOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (tplRef.current && !tplRef.current.contains(e.target as Node)) setTplOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [tplOpen]);
 
   const handleSave = () => {
     saveVersion(undefined, {
@@ -48,6 +69,7 @@ export function ActionBar({
       resumeHealth: health.score,
       jdMatch: jdMatch.score,
     });
+    toast.success("Resume saved");
   };
 
   const handlePdf = async () => {
@@ -57,18 +79,26 @@ export function ActionBar({
       return;
     }
     setExporting("pdf");
-    try { await exportResumeToPdf(h.node, resume); }
-    catch (err) {
+    try {
+      await exportResumeToPdf(h.node, resume);
+    } catch (err) {
       const msg = err instanceof Error ? err.message : "PDF export failed";
       toast.error(msg);
+    } finally {
+      setExporting(null);
     }
-    finally { setExporting(null); }
   };
 
   const handleDocx = async () => {
     setExporting("docx");
-    try { await exportResumeToDocx(resume); }
-    finally { setExporting(null); }
+    try {
+      await exportResumeToDocx(resume);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "DOCX export failed";
+      toast.error(msg);
+    } finally {
+      setExporting(null);
+    }
   };
 
   const handleGenerate = async () => {
@@ -92,10 +122,16 @@ export function ActionBar({
       if (res.summary) {
         patch((r) => { r.summary = res.summary; });
         toast.success("Summary regenerated");
+      } else {
+        toast.error("AI returned an empty summary — try again");
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "AI generation failed";
-      toast.error(msg);
+      toast.error(
+        msg.includes("no AI provider")
+          ? "No AI provider configured. Set OLLAMA_BASE_URL or OPENROUTER_API_KEY in .env"
+          : msg,
+      );
       console.error("[ActionBar] AI generation failed:", err);
     } finally {
       setAiBusy(false);
@@ -138,71 +174,82 @@ export function ActionBar({
   };
 
   return (
-    <>
-      <div className="rs-actionbar">
-        <div className="rs-actionbar-left">
-          <span className="rs-saved-indicator">
-            <span className="rs-saved-check" aria-hidden>✓</span> All changes saved
-          </span>
-        </div>
-
-        <div className="rs-actionbar-center">
-          <button className="rs-btn rs-btn-ghost" onClick={() => setShowHistory(true)}>
-            <span aria-hidden>🕘</span> Version History
-          </button>
-          <button className="rs-btn rs-btn-ghost" onClick={handleSave}>
-            <span aria-hidden>💾</span> Save
-          </button>
-          <button className="rs-btn rs-btn-ghost" onClick={handlePdf} disabled={exporting !== null}>
-            <span aria-hidden>📄</span> {exporting === "pdf" ? "Exporting…" : "Export PDF"}
-          </button>
-          <button className="rs-btn rs-btn-ghost" onClick={handleDocx} disabled={exporting !== null}>
-            <span aria-hidden>📑</span> {exporting === "docx" ? "Exporting…" : "Export DOCX"}
-          </button>
-        </div>
-
-        <div className="rs-actionbar-right">
-          <button
-            className="rs-btn rs-btn-primary"
-            onClick={handleGenerate}
-            disabled={aiBusy}
-          >
-            <span aria-hidden>✨</span> {aiBusy ? "Generating…" : "Generate Summary"}
-          </button>
-          <button
-            className="rs-btn rs-btn-primary"
-            onClick={handleApply}
-            disabled={!selectedJob || applied}
-            title={!selectedJob ? "Select a job first" : "Submit to tracker"}
-          >
-            <span aria-hidden>✈</span> {applied ? "Added" : "Apply"}
-          </button>
-        </div>
+    <div className="rs-actionbar">
+      <div className="rs-actionbar-left">
+        <span className="rs-saved-indicator">
+          <Check size={14} className="rs-saved-check" aria-hidden /> All changes saved
+        </span>
       </div>
 
-      {showHistory && (
-        <div className="rs-modal-backdrop" onClick={() => setShowHistory(false)}>
-          <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="rs-modal-head">
-              <div className="rs-modal-title">Version History</div>
-              <button className="rs-icon-btn" onClick={() => setShowHistory(false)}>×</button>
-            </div>
-            <div className="rs-modal-body">
-              <ul className="rs-history-list">
-                {versions.slice().reverse().map((v) => (
-                  <li key={v.id}>
-                    <div className="rs-history-label">{v.label}</div>
-                    <div className="rs-history-meta">
-                      {v.atsScore != null && `ATS ${v.atsScore} · `}
-                      {new Date(v.createdAt).toLocaleString()}
+      <div className="rs-actionbar-center">
+        {/* Template picker (replaces Version History — versions live in Insights rail) */}
+        <div className="rs-tpl-wrap" ref={tplRef}>
+          <button
+            className="rs-btn rs-btn-ghost"
+            onClick={() => setTplOpen((o) => !o)}
+            aria-haspopup="menu"
+            aria-expanded={tplOpen}
+          >
+            <LayoutTemplate size={16} aria-hidden /> Template: {activeTemplate?.name ?? "Default"}
+          </button>
+          {tplOpen && (
+            <div className="rs-tpl-menu" role="menu">
+              {TEMPLATES.map((t) => {
+                const active = t.id === resume.meta.templateId;
+                return (
+                  <button
+                    key={t.id}
+                    role="menuitem"
+                    className={`rs-tpl-row${active ? " is-active" : ""}`}
+                    onClick={() => {
+                      setTemplate(t.id);
+                      setTplOpen(false);
+                      toast.success(`Template: ${t.name}`);
+                    }}
+                  >
+                    <div className="rs-tpl-row-main">
+                      <span className="rs-tpl-name">{t.name}</span>
+                      <span className="rs-tpl-cat">{t.category}</span>
                     </div>
-                  </li>
-                ))}
-              </ul>
+                    <div className="rs-tpl-row-meta">
+                      <span title="ATS compatibility">ATS {t.atsCompatibility}</span>
+                      {active && <Check size={14} aria-hidden />}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-          </div>
+          )}
         </div>
-      )}
-    </>
+
+        <button className="rs-btn rs-btn-ghost" onClick={handleSave}>
+          <Save size={16} aria-hidden /> Save
+        </button>
+        <button className="rs-btn rs-btn-ghost" onClick={handlePdf} disabled={exporting !== null}>
+          <FileDown size={16} aria-hidden /> {exporting === "pdf" ? "Exporting…" : "Export PDF"}
+        </button>
+        <button className="rs-btn rs-btn-ghost" onClick={handleDocx} disabled={exporting !== null}>
+          <FileText size={16} aria-hidden /> {exporting === "docx" ? "Exporting…" : "Export DOCX"}
+        </button>
+      </div>
+
+      <div className="rs-actionbar-right">
+        <button
+          className="rs-btn rs-btn-primary"
+          onClick={handleGenerate}
+          disabled={aiBusy}
+        >
+          <Sparkles size={16} aria-hidden /> {aiBusy ? "Generating…" : "Generate Summary"}
+        </button>
+        <button
+          className="rs-btn rs-btn-primary"
+          onClick={handleApply}
+          disabled={!selectedJob || applied}
+          title={!selectedJob ? "Select a job first" : "Submit to tracker"}
+        >
+          <Send size={16} aria-hidden /> {applied ? "Added" : "Apply"}
+        </button>
+      </div>
+    </div>
   );
 }
