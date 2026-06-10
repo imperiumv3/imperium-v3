@@ -9,8 +9,9 @@ import { ImperiumNavbar } from "./ImperiumNavbar";
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isDashboard = pathname === "/dashboard";
+  const isResumeStudio = pathname === "/resume";
 
-  if (isDashboard) return <>{children}</>;
+  if (isDashboard || isResumeStudio) return <>{children}</>;
 
   return (
     <>
