@@ -109,12 +109,13 @@ export function ResumePage({ jobId }: ResumePageProps) {
 
   // Load job when jobId present in URL
   useEffect(() => {
-    if (jobId && !selectedJob && !loadingJob) {
+    if (jobId && selectedJob?.id !== jobId && !loadingJob) {
       setLoadingJob(true);
       getJobFn({ data: { jobId } })
         .then((job) => {
           if (job) {
             setSelectedJob({
+              id: job.id,
               company: job.company,
               title: job.title,
               description: job.description,
@@ -127,7 +128,7 @@ export function ResumePage({ jobId }: ResumePageProps) {
           setLoadingJob(false);
         });
     }
-  }, [jobId, selectedJob, loadingJob, getJobFn, setSelectedJob]);
+  }, [jobId, selectedJob?.id, loadingJob, getJobFn, setSelectedJob]);
 
   const printHandleRef = useRef<PrintHandle | null>(null);
   const [jdOpen, setJdOpen] = useState(false);

@@ -23,11 +23,14 @@ export function validatePrintLayout(node: HTMLElement, resume: ResumeJSON): Prin
     const top = (h as HTMLElement).offsetTop;
     const remainder = top % paperH;
     if (remainder > paperH - 60) {
-      warnings.push(`Section "${h.textContent?.slice(0, 40)}" may render orphaned near a page break.`);
+      warnings.push(
+        `Section "${h.textContent?.slice(0, 40)}" may render orphaned near a page break.`,
+      );
     }
   }
 
-  if (estimatedPages > 2) warnings.push(`Resume estimated at ${estimatedPages} pages — consider trimming.`);
+  if (estimatedPages > 2)
+    warnings.push(`Resume estimated at ${estimatedPages} pages — consider trimming.`);
   const overflow = contentH > paperH * 3;
   if (overflow) warnings.push("Content significantly exceeds page area — review for clipping.");
   return { warnings, estimatedPages, overflow };
@@ -60,12 +63,25 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
   const styles = collectDocumentStyles();
   const html = node.outerHTML;
 
-  const win = window.open("", "_blank", "width=900,height=1100");
-  if (!win) {
-    throw new Error("Pop-up blocked. Please allow pop-ups for this site to export PDF.");
+  const iframe = document.createElement("iframe");
+  iframe.setAttribute("title", "Resume PDF export");
+  iframe.style.position = "fixed";
+  iframe.style.right = "0";
+  iframe.style.bottom = "0";
+  iframe.style.width = "0";
+  iframe.style.height = "0";
+  iframe.style.border = "0";
+  iframe.style.opacity = "0";
+  document.body.appendChild(iframe);
+
+  const win = iframe.contentWindow;
+  const doc = iframe.contentDocument ?? win?.document;
+  if (!win || !doc) {
+    iframe.remove();
+    throw new Error("PDF export could not start — please try again.");
   }
 
-  win.document.write(`<!doctype html>
+  doc.write(`<!doctype html>
 <html>
 <head>
   <meta charset="utf-8" />
@@ -80,12 +96,12 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
 </head>
 <body>${html}</body>
 </html>`);
-  win.document.close();
+  doc.close();
 
   // Wait for fonts + images before printing
   await new Promise<void>((resolve) => {
     const ready = () => {
-      const imgs = Array.from(win.document.images);
+      const imgs = Array.from(doc.images);
       const pending = imgs.filter((i) => !i.complete);
       if (pending.length === 0) {
         resolve();
@@ -93,27 +109,27 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
       }
       let left = pending.length;
       pending.forEach((i) => {
-        const done = () => { if (--left === 0) resolve(); };
+        const done = () => {
+          if (--left === 0) resolve();
+        };
         i.addEventListener("load", done, { once: true });
         i.addEventListener("error", done, { once: true });
       });
     };
-    if (win.document.readyState === "complete") ready();
+    if (doc.readyState === "complete") ready();
     else win.addEventListener("load", ready, { once: true });
     // Hard timeout — never hang the UI
     setTimeout(resolve, 2500);
   });
 
   try {
-    const fonts = (win.document as Document & { fonts?: { ready?: Promise<unknown> } }).fonts;
+    const fonts = (doc as Document & { fonts?: { ready?: Promise<unknown> } }).fonts;
     if (fonts && fonts.ready) await fonts.ready;
   } catch {
     // ignore
   }
 
-
   win.focus();
   win.print();
-  // Most browsers auto-close after print; close manually on cancel
-  setTimeout(() => { try { win.close(); } catch { /* noop */ } }, 500);
+  setTimeout(() => iframe.remove(), 1000);
 }

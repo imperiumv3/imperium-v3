@@ -9,6 +9,7 @@ import {
   selectJobForResume,
   getProfileMetrics,
 } from "@backend/api/jobs.api";
+import { useResumeStore } from "@frontend/resume/state/useResumeStore";
 
 export interface SearchFiltersUI {
   title: string;
@@ -20,7 +21,12 @@ export interface SearchFiltersUI {
 }
 
 export const EMPTY_FILTERS: SearchFiltersUI = {
-  title: "", skills: "", location: "", experience: "", workMode: "", salaryMin: "",
+  title: "",
+  skills: "",
+  location: "",
+  experience: "",
+  workMode: "",
+  salaryMin: "",
 };
 
 export function useProfileMetrics() {
@@ -79,9 +85,21 @@ export function useJobDetails(jobId: string | null) {
 export function useSelectJob() {
   const fn = useServerFn(selectJobForResume);
   const navigate = useNavigate();
+  const qc = useQueryClient();
+  const setSelectedJob = useResumeStore((s) => s.setSelectedJob);
   return useMutation({
     mutationFn: (jobId: string) => fn({ data: { jobId } }),
-    onSuccess: (res) => {
+    onSuccess: (res, jobId) => {
+      const discovery = qc.getQueryData(["jobs", "discovery"]) as DiscoveryData | undefined;
+      const job = discovery?.all.find((j) => j.id === jobId);
+      if (job) {
+        setSelectedJob({
+          id: job.id,
+          company: job.company,
+          title: job.title,
+          description: job.description,
+        });
+      }
       navigate({ to: "/resume", search: { jobId: res.jobId } as never }).catch(() => {
         window.location.href = res.redirect;
       });
@@ -91,9 +109,9 @@ export function useSelectJob() {
 
 export const INTELLIGENCE_LABEL: Record<string, { text: string; tone: string }> = {
   high_opportunity: { text: "High Opportunity", tone: "tone-green" },
-  strong_match:     { text: "Strong Match",     tone: "tone-blue" },
-  competitive:      { text: "Competitive",      tone: "tone-amber" },
-  long_shot:        { text: "Long Shot",        tone: "tone-grey" },
+  strong_match: { text: "Strong Match", tone: "tone-blue" },
+  competitive: { text: "Competitive", tone: "tone-amber" },
+  long_shot: { text: "Long Shot", tone: "tone-grey" },
 };
 
 export function postedAgo(iso: string | null): string {

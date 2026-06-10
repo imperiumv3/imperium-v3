@@ -16,6 +16,22 @@ interface ResumeContext {
   projectSnippets: string[];
 }
 
+function fallbackSummary(resume: ResumeContext, jd?: string): string {
+  const skills = resume.skills.slice(0, 5).filter(Boolean);
+  const roleHint = jd?.match(
+    /(?:engineer|developer|analyst|manager|designer|architect|consultant|specialist)[^.,\n]*/i,
+  )?.[0];
+  const role = roleHint || resume.title || "professional";
+  const proof =
+    resume.experienceSnippets[0] ||
+    resume.projectSnippets[0] ||
+    "delivering practical, measurable work across complex projects";
+  const skillText = skills.length
+    ? ` with strengths in ${skills.join(", ")}`
+    : " with a strong execution focus";
+  return `${resume.name || "Candidate"} is a ${role}${skillText}. Brings hands-on experience ${proof.replace(/[.]+$/, "")}, with a resume tailored to the target role and its core requirements.`;
+}
+
 function safeParse<T>(text: string, fallback: T): T {
   try {
     // tolerate ```json ... ``` fenced output
@@ -31,7 +47,7 @@ export const aiGenerateSummary = createServerFn({ method: "POST" })
   .inputValidator((data: { resume: ResumeContext; jd?: string }) => data)
   .handler(async ({ data }) => {
     const sys =
-      "You write concise, ATS-friendly resume summaries. Output ONLY a JSON object {\"summary\": string}. Two to three sentences, max 60 words, no fluff, no first person.";
+      'You write concise, ATS-friendly resume summaries. Output ONLY a JSON object {"summary": string}. Two to three sentences, max 60 words, no fluff, no first person.';
     const user = JSON.stringify({
       role: data.resume.title || "Candidate",
       skills: data.resume.skills.slice(0, 12),
@@ -39,10 +55,19 @@ export const aiGenerateSummary = createServerFn({ method: "POST" })
       projects: data.resume.projectSnippets.slice(0, 2),
       jd: data.jd?.slice(0, 1200) ?? "",
     });
-    const result = await routeBrainCall({ system: sys, user, json: true, max_tokens: 400 });
+    let result: Awaited<ReturnType<typeof routeBrainCall>> | null = null;
+    try {
+      result = await routeBrainCall({ system: sys, user, json: true, max_tokens: 400 });
+    } catch (error) {
+      console.warn("[resume-ai] Using offline summary fallback:", error);
+      return {
+        summary: fallbackSummary(data.resume, data.jd),
+        model: "offline-resume-writer",
+      };
+    }
     const parsed = safeParse<{ summary?: string }>(result.content, {});
     return {
-      summary: parsed.summary ?? "",
+      summary: parsed.summary || fallbackSummary(data.resume, data.jd),
       model: result.model,
     };
   });
@@ -52,7 +77,7 @@ export const aiImproveBullet = createServerFn({ method: "POST" })
   .inputValidator((data: { bullet: string; jd?: string }) => data)
   .handler(async ({ data }) => {
     const sys =
-      "Rewrite the resume bullet. Start with a strong action verb, keep it 14–30 words, integrate a measurable outcome when one is implied (do not invent numbers). Output ONLY {\"bullet\": string}.";
+      'Rewrite the resume bullet. Start with a strong action verb, keep it 14–30 words, integrate a measurable outcome when one is implied (do not invent numbers). Output ONLY {"bullet": string}.';
     const user = JSON.stringify({ bullet: data.bullet, jd: data.jd?.slice(0, 800) ?? "" });
     const result = await routeBrainCall({ system: sys, user, json: true, max_tokens: 250 });
     const parsed = safeParse<{ bullet?: string }>(result.content, {});
@@ -64,15 +89,17 @@ export const aiFillMissing = createServerFn({ method: "POST" })
   .inputValidator((data: { resume: ResumeContext; jd?: string }) => data)
   .handler(async ({ data }) => {
     const sys =
-      "You analyze a resume against a job description. Output ONLY JSON: {\"missingSkills\": string[], \"missingSections\": string[], \"suggestedBullets\": string[]}. Keep suggestedBullets generic-true, never fabricate employer-specific facts.";
+      'You analyze a resume against a job description. Output ONLY JSON: {"missingSkills": string[], "missingSections": string[], "suggestedBullets": string[]}. Keep suggestedBullets generic-true, never fabricate employer-specific facts.';
     const user = JSON.stringify({
       resume: data.resume,
       jd: data.jd?.slice(0, 1500) ?? "",
     });
     const result = await routeBrainCall({ system: sys, user, json: true, max_tokens: 700 });
-    const parsed = safeParse<{ missingSkills?: string[]; missingSections?: string[]; suggestedBullets?: string[] }>(
-      result.content, {},
-    );
+    const parsed = safeParse<{
+      missingSkills?: string[];
+      missingSections?: string[];
+      suggestedBullets?: string[];
+    }>(result.content, {});
     return {
       missingSkills: parsed.missingSkills ?? [],
       missingSections: parsed.missingSections ?? [],
@@ -86,7 +113,7 @@ export const aiAnalyzeJd = createServerFn({ method: "POST" })
   .inputValidator((data: { jd: string }) => data)
   .handler(async ({ data }) => {
     const sys =
-      "Extract JD signals. Output ONLY JSON: {\"requiredSkills\": string[], \"keywords\": string[], \"technologies\": string[], \"softSkills\": string[], \"responsibilities\": string[]}. Max 12 items per array. Lowercase.";
+      'Extract JD signals. Output ONLY JSON: {"requiredSkills": string[], "keywords": string[], "technologies": string[], "softSkills": string[], "responsibilities": string[]}. Max 12 items per array. Lowercase.';
     const result = await routeBrainCall({
       system: sys,
       user: data.jd.slice(0, 2500),

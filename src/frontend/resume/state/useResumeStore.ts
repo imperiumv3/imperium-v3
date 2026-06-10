@@ -76,6 +76,7 @@ function seedFromProfile(p: Pick<
 }
 
 interface SelectedJob {
+  id?: string;
   company: string;
   title: string;
   description: string;
