@@ -103,7 +103,9 @@ export function ResumePage({ jobId }: ResumePageProps) {
           console.error("[ResumePage] Failed to load profile:", err);
         });
     }
-  }, [profileFetched, resume.personal.name, getProfileFn, setResume, resume]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileFetched]);
+
 
   // Load job when jobId present in URL
   useEffect(() => {
