@@ -7,6 +7,7 @@ import { ApplicationsTable } from "./components/ApplicationsTable";
 import { FiltersBar } from "./components/FiltersBar";
 import { CalendarPanel } from "./components/UpcomingPanel";
 import { DetailsDrawer } from "./components/DetailsDrawer";
+import { useSession } from "@frontend/auth/session";
 
 function SearchIcon() {
   return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
