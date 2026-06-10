@@ -22,6 +22,14 @@ interface ResumePageProps {
 export function ResumePage({ jobId }: ResumePageProps) {
   const selectedJob = useResumeStore((s) => s.selectedJob);
   const setSelectedJob = useResumeStore((s) => s.setSelectedJob);
+  const updateSelectedJob = (jd: string) => {
+    if (!selectedJob) {
+      setSelectedJob({ company: "", title: "", description: jd });
+    } else {
+      setSelectedJob({ ...selectedJob, description: jd });
+    }
+  };
+
   const setResume = useResumeStore((s) => s.setResume);
   const versions = useResumeStore((s) => s.versions);
   const resume = useResumeStore((s) => s.resume);
