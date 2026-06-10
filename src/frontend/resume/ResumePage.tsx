@@ -235,25 +235,64 @@ export function ResumePage({ jobId }: ResumePageProps) {
       {/* hidden full-size renderer for PDF export */}
       <PrintRenderer resume={resume} registerHandle={(h) => { printHandleRef.current = h; }} />
 
-      {/* ============ JD MODAL ============ */}
+      {/* ============ JD MODAL — editable: drives ATS/keyword scoring ============ */}
       {jdOpen && (
-        <div className="rs-modal-backdrop" onClick={() => setJdOpen(false)}>
-          <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="rs-modal-head">
-              <div>
-                <div className="rs-modal-title">{role}</div>
-                <div className="rs-modal-sub">{company}</div>
-              </div>
-              <button className="rs-icon-btn" onClick={() => setJdOpen(false)} aria-label="Close">×</button>
-            </div>
-            <div className="rs-modal-body">
-              {selectedJob?.description ?? "No job description attached."}
-            </div>
-          </div>
-        </div>
+        <JdEditorModal
+          role={role}
+          company={company}
+          initial={selectedJob?.description ?? ""}
+          onClose={() => setJdOpen(false)}
+          onSave={(text) => { updateSelectedJob(text); setJdOpen(false); }}
+        />
       )}
     </div>
   );
 }
+
+function JdEditorModal({
+  role,
+  company,
+  initial,
+  onClose,
+  onSave,
+}: {
+  role: string;
+  company: string;
+  initial: string;
+  onClose: () => void;
+  onSave: (text: string) => void;
+}) {
+  const [text, setText] = useState(initial);
+  return (
+    <div className="rs-modal-backdrop" onClick={onClose}>
+      <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="rs-modal-head">
+          <div>
+            <div className="rs-modal-title">{role || "Job Description"}</div>
+            <div className="rs-modal-sub">{company || "Paste the JD below to tailor your resume"}</div>
+          </div>
+          <button className="rs-icon-btn" onClick={onClose} aria-label="Close">
+            <X size={16} aria-hidden />
+          </button>
+        </div>
+        <div className="rs-modal-body">
+          <textarea
+            className="rs-jd-textarea"
+            value={text}
+            placeholder="Paste the full job description here. The Resume Studio uses this text to score your resume, extract missing keywords, and tailor the AI-generated summary."
+            onChange={(e) => setText(e.target.value)}
+          />
+        </div>
+        <div className="rs-modal-foot">
+          <button className="rs-btn rs-btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="rs-btn rs-btn-primary" onClick={() => onSave(text)}>
+            <FileText size={14} aria-hidden /> Save JD &amp; rescore
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 export default ResumePage;
