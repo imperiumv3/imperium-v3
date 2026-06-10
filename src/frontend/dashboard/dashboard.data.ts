@@ -75,14 +75,15 @@ const RESPONDED: ReadonlySet<ApplicationStatus> = new Set([
 function pickIcon(type: ApplicationEventType): ActivityItem["iconKey"] {
   switch (type) {
     case "interview_scheduled":
-    case "interview_completed":
       return "interview";
-    case "ats_scored":
-    case "match_calculated":
+    case "offer_received":
       return "ats";
-    case "resume_tailored":
-    case "cover_letter_generated":
+    case "note_added":
       return "resume";
+    case "application_submitted":
+    case "status_changed":
+    case "rejected":
+    case "withdrawn":
     default:
       return "applied";
   }
