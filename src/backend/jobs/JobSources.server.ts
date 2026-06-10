@@ -1036,7 +1036,7 @@ export const SOURCES: SourceDescriptor[] = [
   { id: "foundit",   label: "Foundit",   fetch: fetchFoundit,   requiresKey: false, isAvailable: () => !disabled("DISABLE_FOUNDIT") },
   { id: "instahyre", label: "Instahyre", fetch: fetchInstahyre, requiresKey: false, isAvailable: () => !disabled("DISABLE_INSTAHYRE") },
   { id: "hirist",    label: "Hirist",    fetch: fetchHirist,    requiresKey: false, isAvailable: () => !disabled("DISABLE_HIRIST") },
-  { id: "wellfound", label: "Wellfound", fetch: fetchWellfound, requiresKey: false, isAvailable: () => !disabled("DISABLE_WELLFOUND") },
+  { id: "wellfound", label: "Wellfound", fetch: fetchWellfound, requiresKey: false, isAvailable: () => process.env.ENABLE_WELLFOUND === "true" },
   { id: "yc",        label: "YC Jobs",   fetch: fetchYC,        requiresKey: false, isAvailable: () => !disabled("DISABLE_YC") },
   { id: "remoteok",  label: "RemoteOK",  fetch: fetchRemoteOK,  requiresKey: false, isAvailable: () => !disabled("DISABLE_REMOTEOK") },
   { id: "remotive",  label: "Remotive",  fetch: fetchRemotive,  requiresKey: false, isAvailable: () => !disabled("DISABLE_REMOTIVE") },
