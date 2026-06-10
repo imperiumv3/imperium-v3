@@ -484,9 +484,9 @@ export async function fetchAdzuna(role: string, location: string): Promise<RawJo
 // All Naukri header magic in one place so spoofing tweaks are obvious.
 const NAUKRI_HEADERS: Record<string, string> = {
   "User-Agent": UA,
-  Accept: "application/json",
-  "App-Id": "109",
-  "Content-Type": "application/json",
+  Accept: "application/json, text/plain, */*",
+  "Accept-Language": "en-IN,en;q=0.9",
+  appid: "109",
   "Sec-Fetch-Site": "same-origin",
   "Sec-Fetch-Mode": "cors",
   "Sec-Fetch-Dest": "empty",
@@ -502,6 +502,12 @@ interface NaukriPlaceholder {
 }
 
 function parseNaukriSalary(o: Record<string, unknown>): { min: number | null; max: number | null; currency: string } {
+  const rawMin = Number(o.minSal ?? 0);
+  const rawMax = Number(o.maxSal ?? 0);
+  if (rawMin > 0 || rawMax > 0) {
+    const currency = /dollar|usd/i.test(String(o.currencySal ?? "")) ? "USD" : "INR";
+    return { min: rawMin > 0 ? rawMin : null, max: rawMax > 0 ? rawMax : null, currency };
+  }
   // Naukri returns salary as a free-form string in placeholders[type=salary].label
   // e.g. "₹ 8-12 Lacs P.A.", "Not disclosed", "$80,000 - $120,000".
   const placeholders = (o.placeholders as NaukriPlaceholder[] | undefined) ?? [];
@@ -517,6 +523,12 @@ function parseNaukriSalary(o: Record<string, unknown>): { min: number | null; ma
 }
 
 function parseNaukriLocation(o: Record<string, unknown>): string {
+  const directCity = String(o.city ?? "").trim();
+  if (directCity) return directCity;
+  const cityField = String(o.cityfield ?? "").toLowerCase();
+  const knownCities = ["hyderabad", "bangalore", "bengaluru", "mumbai", "pune", "delhi", "gurgaon", "gurugram", "noida", "chennai", "kolkata", "ahmedabad", "kochi", "jaipur", "indore", "coimbatore"];
+  const cities = knownCities.filter((city) => cityField.includes(city));
+  if (cities.length) return Array.from(new Set(cities)).join(", ");
   const placeholders = (o.placeholders as NaukriPlaceholder[] | undefined) ?? [];
   const locs = placeholders
     .filter((p) => p.type === "location")
@@ -622,35 +634,41 @@ export async function fetchNaukri(role: string, location: string): Promise<RawJo
     if (res) console.warn(`[naukri:json] HTTP ${res.status} — falling back to HTML scrape`);
     return fetchNaukriHtmlFallback(role, location);
   }
-  let data: { jobDetails?: Record<string, unknown>[] };
+  let data: { jobDetails?: Record<string, unknown>[]; list?: Record<string, unknown>[] };
   try {
-    data = (await res.json()) as { jobDetails?: Record<string, unknown>[] };
+    data = (await res.json()) as { jobDetails?: Record<string, unknown>[]; list?: Record<string, unknown>[] };
   } catch (err) {
     console.warn("[naukri:json] parse failed:", (err as Error).message);
     return fetchNaukriHtmlFallback(role, location);
   }
 
   const out: RawJob[] = [];
-  for (const o of data.jobDetails ?? []) {
-    const text = `${o.title ?? ""} ${o.companyName ?? ""} ${o.jobDescription ?? ""}`;
+  const rows = data.jobDetails?.length ? data.jobDetails : data.list ?? [];
+  for (const o of rows) {
+    const title = String(o.title ?? o.post ?? "");
+    const description = stripHtml(String(o.jobDescription ?? o.jobDesc ?? o.tupleDesc ?? ""));
+    const text = `${title} ${o.companyName ?? o.CONTCOM ?? ""} ${description} ${o.keywords ?? ""}`;
     const salary = parseNaukriSalary(o);
     const loc = parseNaukriLocation(o) || (typeof location === "string" ? location : "");
     const placeholders = (o.placeholders as NaukriPlaceholder[] | undefined) ?? [];
-    const expText = placeholders.find((p) => p.type === "experience")?.label ?? null;
+    const minExp = String(o.minExp ?? "").trim();
+    const maxExp = String(o.maxExp ?? "").trim();
+    const expText = placeholders.find((p) => p.type === "experience")?.label ?? (minExp || maxExp ? `${minExp || 0}-${maxExp || minExp} yrs` : null);
+    const rawUrl = String(o.urlStr ?? o.jdURL ?? "");
     out.push({
       source: "naukri",
       external_id: String(o.jobId ?? `naukri-${Date.now()}-${out.length}`),
-      url: `https://www.naukri.com${(o.jdURL as string) ?? ""}`,
-      title: String(o.title ?? ""),
-      company: String(o.companyName ?? "Unknown"),
+      url: rawUrl.startsWith("http") ? rawUrl : `https://www.naukri.com${rawUrl}`,
+      title,
+      company: String(o.companyName ?? o.CONTCOM ?? "Unknown"),
       location: loc,
       remote: /remote|work from home|wfh/i.test(`${text} ${loc}`),
-      description: stripHtml(String(o.jobDescription ?? "")).slice(0, 4000),
-      tech_stack: extractTechStack(text, (o.tagsAndSkills as string)?.split(",") ?? []),
+      description: description.slice(0, 4000),
+      tech_stack: extractTechStack(text, String(o.tagsAndSkills ?? o.keywords ?? "").split(",")),
       salary_min: salary.min,
       salary_max: salary.max,
       salary_currency: salary.currency,
-      posted_at: typeof o.createdDate === "string" ? o.createdDate : null,
+      posted_at: typeof o.createdDate === "string" ? o.createdDate : typeof o.addDate === "string" ? o.addDate : null,
       experience_text: expText,
     });
   }
