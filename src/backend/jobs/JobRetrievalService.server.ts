@@ -5,7 +5,7 @@
  *
  * Returns RawJob[] + per-source status. Pure I/O — no scoring or persistence.
  */
-import { SOURCES, type RawJob } from "@backend/jobs/JobSources.server";
+import { SOURCES, enrichDescriptions, type RawJob } from "@backend/jobs/JobSources.server";
 
 export interface SourceStatus {
   id: string;
