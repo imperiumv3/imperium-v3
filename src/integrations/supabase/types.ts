@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          achievements: Json
+          certifications: Json
+          created_at: string
+          education: Json
+          email: string
+          experience: Json
+          github_intel: Json
+          github_url: string
+          headline: string
+          id: string
+          languages: Json
+          linkedin_intel: Json
+          linkedin_url: string
+          location: string
+          name: string
+          onboarded: boolean
+          phone: string
+          portfolio_url: string
+          profile_intel: Json
+          projects: Json
+          salary_expectation: Json
+          seniority: string
+          skills: Json
+          summary: string
+          target_locations: Json
+          target_role: string
+          updated_at: string
+          work_mode: string
+        }
+        Insert: {
+          achievements?: Json
+          certifications?: Json
+          created_at?: string
+          education?: Json
+          email?: string
+          experience?: Json
+          github_intel?: Json
+          github_url?: string
+          headline?: string
+          id: string
+          languages?: Json
+          linkedin_intel?: Json
+          linkedin_url?: string
+          location?: string
+          name?: string
+          onboarded?: boolean
+          phone?: string
+          portfolio_url?: string
+          profile_intel?: Json
+          projects?: Json
+          salary_expectation?: Json
+          seniority?: string
+          skills?: Json
+          summary?: string
+          target_locations?: Json
+          target_role?: string
+          updated_at?: string
+          work_mode?: string
+        }
+        Update: {
+          achievements?: Json
+          certifications?: Json
+          created_at?: string
+          education?: Json
+          email?: string
+          experience?: Json
+          github_intel?: Json
+          github_url?: string
+          headline?: string
+          id?: string
+          languages?: Json
+          linkedin_intel?: Json
+          linkedin_url?: string
+          location?: string
+          name?: string
+          onboarded?: boolean
+          phone?: string
+          portfolio_url?: string
+          profile_intel?: Json
+          projects?: Json
+          salary_expectation?: Json
+          seniority?: string
+          skills?: Json
+          summary?: string
+          target_locations?: Json
+          target_role?: string
+          updated_at?: string
+          work_mode?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
