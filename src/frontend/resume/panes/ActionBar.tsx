@@ -1,6 +1,6 @@
 /** Sticky bottom action bar — template picker, saved indicator, exports, AI, Apply. */
 import { useApplicationsStore } from "@frontend/applications/state/useApplicationsStore";
-import { aiGenerateSummary } from "@frontend/resume/ai/resume-ai.functions";
+import { aiGenerateSummary, aiGenerateCoverLetter, aiInterviewPrep } from "@frontend/resume/ai/resume-ai.functions";
 import { useAiRunner } from "@frontend/resume/ai/useAi";
 import { analyzeAts } from "@frontend/resume/ats/AtsEngine";
 import { analyzeHealth } from "@frontend/resume/ats/HealthEngine";
@@ -17,9 +17,12 @@ import {
   FileDown,
   FileText,
   LayoutTemplate,
+  Mail,
+  MessageSquare,
   Save,
   Send,
   Sparkles,
+  X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
