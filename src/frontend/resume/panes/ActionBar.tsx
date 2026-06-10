@@ -43,6 +43,8 @@ export function ActionBar({
 
   const { run: runAi } = useAiRunner();
   const summaryFn = useServerFn(aiGenerateSummary);
+  const coverFn = useServerFn(aiGenerateCoverLetter);
+  const prepFn = useServerFn(aiInterviewPrep);
 
   const jd = selectedJob?.description ?? "";
   const ats = useMemo(() => analyzeAts(resume, jd), [resume, jd]);
@@ -54,6 +56,10 @@ export function ActionBar({
   const [aiBusy, setAiBusy] = useState(false);
   const [applied, setApplied] = useState(false);
   const [tplOpen, setTplOpen] = useState(false);
+  const [coverBusy, setCoverBusy] = useState(false);
+  const [coverText, setCoverText] = useState<string | null>(null);
+  const [prepBusy, setPrepBusy] = useState(false);
+  const [prepData, setPrepData] = useState<{ behavioral: string[]; technical: string[]; projectDeepDive: string[] } | null>(null);
   const tplRef = useRef<HTMLDivElement | null>(null);
 
   // Close template picker on outside click
