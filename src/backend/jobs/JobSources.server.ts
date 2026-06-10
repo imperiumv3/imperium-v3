@@ -607,7 +607,7 @@ export async function fetchNaukri(role: string, location: string): Promise<RawJo
     src: "jobsearchDesk",
     latLong: "",
   });
-  const url = `https://www.naukri.com/jobapi/v3/search?${params.toString()}`;
+  const url = `https://www.naukri.com/jobapi/v2/search?${params.toString()}`;
   let res: Response | null = null;
   try {
     res = await fetchWithRetry(
@@ -951,7 +951,7 @@ export async function fetchInstahyre(role: string, location: string): Promise<Ra
 /* ───────── Hirist (India, tech-only) ───────── */
 export async function fetchHirist(role: string, location: string): Promise<RawJob[]> {
   const slug = `${slugify(role)}-jobs${location ? `-in-${slugify(location)}` : ""}`;
-  const url = `https://www.hirist.com/${slug}`;
+  const url = `https://www.hirist.tech/${slug}`;
   let res: Response;
   try {
     res = await fetchWithRetry(
@@ -994,7 +994,7 @@ export async function fetchHirist(role: string, location: string): Promise<RawJo
         out.push({
           source: "hirist",
           external_id: String(o.jobId ?? o.id ?? `hirist-${out.length}`),
-          url: o.jobUrl ? String(o.jobUrl) : `https://www.hirist.com/j/${o.jobId ?? ""}`,
+          url: o.jobUrl ? String(o.jobUrl) : `https://www.hirist.tech/j/${o.jobId ?? ""}`,
           title,
           company,
           location: loc,
@@ -1036,7 +1036,7 @@ export const SOURCES: SourceDescriptor[] = [
   { id: "foundit",   label: "Foundit",   fetch: fetchFoundit,   requiresKey: false, isAvailable: () => !disabled("DISABLE_FOUNDIT") },
   { id: "instahyre", label: "Instahyre", fetch: fetchInstahyre, requiresKey: false, isAvailable: () => !disabled("DISABLE_INSTAHYRE") },
   { id: "hirist",    label: "Hirist",    fetch: fetchHirist,    requiresKey: false, isAvailable: () => !disabled("DISABLE_HIRIST") },
-  { id: "wellfound", label: "Wellfound", fetch: fetchWellfound, requiresKey: false, isAvailable: () => !disabled("DISABLE_WELLFOUND") },
+  { id: "wellfound", label: "Wellfound", fetch: fetchWellfound, requiresKey: false, isAvailable: () => process.env.ENABLE_WELLFOUND === "true" },
   { id: "yc",        label: "YC Jobs",   fetch: fetchYC,        requiresKey: false, isAvailable: () => !disabled("DISABLE_YC") },
   { id: "remoteok",  label: "RemoteOK",  fetch: fetchRemoteOK,  requiresKey: false, isAvailable: () => !disabled("DISABLE_REMOTEOK") },
   { id: "remotive",  label: "Remotive",  fetch: fetchRemotive,  requiresKey: false, isAvailable: () => !disabled("DISABLE_REMOTIVE") },
