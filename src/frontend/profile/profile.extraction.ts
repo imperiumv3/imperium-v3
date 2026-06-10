@@ -1,12 +1,11 @@
-/** Local-first profile extraction helpers. Resume parses via existing client
- *  PDF/DOCX parser; LinkedIn import is a placeholder until Ollama wiring lands. */
-import { extractTextFromFile } from "@backend/profile/ResumeFileParser";
-
-export async function extractFromResume(file: File): Promise<{ text: string; chars: number }> {
-  const text = await extractTextFromFile(file);
-  return { text, chars: text.length };
-}
-
-export async function importFromLinkedIn(_url: string): Promise<{ ok: boolean; message: string }> {
-  return { ok: false, message: "Local LinkedIn import will activate when Ollama integration is enabled." };
+/** Client-side helpers: read file bytes; server fns own the heavy lifting. */
+export async function fileToBase64(file: File): Promise<string> {
+  const buf = await file.arrayBuffer();
+  let bin = "";
+  const bytes = new Uint8Array(buf);
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    bin += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(bin);
 }

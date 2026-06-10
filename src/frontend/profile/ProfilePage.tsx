@@ -18,8 +18,6 @@ export function ProfilePage() {
       <div className="profile-topbar">
         <div className="profile-logo" aria-hidden>◐</div>
         <div className="profile-top-actions">
-          <div className="profile-chip"><span className="dot red" />297 <span className="caret">▾</span></div>
-          <div className="profile-chip"><span className="dot gold" />1,258 <span className="caret">▾</span></div>
           <button className="profile-gear" onClick={() => navigate({ to: "/settings" })} aria-label="Settings">⚙</button>
         </div>
       </div>
