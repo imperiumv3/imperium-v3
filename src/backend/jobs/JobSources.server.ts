@@ -351,6 +351,88 @@ export async function fetchLinkedIn(role: string, location: string): Promise<Raw
   return out;
 }
 
+/* ───────── Generic JD enrichment (Naukri / Foundit / Instahyre / Wellfound / YC / Hirist) ─────────
+ * Best-effort fetch of the original posting URL to recover a real description
+ * when the source's list response only ships a short snippet. Throttled and
+ * fully swallowed — failures never break the pipeline.
+ */
+const ENRICH_MIN_DESC = 150;
+const ENRICH_TIMEOUT_MS = 6000;
+const ENRICH_GAP_MS = 350;
+
+async function fetchJdHtml(url: string): Promise<string | null> {
+  if (!url || !/^https?:\/\//i.test(url)) return null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ENRICH_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": pickUA(), Accept: "text/html,application/xhtml+xml", "Accept-Language": "en-IN,en;q=0.9" },
+      signal: ctrl.signal,
+    });
+    if (!res.ok) return null;
+    return await res.text();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function extractJdFromHtml(html: string): string | null {
+  // Prefer JSON-LD JobPosting.description
+  const ldRegex = /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g;
+  let m: RegExpExecArray | null;
+  while ((m = ldRegex.exec(html)) !== null) {
+    try {
+      const parsed = JSON.parse(m[1]);
+      const arr = Array.isArray(parsed) ? parsed : [parsed];
+      for (const o of arr) {
+        if (o && o["@type"] === "JobPosting" && typeof o.description === "string") {
+          const txt = stripHtml(o.description);
+          if (txt.length >= ENRICH_MIN_DESC) return txt.slice(0, 8000);
+        }
+      }
+    } catch { /* ignore */ }
+  }
+  // OG description
+  const og = html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']+)["']/i);
+  if (og && og[1].length >= ENRICH_MIN_DESC) return og[1].slice(0, 8000);
+  // Common JD container heuristics
+  const blocks = [
+    /<section[^>]*class="[^"]*(?:job-desc|jobDescription|jd-container|styles_JDC|description)[^"]*"[^>]*>([\s\S]*?)<\/section>/i,
+    /<div[^>]*class="[^"]*(?:job-desc|jobDescription|jd-container|styles_JDC|description|show-more-less-html)[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
+    /<article[^>]*>([\s\S]*?)<\/article>/i,
+  ];
+  for (const re of blocks) {
+    const b = html.match(re);
+    if (b) {
+      const txt = stripHtml(b[1]);
+      if (txt.length >= ENRICH_MIN_DESC) return txt.slice(0, 8000);
+    }
+  }
+  return null;
+}
+
+const ENRICHABLE_SOURCES = new Set(["naukri", "foundit", "instahyre", "wellfound", "yc", "hirist"]);
+
+export async function enrichDescriptions(jobs: RawJob[], maxFetch = 12): Promise<void> {
+  if (process.env.DISABLE_JD_ENRICH === "true") return;
+  const candidates = jobs.filter(
+    (j) => ENRICHABLE_SOURCES.has(j.source) && (j.description?.trim().length ?? 0) < ENRICH_MIN_DESC && !!j.url,
+  ).slice(0, maxFetch);
+  for (const j of candidates) {
+    const html = await fetchJdHtml(j.url);
+    if (html) {
+      const txt = extractJdFromHtml(html);
+      if (txt) {
+        j.description = txt;
+        j.tech_stack = Array.from(new Set([...(j.tech_stack ?? []), ...extractTechStack(txt)])).slice(0, 25);
+      }
+    }
+    await new Promise((r) => setTimeout(r, ENRICH_GAP_MS));
+  }
+}
+
 
 /* ───────── Adzuna (Indeed-class aggregator; requires API key) ───────── */
 export async function fetchAdzuna(role: string, location: string): Promise<RawJob[]> {
