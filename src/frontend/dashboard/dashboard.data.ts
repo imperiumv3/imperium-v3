@@ -1,196 +1,134 @@
 /**
- * Dashboard data layer. v1 returns a generic Imperium identity overlaid
- * with the current mockAuth session's name/email when present. Swap the
- * body of `useDashboardData` for a server function later — the contract stays.
- * PII has been stripped (Phase 0): no hardcoded personal email/name.
+ * Dashboard data layer — REAL DATA ONLY.
+ *
+ * All gamification (XP, levels, coins, gems, powers, attributes, fake
+ * activity, fake KPIs) was removed in the V3 cleanup. The dashboard now
+ * derives every metric from the authenticated user's applications +
+ * timeline rows in Supabase. Zero-state is honest: counts render as 0 with
+ * helpful CTAs when the user has not yet applied to anything.
  */
 import { useMemo } from "react";
 import { useSession } from "@frontend/auth/session";
+import {
+  useApplicationsSync,
+} from "@frontend/applications/data/useApplicationsData";
+import { useApplicationsStore } from "@frontend/applications/state/useApplicationsStore";
+import type { Application, ApplicationEvent, ApplicationStatus } from "@frontend/applications/schema";
 
-export type Rarity = "common" | "rare" | "epic" | "legendary" | "mythic";
-
-export type ModuleColor =
-  | "coral"
-  | "mint"
-  | "lavender"
-  | "butter"
-  | "sky"
-  | "rose";
-
-export interface IdentityData {
+export interface DashboardIdentity {
   fullName: string;
-  title: string;
   email: string;
-  imperiumId: string;
-  country: string;
-  level: number;
-  rank: number;
-  rankLabel: string;
-  xp: number;
-  xpMax: number;
-  stars: number; // 0–7
 }
 
-export interface AttributesData {
-  atsScore: number;
-  capacity: number;
-  speed: number;
-  accuracy: number;
+export interface DashboardKpis {
+  applicationsSubmitted: number;
+  underReview: number;
+  interviews: number;
+  offers: number;
+  responseRate: number; // 0..1
+  active: number;
 }
 
-export interface PowerData {
+export interface DashboardActivityItem {
   id: string;
-  name: string;
-  level: number;
-  color: ModuleColor;
-  iconKey: "mastery" | "interview" | "speed";
-  description: string;
-}
-
-export interface CareerOverviewData {
-  jobsFound: { value: number; delta: number };
-  applications: { value: number; delta: number };
-  interviews: { value: number; delta: number };
-  offers: { value: number; delta: number };
-}
-
-export interface ActivityItem {
-  id: string;
-  iconKey: "resume" | "applied" | "interview" | "ats";
   label: string;
   timeAgo: string;
-}
-
-export interface CoreModuleData {
-  id: string;
-  name: string;
-  description: string;
-  powerLevel: number; // 0..5 (supports half)
-  color: ModuleColor;
-  iconKey: string;
-}
-
-export interface InventoryModule {
-  id: string;
-  name: string;
-  level: number;
-  color: ModuleColor;
-  rarity: Rarity;
-  route: string;
-  iconKey:
-    | "job"
-    | "resume"
-    | "ats"
-    | "tracker"
-    | "interview"
-    | "skill"
-    | "assistant"
-    | "recruiter"
-    | "network"
-    | "salary";
-  description: string;
-  locked?: boolean;
+  status?: ApplicationStatus;
 }
 
 export interface DashboardData {
-  identity: IdentityData;
-  attributes: AttributesData;
-  powers: PowerData[];
-  resources: { gems: number; coins: number };
-  careerOverview: CareerOverviewData;
-  recentActivity: ActivityItem[];
-  equippedCore: CoreModuleData;
-  inventory: InventoryModule[];
-  quote: string;
+  identity: DashboardIdentity;
+  kpis: DashboardKpis;
+  recentActivity: DashboardActivityItem[];
+  loading: boolean;
+  hasAnyData: boolean;
 }
 
-const BASE: DashboardData = {
-  identity: {
-    fullName: "Imperium Operator",
-    title: "Career Architect",
-    email: "",
-    imperiumId: "IMP-0000-0000",
-    country: "",
-    level: 1,
-    rank: 0,
-    rankLabel: "Initiate",
-    xp: 0,
-    xpMax: 1000,
-    stars: 0,
-  },
-  attributes: {
-    atsScore: 85,
-    capacity: 78,
-    speed: 72,
-    accuracy: 88,
-  },
-  resources: { gems: 297, coins: 1258 },
-  powers: [
-    {
-      id: "resume-mastery",
-      name: "Resume Mastery",
-      level: 12,
-      color: "coral",
-      iconKey: "mastery",
-      description: "Craft ATS-perfect resumes faster than the meta.",
-    },
-    {
-      id: "interview-power",
-      name: "Interview Power",
-      level: 9,
-      color: "mint",
-      iconKey: "interview",
-      description: "Confidence under fire — mock interviews mastered.",
-    },
-    {
-      id: "application-speed",
-      name: "Application Speed",
-      level: 7,
-      color: "butter",
-      iconKey: "speed",
-      description: "Submit qualified apps at record velocity.",
-    },
-  ],
-  careerOverview: {
-    jobsFound: { value: 128, delta: 12 },
-    applications: { value: 23, delta: 5 },
-    interviews: { value: 7, delta: 2 },
-    offers: { value: 3, delta: 1 },
-  },
-  recentActivity: [
-    { id: "a1", iconKey: "resume", label: "Resume generated for Senior AI Engineer at NovaTech", timeAgo: "2h ago" },
-    { id: "a2", iconKey: "applied", label: "Applied for Data Scientist at FutureNet", timeAgo: "1d ago" },
-    { id: "a3", iconKey: "interview", label: "Interview scheduled with TechNova", timeAgo: "2d ago" },
-    { id: "a4", iconKey: "ats", label: "Profile optimized for ATS", timeAgo: "3d ago" },
-  ],
-  equippedCore: {
-    id: "job-agent-core",
-    name: "Job Agent Core",
-    description: "Primary intelligence module for job discovery, analysis and application automation.",
-    powerLevel: 4.5,
-    color: "mint",
-    iconKey: "core",
-  },
-  inventory: [
-    { id: "job-agent", name: "Job Agent", level: 5, color: "coral", rarity: "legendary", route: "/jobs", iconKey: "job", description: "Discovery, ranking, analysis and application orchestration." },
-    { id: "resume-studio", name: "Resume Studio", level: 4, color: "mint", rarity: "epic", route: "/resume", iconKey: "resume", description: "Tailored, ATS-optimized resumes per role." },
-    { id: "application-tracker", name: "Application Tracker", level: 4, color: "lavender", rarity: "epic", route: "/applications", iconKey: "tracker", description: "Pipeline view across every applied role." },
-    { id: "autopilot", name: "Autopilot", level: 3, color: "butter", rarity: "rare", route: "/autopilot", iconKey: "assistant", description: "Local agent: browser automation, form fill, submit." },
-  ],
-  quote: "Automate applications. Optimize opportunities. Elevate your career.",
-};
+const RESPONDED: ReadonlySet<ApplicationStatus> = new Set([
+  "viewed",
+  "under_review",
+  "assessment",
+  "interview",
+  "offer",
+  "rejected",
+]);
+
+const ACTIVE: ReadonlySet<ApplicationStatus> = new Set([
+  "applied",
+  "viewed",
+  "under_review",
+  "assessment",
+  "interview",
+  "offer",
+]);
+
+function computeKpis(apps: Application[]): DashboardKpis {
+  const total = apps.length;
+  const interviews = apps.filter((a) => a.status === "interview").length;
+  const offers = apps.filter((a) => a.status === "offer").length;
+  const underReview = apps.filter(
+    (a) => a.status === "under_review" || a.status === "assessment",
+  ).length;
+  const responses = apps.filter((a) => RESPONDED.has(a.status)).length;
+  const active = apps.filter((a) => ACTIVE.has(a.status)).length;
+  return {
+    applicationsSubmitted: total,
+    underReview,
+    interviews,
+    offers,
+    responseRate: total ? responses / total : 0,
+    active,
+  };
+}
+
+function timeAgo(iso: string): string {
+  const ms = Date.now() - Date.parse(iso);
+  if (Number.isNaN(ms) || ms < 0) return "just now";
+  const m = Math.floor(ms / 60_000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 30) return `${d}d ago`;
+  const mo = Math.floor(d / 30);
+  return `${mo}mo ago`;
+}
+
+function buildActivity(events: ApplicationEvent[], apps: Application[]): DashboardActivityItem[] {
+  const appMap = new Map(apps.map((a) => [a.id, a]));
+  return [...events]
+    .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
+    .slice(0, 6)
+    .map((e) => {
+      const app = appMap.get(e.applicationId);
+      const where = app ? `${app.role} @ ${app.company}` : "Application";
+      return {
+        id: e.id,
+        label: `${e.title} — ${where}`,
+        timeAgo: timeAgo(e.timestamp),
+        status: app?.status,
+      };
+    });
+}
 
 export function useDashboardData(): DashboardData {
   const session = useSession();
+  const { loading } = useApplicationsSync();
+  const apps = useApplicationsStore((s) => s.applications);
+  const events = useApplicationsStore((s) => s.events);
+
   return useMemo<DashboardData>(() => {
-    if (!session) return BASE;
+    const kpis = computeKpis(apps);
     return {
-      ...BASE,
       identity: {
-        ...BASE.identity,
-        fullName: session.fullName?.split(" ")[0] || BASE.identity.fullName,
-        email: session.email || BASE.identity.email,
+        fullName: session?.fullName?.split(" ")[0] || "there",
+        email: session?.email || "",
       },
+      kpis,
+      recentActivity: buildActivity(events, apps),
+      loading,
+      hasAnyData: apps.length > 0,
     };
-  }, [session]);
+  }, [session, apps, events, loading]);
 }

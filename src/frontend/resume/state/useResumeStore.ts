@@ -14,6 +14,7 @@ import {
   uid,
 } from "@frontend/resume/schema";
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 function seedFromProfile(p: Pick<
   ImperiumProfile,
@@ -102,51 +103,68 @@ interface ResumeStore {
 
 const INITIAL_FROM_EMPTY = seedFromProfile(EMPTY_PROFILE);
 
-export const useResumeStore = create<ResumeStore>()((set, get) => ({
-  resume: INITIAL_FROM_EMPTY,
-  selectedJob: null,
-  versions: [
-    {
-      id: uid("v"),
-      label: "V1",
-      createdAt: Date.now(),
-      json: INITIAL_FROM_EMPTY,
-      templateId: INITIAL_FROM_EMPTY.meta.templateId,
-      themeId: INITIAL_FROM_EMPTY.meta.themeId,
-    },
-  ],
-  setResume: (r) => set({ resume: r }),
-  patch: (fn) =>
-    set((s) => {
-      const next = structuredClone(s.resume);
-      fn(next);
-      return { resume: next };
-    }),
-  setTemplate: (id) =>
-    set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, templateId: id } } })),
-  setTheme: (id) =>
-    set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, themeId: id } } })),
-  setSelectedJob: (j) => set({ selectedJob: j }),
-  saveVersion: (label, scores) =>
-    set((s) => ({
+export const useResumeStore = create<ResumeStore>()(
+  persist(
+    (set, get) => ({
+      resume: INITIAL_FROM_EMPTY,
+      selectedJob: null,
       versions: [
-        ...s.versions,
         {
           id: uid("v"),
-          label: label ?? `V${s.versions.length + 1}`,
+          label: "V1",
           createdAt: Date.now(),
-          json: structuredClone(s.resume),
-          templateId: s.resume.meta.templateId,
-          themeId: s.resume.meta.themeId,
-          atsScore: scores?.atsScore,
-          resumeHealth: scores?.resumeHealth,
-          jdMatch: scores?.jdMatch,
+          json: INITIAL_FROM_EMPTY,
+          templateId: INITIAL_FROM_EMPTY.meta.templateId,
+          themeId: INITIAL_FROM_EMPTY.meta.themeId,
         },
       ],
-    })),
-  restoreVersion: (id) => {
-    const v = get().versions.find((x) => x.id === id);
-    if (v) set({ resume: structuredClone(v.json) });
-  },
-  reset: () => set({ resume: INITIAL_FROM_EMPTY }),
-}));
+      setResume: (r) => set({ resume: r }),
+      patch: (fn) =>
+        set((s) => {
+          const next = structuredClone(s.resume);
+          fn(next);
+          return { resume: next };
+        }),
+      setTemplate: (id) =>
+        set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, templateId: id } } })),
+      setTheme: (id) =>
+        set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, themeId: id } } })),
+      setSelectedJob: (j) => set({ selectedJob: j }),
+      saveVersion: (label, scores) =>
+        set((s) => ({
+          versions: [
+            ...s.versions,
+            {
+              id: uid("v"),
+              label: label ?? `V${s.versions.length + 1}`,
+              createdAt: Date.now(),
+              json: structuredClone(s.resume),
+              templateId: s.resume.meta.templateId,
+              themeId: s.resume.meta.themeId,
+              atsScore: scores?.atsScore,
+              resumeHealth: scores?.resumeHealth,
+              jdMatch: scores?.jdMatch,
+            },
+          ],
+        })),
+      restoreVersion: (id) => {
+        const v = get().versions.find((x) => x.id === id);
+        if (v) set({ resume: structuredClone(v.json) });
+      },
+      reset: () => set({ resume: INITIAL_FROM_EMPTY, selectedJob: null }),
+    }),
+    {
+      name: "imperium-resume-studio-v1",
+      storage: createJSONStorage(() => localStorage),
+      // Persist selected job + resume content + saved versions so the studio
+      // survives refresh, navigation, and tab switches. Profile re-hydration
+      // still wins on first load when resume.personal.name is empty.
+      partialize: (s) => ({
+        resume: s.resume,
+        selectedJob: s.selectedJob,
+        versions: s.versions,
+      }),
+      version: 1,
+    },
+  ),
+);

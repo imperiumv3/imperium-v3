@@ -13,6 +13,7 @@ import { getTemplate } from "@frontend/resume/templates/registry";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 export function ActionBar({
   printHandleRef,
@@ -51,9 +52,16 @@ export function ActionBar({
 
   const handlePdf = async () => {
     const h = printHandleRef.current;
-    if (!h) return;
+    if (!h) {
+      toast.error("Preview not ready yet — try again in a moment");
+      return;
+    }
     setExporting("pdf");
     try { await exportResumeToPdf(h.node, resume); }
+    catch (err) {
+      const msg = err instanceof Error ? err.message : "PDF export failed";
+      toast.error(msg);
+    }
     finally { setExporting(null); }
   };
 
@@ -81,30 +89,52 @@ export function ActionBar({
         cacheJd: jd,
         call: () => summaryFn({ data: { resume: ctx, jd } }),
       });
-      if (res.summary) patch((r) => { r.summary = res.summary; });
-    } catch { /* swallow */ }
-    finally { setAiBusy(false); }
+      if (res.summary) {
+        patch((r) => { r.summary = res.summary; });
+        toast.success("Summary regenerated");
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "AI generation failed";
+      toast.error(msg);
+      console.error("[ActionBar] AI generation failed:", err);
+    } finally {
+      setAiBusy(false);
+    }
   };
 
-  const handleApply = () => {
-    if (!selectedJob) return;
+  const handleApply = async () => {
+    if (!selectedJob) {
+      toast.error("Select a job first");
+      return;
+    }
     const versionLabel = versions[versions.length - 1]?.label ?? "V1";
-    create({
-      job: {
-        title: selectedJob.title,
-        company: selectedJob.company,
-        description: selectedJob.description,
-      },
-      resume: {
-        resumeId: "current",
-        resumeVersion: versionLabel,
-        templateUsed: activeTemplate?.name ?? resume.meta.templateId,
-      },
-      atsScore: ats.atsScore,
-      matchScore: jdMatch.score,
-    });
-    setApplied(true);
-    setTimeout(() => navigate({ to: "/applications" }), 600);
+    try {
+      const app = await create({
+        job: {
+          title: selectedJob.title,
+          company: selectedJob.company,
+          description: selectedJob.description,
+        },
+        resume: {
+          resumeId: "current",
+          resumeVersion: versionLabel,
+          templateUsed: activeTemplate?.name ?? resume.meta.templateId,
+        },
+        atsScore: ats.atsScore,
+        matchScore: jdMatch.score,
+      });
+      if (!app) {
+        toast.error("Failed to submit application — please try again");
+        return;
+      }
+      setApplied(true);
+      toast.success(`Added to tracker: ${selectedJob.title} @ ${selectedJob.company}`);
+      setTimeout(() => navigate({ to: "/applications" }), 600);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to submit application";
+      toast.error(msg);
+      console.error("[ActionBar] handleApply failed:", err);
+    }
   };
 
   return (
