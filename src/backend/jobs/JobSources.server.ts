@@ -994,7 +994,7 @@ export async function fetchHirist(role: string, location: string): Promise<RawJo
         out.push({
           source: "hirist",
           external_id: String(o.jobId ?? o.id ?? `hirist-${out.length}`),
-          url: o.jobUrl ? String(o.jobUrl) : `https://www.hirist.com/j/${o.jobId ?? ""}`,
+          url: o.jobUrl ? String(o.jobUrl) : `https://www.hirist.tech/j/${o.jobId ?? ""}`,
           title,
           company,
           location: loc,
