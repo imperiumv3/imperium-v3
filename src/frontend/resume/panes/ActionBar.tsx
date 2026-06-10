@@ -1,6 +1,6 @@
 /** Sticky bottom action bar — template picker, saved indicator, exports, AI, Apply. */
 import { useApplicationsStore } from "@frontend/applications/state/useApplicationsStore";
-import { aiGenerateSummary } from "@frontend/resume/ai/resume-ai.functions";
+import { aiGenerateSummary, aiGenerateCoverLetter, aiInterviewPrep } from "@frontend/resume/ai/resume-ai.functions";
 import { useAiRunner } from "@frontend/resume/ai/useAi";
 import { analyzeAts } from "@frontend/resume/ats/AtsEngine";
 import { analyzeHealth } from "@frontend/resume/ats/HealthEngine";
@@ -17,9 +17,12 @@ import {
   FileDown,
   FileText,
   LayoutTemplate,
+  Mail,
+  MessageSquare,
   Save,
   Send,
   Sparkles,
+  X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -40,6 +43,8 @@ export function ActionBar({
 
   const { run: runAi } = useAiRunner();
   const summaryFn = useServerFn(aiGenerateSummary);
+  const coverFn = useServerFn(aiGenerateCoverLetter);
+  const prepFn = useServerFn(aiInterviewPrep);
 
   const jd = selectedJob?.description ?? "";
   const ats = useMemo(() => analyzeAts(resume, jd), [resume, jd]);
@@ -51,6 +56,10 @@ export function ActionBar({
   const [aiBusy, setAiBusy] = useState(false);
   const [applied, setApplied] = useState(false);
   const [tplOpen, setTplOpen] = useState(false);
+  const [coverBusy, setCoverBusy] = useState(false);
+  const [coverText, setCoverText] = useState<string | null>(null);
+  const [prepBusy, setPrepBusy] = useState(false);
+  const [prepData, setPrepData] = useState<{ behavioral: string[]; technical: string[]; projectDeepDive: string[] } | null>(null);
   const tplRef = useRef<HTMLDivElement | null>(null);
 
   // Close template picker on outside click
@@ -135,6 +144,52 @@ export function ActionBar({
       console.error("[ActionBar] AI generation failed:", err);
     } finally {
       setAiBusy(false);
+    }
+  };
+
+  const resumeCtx = () => ({
+    name: resume.personal.name,
+    title: resume.personal.title,
+    summary: resume.summary,
+    skills: resume.skills.flatMap((g) => g.items),
+    experienceSnippets: resume.experience.flatMap((e) => e.bullets).slice(0, 6),
+    projectSnippets: resume.projects.flatMap((p) => p.bullets).slice(0, 4),
+  });
+
+  const handleCoverLetter = async () => {
+    setCoverBusy(true);
+    try {
+      const res = await coverFn({
+        data: {
+          resume: resumeCtx(),
+          jd,
+          company: selectedJob?.company,
+          role: selectedJob?.title,
+        },
+      });
+      setCoverText(res.letter);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Cover letter failed");
+    } finally {
+      setCoverBusy(false);
+    }
+  };
+
+  const handleInterviewPrep = async () => {
+    setPrepBusy(true);
+    try {
+      const res = await prepFn({
+        data: { resume: resumeCtx(), jd, role: selectedJob?.title },
+      });
+      setPrepData({
+        behavioral: res.behavioral,
+        technical: res.technical,
+        projectDeepDive: res.projectDeepDive,
+      });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Interview prep failed");
+    } finally {
+      setPrepBusy(false);
     }
   };
 
@@ -234,6 +289,12 @@ export function ActionBar({
       </div>
 
       <div className="rs-actionbar-right">
+        <button className="rs-btn rs-btn-ghost" onClick={handleCoverLetter} disabled={coverBusy} title="Generate cover letter">
+          <Mail size={16} aria-hidden /> {coverBusy ? "Writing…" : "Cover Letter"}
+        </button>
+        <button className="rs-btn rs-btn-ghost" onClick={handleInterviewPrep} disabled={prepBusy} title="Interview prep">
+          <MessageSquare size={16} aria-hidden /> {prepBusy ? "Preparing…" : "Interview Prep"}
+        </button>
         <button
           className="rs-btn rs-btn-primary"
           onClick={handleGenerate}
@@ -250,6 +311,51 @@ export function ActionBar({
           <Send size={16} aria-hidden /> {applied ? "Added" : "Apply"}
         </button>
       </div>
+
+      {coverText !== null && (
+        <div className="rs-modal-overlay" onClick={() => setCoverText(null)}>
+          <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="rs-modal-head">
+              <h3>Cover Letter</h3>
+              <button className="rs-btn rs-btn-ghost" onClick={() => setCoverText(null)} aria-label="Close"><X size={16} /></button>
+            </div>
+            <textarea className="rs-modal-textarea" value={coverText} onChange={(e) => setCoverText(e.target.value)} rows={16} />
+            <div className="rs-modal-foot">
+              <button className="rs-btn rs-btn-ghost" onClick={() => { void navigator.clipboard.writeText(coverText); toast.success("Copied"); }}>Copy</button>
+              <button className="rs-btn rs-btn-primary" onClick={() => {
+                const blob = new Blob([coverText], { type: "text/plain" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = `cover-letter-${(selectedJob?.company || "draft").replace(/\s+/g, "-").toLowerCase()}.txt`; a.click();
+                URL.revokeObjectURL(url);
+              }}>Download</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {prepData && (
+        <div className="rs-modal-overlay" onClick={() => setPrepData(null)}>
+          <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="rs-modal-head">
+              <h3>Interview Prep{selectedJob?.title ? ` — ${selectedJob.title}` : ""}</h3>
+              <button className="rs-btn rs-btn-ghost" onClick={() => setPrepData(null)} aria-label="Close"><X size={16} /></button>
+            </div>
+            <div className="rs-prep-body">
+              {([
+                ["Behavioral", prepData.behavioral],
+                ["Technical", prepData.technical],
+                ["Project Deep-Dive", prepData.projectDeepDive],
+              ] as const).map(([label, items]) => items.length > 0 && (
+                <section key={label}>
+                  <h4>{label}</h4>
+                  <ol>{items.map((q, i) => <li key={i}>{q}</li>)}</ol>
+                </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

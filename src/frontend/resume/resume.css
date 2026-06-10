@@ -560,3 +560,16 @@
   .rs-actionbar-left, .rs-actionbar-right, .rs-actionbar-center { justify-self: stretch; }
   .rs-actionbar-center { flex-wrap: wrap; justify-content: center; }
 }
+
+/* Cover Letter / Interview Prep modals — token-based, matches studio chrome */
+.rs-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.rs-modal { background: var(--rs-surface, #14151a); color: var(--rs-text, #e7e9ee); border: 1px solid var(--rs-border, rgba(255,255,255,0.08)); border-radius: 12px; width: min(720px, 100%); max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 24px 64px rgba(0,0,0,0.5); }
+.rs-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--rs-border, rgba(255,255,255,0.08)); }
+.rs-modal-head h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.rs-modal-textarea { flex: 1; margin: 14px 18px; padding: 12px; background: var(--rs-bg, #0c0d11); color: inherit; border: 1px solid var(--rs-border, rgba(255,255,255,0.08)); border-radius: 8px; font: 13px/1.55 ui-sans-serif, system-ui, sans-serif; resize: vertical; min-height: 280px; }
+.rs-modal-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--rs-border, rgba(255,255,255,0.08)); }
+.rs-prep-body { padding: 14px 18px 18px; overflow-y: auto; }
+.rs-prep-body section + section { margin-top: 16px; }
+.rs-prep-body h4 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--rs-muted, #9aa0aa); text-transform: uppercase; letter-spacing: 0.04em; }
+.rs-prep-body ol { margin: 0; padding-left: 20px; font-size: 13.5px; line-height: 1.55; }
+.rs-prep-body li + li { margin-top: 6px; }
