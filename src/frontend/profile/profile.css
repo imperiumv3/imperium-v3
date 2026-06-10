@@ -417,6 +417,19 @@
 .pe-span-2 { grid-column: 1 / -1; }
 @media (max-width: 640px) { .pe-grid-2 { grid-template-columns: 1fr; } }
 .pe-hint { margin: 0; color: #6b7280; font-size: 11px; }
+.pe-item {
+  display: grid; gap: 12px; padding: 12px;
+  background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+.pe-item-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #dfe3ea; font-size: 12px; }
+.pe-item-head button, .pe-add {
+  background: transparent; color: #b9a7e0; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 9px; padding: 7px 10px; cursor: pointer; font-size: 12px;
+}
+.pe-item-head button:hover, .pe-add:hover { border-color: var(--p-violet, #7c5cff); color: #fff; }
+.pe-check { align-content: end; grid-template-columns: auto 1fr; align-items: center; color: #dfe3ea !important; }
+.profile-edit-body .pe-check input { width: auto; }
 .profile-edit-foot {
   display: flex; justify-content: flex-end; gap: 10px;
   padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.08);

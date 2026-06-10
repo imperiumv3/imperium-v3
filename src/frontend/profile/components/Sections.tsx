@@ -22,7 +22,7 @@ function formatSalary(s: ProfilePageData["profile"]["salary_expectation"]): stri
 export function EducationCard({ data }: { data: ProfilePageData }) {
   const e = data.profile.education[0];
   return (
-    <InfoCard title="EDUCATION" icon="🎓" tone="violet">
+    <InfoCard title="EDUCATION" icon="🎓" tone="violet" section="education">
       <Field label="DEGREE" value={e?.degree ?? "—"} />
       <Field label="SPECIALIZATION" value={e?.field ?? "—"} />
       <Field label="COLLEGE" value={e?.school ?? "—"} />
@@ -48,7 +48,7 @@ export function ExperienceCard({ data }: { data: ProfilePageData }) {
   const previous = exp[1];
   const totalYears = exp.reduce((acc, x) => acc + yearsBetween(x.start, x.end), 0);
   return (
-    <InfoCard title="EXPERIENCE" icon="💼" tone="green">
+    <InfoCard title="EXPERIENCE" icon="💼" tone="green" section="experience">
       <Field label="CURRENT ROLE" value={current?.title ?? "—"} />
       <Field label="COMPANY" value={current?.company ?? "—"} />
       <Field label="YEARS OF EXPERIENCE" value={totalYears > 0 ? `${totalYears.toFixed(1)} Years` : "—"} />
@@ -60,7 +60,7 @@ export function ExperienceCard({ data }: { data: ProfilePageData }) {
 export function JobPreferencesCard({ data }: { data: ProfilePageData }) {
   const p = data.profile;
   return (
-    <InfoCard title="JOB PREFERENCES" icon="🎯" tone="sky">
+    <InfoCard title="JOB PREFERENCES" icon="🎯" tone="sky" section="jobPreferences">
       <Field label="PREFERRED ROLE" value={p.target_role || "—"} />
       <div className="profile-grid-2">
         <Field label="PREFERRED LOCATION" value={p.target_locations.slice(0, 2).join(", ") || "—"} />
@@ -76,7 +76,7 @@ export function JobPreferencesCard({ data }: { data: ProfilePageData }) {
 
 export function SummaryCard({ data }: { data: ProfilePageData }) {
   return (
-    <InfoCard title="PROFESSIONAL SUMMARY" icon="👤" tone="violet" className="profile-info--wide">
+    <InfoCard title="PROFESSIONAL SUMMARY" icon="👤" tone="violet" className="profile-info--wide" section="summary">
       <p className="profile-summary-body">{data.profile.summary || "No summary on file. Import a resume or LinkedIn profile to populate."}</p>
     </InfoCard>
   );
@@ -84,7 +84,7 @@ export function SummaryCard({ data }: { data: ProfilePageData }) {
 
 export function SkillsCard({ data }: { data: ProfilePageData }) {
   return (
-    <InfoCard title="SKILLS" icon="</>" tone="violet">
+    <InfoCard title="SKILLS" icon="</>" tone="violet" section="skills">
       <div className="profile-skills">
         {data.profile.skills.length === 0 && <span className="profile-skill muted">No skills on file</span>}
         {data.profile.skills.slice(0, 12).map((s) => (
@@ -97,7 +97,7 @@ export function SkillsCard({ data }: { data: ProfilePageData }) {
 
 export function ProjectsCard({ data }: { data: ProfilePageData }) {
   return (
-    <InfoCard title="PROJECTS" icon="🗂️" tone="amber">
+    <InfoCard title="PROJECTS" icon="🗂️" tone="amber" section="projects">
       {data.profile.projects.length === 0 && <div className="profile-empty">No projects on file.</div>}
       <ul className="profile-projects">
         {data.profile.projects.slice(0, 3).map((p) => (
@@ -144,7 +144,7 @@ export function ResumeCard({ data }: { data: ProfilePageData }) {
   }
 
   return (
-    <InfoCard title="RESUME" icon="📄" tone="sky">
+    <InfoCard title="RESUME" icon="📄" tone="sky" editable={false}>
       <div className="profile-resume-file">
         <span className="ico">📑</span>
         <div className="meta">
@@ -173,7 +173,7 @@ export function ResumeCard({ data }: { data: ProfilePageData }) {
 
 export function CertificationsCard({ data }: { data: ProfilePageData }) {
   return (
-    <InfoCard title="CERTIFICATIONS" icon="🏅" tone="amber" className="profile-info--wide">
+    <InfoCard title="CERTIFICATIONS" icon="🏅" tone="amber" className="profile-info--wide" section="certifications">
       {data.profile.certifications.length === 0 ? (
         <div className="profile-empty">No certifications on file.</div>
       ) : (
@@ -219,7 +219,7 @@ export function JobPrefDetailedCard({ data }: { data: ProfilePageData }) {
   }
 
   return (
-    <InfoCard title="JOB PREFERENCES (DETAILED)" icon="🎯" tone="sky" className="profile-info--wide">
+    <InfoCard title="JOB PREFERENCES (DETAILED)" icon="🎯" tone="sky" className="profile-info--wide" section="jobPreferences">
       <div className="profile-grid-3">
         <Field label="PREFERRED ROLE" value={data.profile.target_role || "—"} />
         <Field label="SENIORITY" value={data.profile.seniority || "—"} />

@@ -16,8 +16,24 @@ export function ProfilePage() {
   const data = useProfilePageData();
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
+  const [editSection, setEditSection] = useState<string | undefined>();
+
+  function closeEdit() {
+    setEditOpen(false);
+    setEditSection(undefined);
+  }
+
+  function openFullEdit() {
+    setEditSection(undefined);
+    setEditOpen(true);
+  }
+
   useEffect(() => {
-    function open() { setEditOpen(true); }
+    function open(event: Event) {
+      const detail = (event as CustomEvent<{ section?: string }>).detail;
+      setEditSection(detail?.section);
+      setEditOpen(true);
+    }
     window.addEventListener("profile:edit", open as EventListener);
     return () => window.removeEventListener("profile:edit", open as EventListener);
   }, []);
@@ -26,12 +42,12 @@ export function ProfilePage() {
       <div className="profile-topbar">
         <div className="profile-logo" aria-hidden>◐</div>
         <div className="profile-top-actions">
-          <button className="profile-gear" onClick={() => setEditOpen(true)} aria-label="Edit profile" title="Edit profile">✎ Edit</button>
+          <button className="profile-gear" onClick={openFullEdit} aria-label="Edit profile" title="Edit profile">✎ Edit</button>
           <button className="profile-gear" onClick={() => navigate({ to: "/settings" })} aria-label="Settings">⚙</button>
         </div>
       </div>
 
-      <ProfileEditDialog open={editOpen} onClose={() => setEditOpen(false)} profile={data.profile} />
+      <ProfileEditDialog open={editOpen} onClose={closeEdit} profile={data.profile} section={editSection} />
 
 
       <div className="profile-hero">
