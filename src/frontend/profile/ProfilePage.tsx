@@ -1,10 +1,12 @@
 import "./profile.css";
+import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useProfilePageData } from "./profile.data";
 import { ProfileHeader } from "./components/ProfileHeader";
 import { ProfileCard } from "./components/ProfileCard";
 import { StatusCard } from "./components/StatusCard";
 import { RightRail } from "./components/RightRail";
+import { ProfileEditDialog } from "./components/ProfileEditDialog";
 import {
   EducationCard, ExperienceCard, JobPreferencesCard, SummaryCard,
   SkillsCard, ProjectsCard, ResumeCard, CertificationsCard, JobPrefDetailedCard,
@@ -13,14 +15,19 @@ import {
 export function ProfilePage() {
   const data = useProfilePageData();
   const navigate = useNavigate();
+  const [editOpen, setEditOpen] = useState(false);
   return (
     <div className="profile-root">
       <div className="profile-topbar">
         <div className="profile-logo" aria-hidden>◐</div>
         <div className="profile-top-actions">
+          <button className="profile-gear" onClick={() => setEditOpen(true)} aria-label="Edit profile" title="Edit profile">✎ Edit</button>
           <button className="profile-gear" onClick={() => navigate({ to: "/settings" })} aria-label="Settings">⚙</button>
         </div>
       </div>
+
+      <ProfileEditDialog open={editOpen} onClose={() => setEditOpen(false)} profile={data.profile} />
+
 
       <div className="profile-hero">
         <ProfileHeader />
