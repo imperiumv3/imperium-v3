@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import avatar from "@/assets/profile/avatar-placeholder.jpg";
 import { supabase, isSupabaseConfigured } from "@backend/database/SupabaseClient";
@@ -33,19 +33,29 @@ export function ProfileCard({ data }: { data: ProfilePageData }) {
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const syncAvatar = useCallback(async (meta: Record<string, unknown>) => {
+    const avatarPath = typeof meta.avatar_path === "string" ? meta.avatar_path : "";
+    if (avatarPath) {
+      const { data: signed } = await supabase.storage.from(BUCKET).createSignedUrl(avatarPath, 60 * 60);
+      setPhotoUrl(signed?.signedUrl ?? null);
+      return;
+    }
+    setPhotoUrl(typeof meta.avatar_url === "string" ? meta.avatar_url : null);
+  }, []);
+
   useEffect(() => {
     let active = true;
     void supabase.auth.getUser().then(({ data }) => {
       if (!active) return;
       const meta = (data.user?.user_metadata ?? {}) as Record<string, unknown>;
-      setPhotoUrl(typeof meta.avatar_url === "string" ? meta.avatar_url : null);
+      void syncAvatar(meta);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       const meta = (s?.user?.user_metadata ?? {}) as Record<string, unknown>;
-      setPhotoUrl(typeof meta.avatar_url === "string" ? meta.avatar_url : null);
+      void syncAvatar(meta);
     });
     return () => { active = false; sub.subscription.unsubscribe(); };
-  }, []);
+  }, [syncAvatar]);
 
   async function onPick(file: File) {
     if (!isSupabaseConfigured()) {
@@ -63,11 +73,11 @@ export function ProfileCard({ data }: { data: ProfilePageData }) {
       const path = `${userId}/avatar-${Date.now()}.${ext}`;
       const up = await supabase.storage.from(BUCKET).upload(path, file, { upsert: true, contentType: file.type });
       if (up.error) throw up.error;
-      const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
-      const publicUrl = `${pub.publicUrl}?v=${Date.now()}`;
-      const upd = await supabase.auth.updateUser({ data: { avatar_url: publicUrl } });
+      const { data: signed, error: signedError } = await supabase.storage.from(BUCKET).createSignedUrl(path, 60 * 60);
+      if (signedError) throw signedError;
+      const upd = await supabase.auth.updateUser({ data: { avatar_path: path } });
       if (upd.error) throw upd.error;
-      setPhotoUrl(publicUrl);
+      setPhotoUrl(signed.signedUrl);
       toast.success("Profile photo updated");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
