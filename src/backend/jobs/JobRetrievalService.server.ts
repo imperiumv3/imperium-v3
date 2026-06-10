@@ -111,5 +111,8 @@ export async function retrieveJobs(
     if (jobs.length >= threshold) break; // enough — stop expanding
   }
 
+  // Best-effort JD enrichment for sources that ship short snippets.
+  try { await enrichDescriptions(jobs, 12); } catch { /* never break retrieval */ }
+
   return { jobs, perSource: Array.from(sourceAgg.values()), expansionsUsed };
 }
