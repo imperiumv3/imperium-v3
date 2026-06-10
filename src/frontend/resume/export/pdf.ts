@@ -105,12 +105,12 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
   });
 
   try {
-    if ((win.document as Document & { fonts?: { ready?: Promise<unknown> } }).fonts?.ready) {
-      await (win.document as Document & { fonts: { ready: Promise<unknown> } }).fonts.ready;
-    }
+    const fonts = (win.document as Document & { fonts?: { ready?: Promise<unknown> } }).fonts;
+    if (fonts && fonts.ready) await fonts.ready;
   } catch {
     // ignore
   }
+
 
   win.focus();
   win.print();
