@@ -112,15 +112,16 @@ export function normalizeMany(raws: RawJob[], ctx: CandidateContext): Normalized
   });
 }
 
-/** Top-5 selector (strict): see file header for rules. */
+/** Top-5 selector (relaxed): keep strong matches even when the JD is short or
+ * the source only ships a snippet. We still ban hard mismatches and stale jobs.
+ */
 export function selectTop5(jobs: NormalizedJob[]): NormalizedJob[] {
   const allowedTiers: LocationTier[] = ["same_city", "same_state", "remote", "same_country"];
   return jobs
     .filter((j) =>
-      j.qualityStatus === "ok" &&
-      j.qualityScore >= 60 &&
+      j.qualityStatus !== "invalid_url" &&
       !j.titleMismatch &&
-      j.matchScore >= 0.5 &&
+      j.matchScore >= 0.4 &&
       j.freshnessDays <= 30 &&
       allowedTiers.includes(j.locationTier),
     )
