@@ -21,7 +21,12 @@ export interface SearchFiltersUI {
 }
 
 export const EMPTY_FILTERS: SearchFiltersUI = {
-  title: "", skills: "", location: "", experience: "", workMode: "", salaryMin: "",
+  title: "",
+  skills: "",
+  location: "",
+  experience: "",
+  workMode: "",
+  salaryMin: "",
 };
 
 export function useProfileMetrics() {
@@ -104,9 +109,9 @@ export function useSelectJob() {
 
 export const INTELLIGENCE_LABEL: Record<string, { text: string; tone: string }> = {
   high_opportunity: { text: "High Opportunity", tone: "tone-green" },
-  strong_match:     { text: "Strong Match",     tone: "tone-blue" },
-  competitive:      { text: "Competitive",      tone: "tone-amber" },
-  long_shot:        { text: "Long Shot",        tone: "tone-grey" },
+  strong_match: { text: "Strong Match", tone: "tone-blue" },
+  competitive: { text: "Competitive", tone: "tone-amber" },
+  long_shot: { text: "Long Shot", tone: "tone-grey" },
 };
 
 export function postedAgo(iso: string | null): string {
