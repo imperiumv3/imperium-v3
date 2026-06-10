@@ -23,11 +23,14 @@ export function validatePrintLayout(node: HTMLElement, resume: ResumeJSON): Prin
     const top = (h as HTMLElement).offsetTop;
     const remainder = top % paperH;
     if (remainder > paperH - 60) {
-      warnings.push(`Section "${h.textContent?.slice(0, 40)}" may render orphaned near a page break.`);
+      warnings.push(
+        `Section "${h.textContent?.slice(0, 40)}" may render orphaned near a page break.`,
+      );
     }
   }
 
-  if (estimatedPages > 2) warnings.push(`Resume estimated at ${estimatedPages} pages — consider trimming.`);
+  if (estimatedPages > 2)
+    warnings.push(`Resume estimated at ${estimatedPages} pages — consider trimming.`);
   const overflow = contentH > paperH * 3;
   if (overflow) warnings.push("Content significantly exceeds page area — review for clipping.");
   return { warnings, estimatedPages, overflow };
@@ -106,7 +109,9 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
       }
       let left = pending.length;
       pending.forEach((i) => {
-        const done = () => { if (--left === 0) resolve(); };
+        const done = () => {
+          if (--left === 0) resolve();
+        };
         i.addEventListener("load", done, { once: true });
         i.addEventListener("error", done, { once: true });
       });
@@ -123,7 +128,6 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
   } catch {
     // ignore
   }
-
 
   win.focus();
   win.print();
