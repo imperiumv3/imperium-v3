@@ -7,6 +7,7 @@ import { ApplicationsTable } from "./components/ApplicationsTable";
 import { FiltersBar } from "./components/FiltersBar";
 import { CalendarPanel } from "./components/UpcomingPanel";
 import { DetailsDrawer } from "./components/DetailsDrawer";
+import { useSession } from "@frontend/auth/session";
 
 function SearchIcon() {
   return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
@@ -21,9 +22,16 @@ function MoonIcon() {
 export function ApplicationsPage() {
   const search = useApplicationsStore((s) => s.search);
   const setSearch = useApplicationsStore((s) => s.setSearch);
+  const session = useSession();
   // Hydrates the store from Supabase + runs one-time localStorage migration.
   useApplicationsSync();
 
+  const initials = (session?.fullName || session?.email || "?")
+    .split(/\s+|@/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((s) => s[0]?.toUpperCase() ?? "")
+    .join("") || "?";
 
   return (
     <div className="tracker-root">
@@ -47,13 +55,15 @@ export function ApplicationsPage() {
             <BellIcon /><span className="badge" />
           </button>
           <button className="icon-btn" aria-label="Theme"><MoonIcon /></button>
-          <div className="user-chip">
-            <span className="avatar">IM</span>
-            <div>
-              <div className="name">Imperium User</div>
-              <div className="role">Premium</div>
+          {session && (
+            <div className="user-chip">
+              <span className="avatar">{initials}</span>
+              <div>
+                <div className="name">{session.fullName || session.email.split("@")[0]}</div>
+                <div className="role">{session.email}</div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </header>
 
@@ -62,12 +72,6 @@ export function ApplicationsPage() {
       <div className="tracker-section">
         <div className="section-head">
           <h2>Pipeline</h2>
-          <div className="section-head-actions">
-            <select className="filter-select" defaultValue="">
-              <option value="">All Status</option>
-            </select>
-            <button className="filter-clear">⚙ Customize Pipeline</button>
-          </div>
         </div>
         <PipelineBoard />
       </div>
