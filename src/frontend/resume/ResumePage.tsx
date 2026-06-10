@@ -211,8 +211,9 @@ export function ResumePage({ jobId }: ResumePageProps) {
             className="rs-jd-btn"
             onClick={() => setJdOpen(true)}
           >
-            <span aria-hidden>📄</span> View Job Description
+            <FileText size={14} aria-hidden /> {selectedJob?.description ? "View / Edit JD" : "Paste Job Description"}
           </button>
+
         </div>
       </header>
 
