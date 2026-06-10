@@ -69,8 +69,11 @@ export const discoverJobs = createServerFn({ method: "POST" })
     }
 
     if (candidate.experienceBucket) {
+      // Keep jobs we couldn't classify (bucket === null) — the ranker already
+      // applies a small penalty. Only drop jobs whose bucket is known AND
+      // differs from what the candidate wants.
       normalized = normalized.filter(
-        (j) => j.experienceBucket === candidate.experienceBucket,
+        (j) => j.experienceBucket == null || j.experienceBucket === candidate.experienceBucket,
       );
     }
     if (candidate.desiredSalaryMin && candidate.desiredSalaryMin > 0) {
