@@ -7,6 +7,8 @@
  */
 import { SOURCES, enrichDescriptions, type RawJob } from "@backend/jobs/JobSources.server";
 
+const DISCOVERY_SOURCE_IDS = new Set(["naukri", "linkedin"]);
+
 export interface SourceStatus {
   id: string;
   label: string;
@@ -46,7 +48,7 @@ const IN_CITY_TO_STATE: Record<string, string> = {
 };
 
 function expansionLevels(location: string): string[] {
-  const l = (location || "").trim();
+  const l = normalizeLocation(location);
   if (!l) return [""];
   const lower = l.toLowerCase();
   const state = IN_CITY_TO_STATE[lower];
@@ -61,6 +63,13 @@ function expansionLevels(location: string): string[] {
   return levels;
 }
 
+function normalizeLocation(location: string): string {
+  const l = (location || "").trim();
+  if (/^hyder(?:a|ab|aba|bad|ba)$/i.test(l)) return "hyderabad";
+  if (/^bangalor$/i.test(l)) return "bangalore";
+  return l;
+}
+
 export async function retrieveJobs(
   role: string,
   location: string,
@@ -68,13 +77,14 @@ export async function retrieveJobs(
 ): Promise<RetrievalResult> {
   const threshold = opts.expansionThreshold ?? 5;
   const levels = expansionLevels(location);
+  const sources = SOURCES.filter((src) => DISCOVERY_SOURCE_IDS.has(src.id));
   const jobs: RawJob[] = [];
   const seen = new Set<string>();
   const expansionsUsed: string[] = [];
 
   // Aggregate per-source counts and statuses across levels.
   const sourceAgg = new Map<string, SourceStatus>();
-  for (const src of SOURCES) {
+  for (const src of sources) {
     sourceAgg.set(src.id, {
       id: src.id,
       label: src.label,
@@ -87,7 +97,7 @@ export async function retrieveJobs(
   for (const lvl of levels) {
     expansionsUsed.push(lvl);
     await Promise.all(
-      SOURCES.map(async (src) => {
+      sources.map(async (src) => {
         const status = sourceAgg.get(src.id)!;
         if (!src.isAvailable()) return;
         status.locationsTried!.push(lvl);
