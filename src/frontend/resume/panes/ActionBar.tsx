@@ -147,6 +147,52 @@ export function ActionBar({
     }
   };
 
+  const resumeCtx = () => ({
+    name: resume.personal.name,
+    title: resume.personal.title,
+    summary: resume.summary,
+    skills: resume.skills.flatMap((g) => g.items),
+    experienceSnippets: resume.experience.flatMap((e) => e.bullets).slice(0, 6),
+    projectSnippets: resume.projects.flatMap((p) => p.bullets).slice(0, 4),
+  });
+
+  const handleCoverLetter = async () => {
+    setCoverBusy(true);
+    try {
+      const res = await coverFn({
+        data: {
+          resume: resumeCtx(),
+          jd,
+          company: selectedJob?.company,
+          role: selectedJob?.title,
+        },
+      });
+      setCoverText(res.letter);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Cover letter failed");
+    } finally {
+      setCoverBusy(false);
+    }
+  };
+
+  const handleInterviewPrep = async () => {
+    setPrepBusy(true);
+    try {
+      const res = await prepFn({
+        data: { resume: resumeCtx(), jd, role: selectedJob?.title },
+      });
+      setPrepData({
+        behavioral: res.behavioral,
+        technical: res.technical,
+        projectDeepDive: res.projectDeepDive,
+      });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Interview prep failed");
+    } finally {
+      setPrepBusy(false);
+    }
+  };
+
   const handleApply = async () => {
     if (!selectedJob) {
       toast.error("Select a job first");
