@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase, isSupabaseConfigured } from "@backend/database/SupabaseClient";
 import { IconUser } from "./icons";
@@ -12,8 +12,8 @@ interface Props {
 }
 
 /** Profile photo upload / replace / remove. Stores the file in the
- *  `avatars` storage bucket and writes the public URL into
- *  `auth.users.user_metadata.avatar_url` so it survives sign-out and
+ *  `avatars` storage bucket and writes the private file path into
+ *  `auth.users.user_metadata.avatar_path` so it survives sign-out and
  *  is shared across the app without a separate column. */
 export function AvatarUploader({ fullName, size = 56 }: Props) {
   const [url, setUrl] = useState<string | null>(null);
@@ -22,21 +22,29 @@ export function AvatarUploader({ fullName, size = 56 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
+  const syncAvatar = useCallback(async (meta: Record<string, unknown>) => {
+    const avatarPath = typeof meta.avatar_path === "string" ? meta.avatar_path : "";
+    if (avatarPath) {
+      const { data: signed } = await supabase.storage.from(BUCKET).createSignedUrl(avatarPath, 60 * 60);
+      setUrl(signed?.signedUrl ?? null);
+      return;
+    }
+    setUrl(typeof meta.avatar_url === "string" ? meta.avatar_url : null);
+  }, []);
+
   useEffect(() => {
     let active = true;
     void supabase.auth.getUser().then(({ data }) => {
       if (!active) return;
       const meta = (data.user?.user_metadata ?? {}) as Record<string, unknown>;
-      const v = typeof meta.avatar_url === "string" ? meta.avatar_url : null;
-      setUrl(v);
+      void syncAvatar(meta);
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       const meta = (s?.user?.user_metadata ?? {}) as Record<string, unknown>;
-      const v = typeof meta.avatar_url === "string" ? meta.avatar_url : null;
-      setUrl(v);
+      void syncAvatar(meta);
     });
     return () => { active = false; sub.subscription.unsubscribe(); };
-  }, []);
+  }, [syncAvatar]);
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -78,11 +86,11 @@ export function AvatarUploader({ fullName, size = 56 }: Props) {
         .from(BUCKET)
         .upload(path, file, { upsert: true, contentType: file.type });
       if (up.error) throw up.error;
-      const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
-      const publicUrl = `${pub.publicUrl}?v=${Date.now()}`;
-      const upd = await supabase.auth.updateUser({ data: { avatar_url: publicUrl } });
+      const { data: signed, error: signedError } = await supabase.storage.from(BUCKET).createSignedUrl(path, 60 * 60);
+      if (signedError) throw signedError;
+      const upd = await supabase.auth.updateUser({ data: { avatar_path: path } });
       if (upd.error) throw upd.error;
-      setUrl(publicUrl);
+      setUrl(signed.signedUrl);
       toast.success("Profile photo updated.");
     } catch (e) {
       console.error(e);
@@ -97,7 +105,7 @@ export function AvatarUploader({ fullName, size = 56 }: Props) {
     if (!isSupabaseConfigured()) return;
     setBusy(true);
     try {
-      const upd = await supabase.auth.updateUser({ data: { avatar_url: null } });
+      const upd = await supabase.auth.updateUser({ data: { avatar_url: null, avatar_path: null } });
       if (upd.error) throw upd.error;
       setUrl(null);
       toast.success("Profile photo removed.");
