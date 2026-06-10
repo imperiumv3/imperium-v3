@@ -289,6 +289,12 @@ export function ActionBar({
       </div>
 
       <div className="rs-actionbar-right">
+        <button className="rs-btn rs-btn-ghost" onClick={handleCoverLetter} disabled={coverBusy} title="Generate cover letter">
+          <Mail size={16} aria-hidden /> {coverBusy ? "Writing…" : "Cover Letter"}
+        </button>
+        <button className="rs-btn rs-btn-ghost" onClick={handleInterviewPrep} disabled={prepBusy} title="Interview prep">
+          <MessageSquare size={16} aria-hidden /> {prepBusy ? "Preparing…" : "Interview Prep"}
+        </button>
         <button
           className="rs-btn rs-btn-primary"
           onClick={handleGenerate}
@@ -305,6 +311,51 @@ export function ActionBar({
           <Send size={16} aria-hidden /> {applied ? "Added" : "Apply"}
         </button>
       </div>
+
+      {coverText !== null && (
+        <div className="rs-modal-overlay" onClick={() => setCoverText(null)}>
+          <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="rs-modal-head">
+              <h3>Cover Letter</h3>
+              <button className="rs-btn rs-btn-ghost" onClick={() => setCoverText(null)} aria-label="Close"><X size={16} /></button>
+            </div>
+            <textarea className="rs-modal-textarea" value={coverText} onChange={(e) => setCoverText(e.target.value)} rows={16} />
+            <div className="rs-modal-foot">
+              <button className="rs-btn rs-btn-ghost" onClick={() => { void navigator.clipboard.writeText(coverText); toast.success("Copied"); }}>Copy</button>
+              <button className="rs-btn rs-btn-primary" onClick={() => {
+                const blob = new Blob([coverText], { type: "text/plain" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url; a.download = `cover-letter-${(selectedJob?.company || "draft").replace(/\s+/g, "-").toLowerCase()}.txt`; a.click();
+                URL.revokeObjectURL(url);
+              }}>Download</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {prepData && (
+        <div className="rs-modal-overlay" onClick={() => setPrepData(null)}>
+          <div className="rs-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="rs-modal-head">
+              <h3>Interview Prep{selectedJob?.title ? ` — ${selectedJob.title}` : ""}</h3>
+              <button className="rs-btn rs-btn-ghost" onClick={() => setPrepData(null)} aria-label="Close"><X size={16} /></button>
+            </div>
+            <div className="rs-prep-body">
+              {([
+                ["Behavioral", prepData.behavioral],
+                ["Technical", prepData.technical],
+                ["Project Deep-Dive", prepData.projectDeepDive],
+              ] as const).map(([label, items]) => items.length > 0 && (
+                <section key={label}>
+                  <h4>{label}</h4>
+                  <ol>{items.map((q, i) => <li key={i}>{q}</li>)}</ol>
+                </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
