@@ -944,22 +944,21 @@ export interface SourceDescriptor {
   isAvailable: () => boolean;
 }
 
-// Anti-bot heavy sources (LinkedIn, Naukri, Wellfound, Hirist) are kept in the
-// registry but disabled by default because they reliably return 0 results or
-// block Worker-origin traffic. Enable via env when a working proxy/cookie pipeline is in place.
-const flag = (k: string) => (process.env[k] ?? "").toLowerCase() === "true";
+// Sources are ON by default. Use DISABLE_<SOURCE>=true to kill-switch a flaky one
+// (e.g. while a residential proxy / cookie pipeline is being set up).
+const disabled = (k: string) => (process.env[k] ?? "").toLowerCase() === "true";
 
 export const SOURCES: SourceDescriptor[] = [
-  { id: "naukri",    label: "Naukri",    fetch: fetchNaukri,    requiresKey: false, isAvailable: () => flag("ENABLE_NAUKRI") },
-  { id: "linkedin",  label: "LinkedIn",  fetch: fetchLinkedIn,  requiresKey: false, isAvailable: () => flag("ENABLE_LINKEDIN") },
-  { id: "foundit",   label: "Foundit",   fetch: fetchFoundit,   requiresKey: false, isAvailable: () => true },
-  { id: "instahyre", label: "Instahyre", fetch: fetchInstahyre, requiresKey: false, isAvailable: () => true },
-  { id: "hirist",    label: "Hirist",    fetch: fetchHirist,    requiresKey: false, isAvailable: () => flag("ENABLE_HIRIST") },
-  { id: "wellfound", label: "Wellfound", fetch: fetchWellfound, requiresKey: false, isAvailable: () => flag("ENABLE_WELLFOUND") },
-  { id: "yc",        label: "YC Jobs",   fetch: fetchYC,        requiresKey: false, isAvailable: () => true },
-  { id: "remoteok",  label: "RemoteOK",  fetch: fetchRemoteOK,  requiresKey: false, isAvailable: () => true },
-  { id: "remotive",  label: "Remotive",  fetch: fetchRemotive,  requiresKey: false, isAvailable: () => true },
-  { id: "arbeitnow", label: "Arbeitnow", fetch: fetchArbeitnow, requiresKey: false, isAvailable: () => true },
+  { id: "naukri",    label: "Naukri",    fetch: fetchNaukri,    requiresKey: false, isAvailable: () => !disabled("DISABLE_NAUKRI") },
+  { id: "linkedin",  label: "LinkedIn",  fetch: fetchLinkedIn,  requiresKey: false, isAvailable: () => !disabled("DISABLE_LINKEDIN") },
+  { id: "foundit",   label: "Foundit",   fetch: fetchFoundit,   requiresKey: false, isAvailable: () => !disabled("DISABLE_FOUNDIT") },
+  { id: "instahyre", label: "Instahyre", fetch: fetchInstahyre, requiresKey: false, isAvailable: () => !disabled("DISABLE_INSTAHYRE") },
+  { id: "hirist",    label: "Hirist",    fetch: fetchHirist,    requiresKey: false, isAvailable: () => !disabled("DISABLE_HIRIST") },
+  { id: "wellfound", label: "Wellfound", fetch: fetchWellfound, requiresKey: false, isAvailable: () => !disabled("DISABLE_WELLFOUND") },
+  { id: "yc",        label: "YC Jobs",   fetch: fetchYC,        requiresKey: false, isAvailable: () => !disabled("DISABLE_YC") },
+  { id: "remoteok",  label: "RemoteOK",  fetch: fetchRemoteOK,  requiresKey: false, isAvailable: () => !disabled("DISABLE_REMOTEOK") },
+  { id: "remotive",  label: "Remotive",  fetch: fetchRemotive,  requiresKey: false, isAvailable: () => !disabled("DISABLE_REMOTIVE") },
+  { id: "arbeitnow", label: "Arbeitnow", fetch: fetchArbeitnow, requiresKey: false, isAvailable: () => !disabled("DISABLE_ARBEITNOW") },
   { id: "indeed",    label: "Indeed (via Adzuna)", fetch: fetchAdzuna, requiresKey: true,
     isAvailable: () => !!process.env.ADZUNA_APP_ID && !!process.env.ADZUNA_APP_KEY },
   { id: "jooble",    label: "Jooble",    fetch: fetchJooble,    requiresKey: true,
