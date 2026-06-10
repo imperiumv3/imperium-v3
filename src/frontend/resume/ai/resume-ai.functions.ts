@@ -16,6 +16,15 @@ interface ResumeContext {
   projectSnippets: string[];
 }
 
+function fallbackSummary(resume: ResumeContext, jd?: string): string {
+  const skills = resume.skills.slice(0, 5).filter(Boolean);
+  const roleHint = jd?.match(/(?:engineer|developer|analyst|manager|designer|architect|consultant|specialist)[^.,\n]*/i)?.[0];
+  const role = roleHint || resume.title || "professional";
+  const proof = resume.experienceSnippets[0] || resume.projectSnippets[0] || "delivering practical, measurable work across complex projects";
+  const skillText = skills.length ? ` with strengths in ${skills.join(", ")}` : " with a strong execution focus";
+  return `${resume.name || "Candidate"} is a ${role}${skillText}. Brings hands-on experience ${proof.replace(/[.]+$/, "")}, with a resume tailored to the target role and its core requirements.`;
+}
+
 function safeParse<T>(text: string, fallback: T): T {
   try {
     // tolerate ```json ... ``` fenced output
@@ -39,10 +48,19 @@ export const aiGenerateSummary = createServerFn({ method: "POST" })
       projects: data.resume.projectSnippets.slice(0, 2),
       jd: data.jd?.slice(0, 1200) ?? "",
     });
-    const result = await routeBrainCall({ system: sys, user, json: true, max_tokens: 400 });
+    let result: Awaited<ReturnType<typeof routeBrainCall>> | null = null;
+    try {
+      result = await routeBrainCall({ system: sys, user, json: true, max_tokens: 400 });
+    } catch (error) {
+      console.warn("[resume-ai] Using offline summary fallback:", error);
+      return {
+        summary: fallbackSummary(data.resume, data.jd),
+        model: "offline-resume-writer",
+      };
+    }
     const parsed = safeParse<{ summary?: string }>(result.content, {});
     return {
-      summary: parsed.summary ?? "",
+      summary: parsed.summary || fallbackSummary(data.resume, data.jd),
       model: result.model,
     };
   });
