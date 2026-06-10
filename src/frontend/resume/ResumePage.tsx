@@ -2,13 +2,14 @@ import { getProfile } from "@backend/api/imperium.api";
 import { getDiscoveredJob } from "@backend/api/jobs.api";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PrintRenderer, type PrintHandle } from "./export/PrintRenderer";
 import "./export/print.css";
 import { ActionBar } from "./panes/ActionBar";
 import { EditorPane } from "./panes/EditorPane";
 import { InsightsPane } from "./panes/InsightsPane";
 import { PreviewPane } from "./panes/PreviewPane";
+import { analyzeJdMatch } from "./ats/JdMatchEngine";
 import "./resume.css";
 import { useResumeStore } from "./state/useResumeStore";
 
@@ -123,6 +124,10 @@ export function ResumePage({ jobId }: ResumePageProps) {
   const company = selectedJob?.company ?? "";
   const role = selectedJob?.title ?? "";
   const initials = company ? company.slice(0, 1).toUpperCase() : "";
+  const matchScore = useMemo(
+    () => (selectedJob?.description ? analyzeJdMatch(resume, selectedJob.description).score : 0),
+    [resume, selectedJob?.description],
+  );
 
   if (loadingJob) {
     return (
@@ -172,7 +177,9 @@ export function ResumePage({ jobId }: ResumePageProps) {
           {selectedJob && (
             <div className="rs-stat">
               <div className="rs-stat-label">Match Score</div>
-              <div className="rs-stat-value rs-stat-good">● Calculating...</div>
+              <div className={`rs-stat-value ${matchScore >= 70 ? "rs-stat-good" : matchScore >= 40 ? "rs-stat-mid" : "rs-stat-low"}`}>
+                ● {selectedJob.description ? `${matchScore}%` : "No JD"}
+              </div>
             </div>
           )}
 

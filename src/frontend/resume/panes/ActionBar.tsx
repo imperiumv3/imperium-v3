@@ -52,9 +52,16 @@ export function ActionBar({
 
   const handlePdf = async () => {
     const h = printHandleRef.current;
-    if (!h) return;
+    if (!h) {
+      toast.error("Preview not ready yet — try again in a moment");
+      return;
+    }
     setExporting("pdf");
     try { await exportResumeToPdf(h.node, resume); }
+    catch (err) {
+      const msg = err instanceof Error ? err.message : "PDF export failed";
+      toast.error(msg);
+    }
     finally { setExporting(null); }
   };
 
