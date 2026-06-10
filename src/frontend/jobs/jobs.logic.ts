@@ -9,6 +9,7 @@ import {
   selectJobForResume,
   getProfileMetrics,
 } from "@backend/api/jobs.api";
+import { useResumeStore } from "@frontend/resume/state/useResumeStore";
 
 export interface SearchFiltersUI {
   title: string;
@@ -79,9 +80,21 @@ export function useJobDetails(jobId: string | null) {
 export function useSelectJob() {
   const fn = useServerFn(selectJobForResume);
   const navigate = useNavigate();
+  const qc = useQueryClient();
+  const setSelectedJob = useResumeStore((s) => s.setSelectedJob);
   return useMutation({
     mutationFn: (jobId: string) => fn({ data: { jobId } }),
-    onSuccess: (res) => {
+    onSuccess: (res, jobId) => {
+      const discovery = qc.getQueryData(["jobs", "discovery"]) as DiscoveryData | undefined;
+      const job = discovery?.all.find((j) => j.id === jobId);
+      if (job) {
+        setSelectedJob({
+          id: job.id,
+          company: job.company,
+          title: job.title,
+          description: job.description,
+        });
+      }
       navigate({ to: "/resume", search: { jobId: res.jobId } as never }).catch(() => {
         window.location.href = res.redirect;
       });
