@@ -2,6 +2,7 @@ import { getProfile } from "@backend/api/imperium.api";
 import { getDiscoveredJob } from "@backend/api/jobs.api";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { FileText, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PrintRenderer, type PrintHandle } from "./export/PrintRenderer";
 import "./export/print.css";
@@ -12,6 +13,7 @@ import { PreviewPane } from "./panes/PreviewPane";
 import { analyzeJdMatch } from "./ats/JdMatchEngine";
 import "./resume.css";
 import { useResumeStore } from "./state/useResumeStore";
+
 
 interface ResumePageProps {
   jobId?: string;
