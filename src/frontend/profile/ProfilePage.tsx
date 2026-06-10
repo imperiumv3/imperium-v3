@@ -1,5 +1,5 @@
 import "./profile.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useProfilePageData } from "./profile.data";
 import { ProfileHeader } from "./components/ProfileHeader";
@@ -16,6 +16,11 @@ export function ProfilePage() {
   const data = useProfilePageData();
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
+  useEffect(() => {
+    function open() { setEditOpen(true); }
+    window.addEventListener("profile:edit", open as EventListener);
+    return () => window.removeEventListener("profile:edit", open as EventListener);
+  }, []);
   return (
     <div className="profile-root">
       <div className="profile-topbar">
