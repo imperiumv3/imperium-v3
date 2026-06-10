@@ -24,7 +24,7 @@ const DiscoverInput = z.object({
   experience: z.union([ExperienceBucketEnum, z.literal("")]).default(""),
   workMode: z.string().max(50).default(""),
   salaryMin: z.number().int().min(0).max(100_000_000).nullable().optional(),
-  freshnessDays: z.number().int().min(1).max(365).optional().default(15),
+  freshnessDays: z.number().int().min(1).max(365).optional().default(30),
 });
 
 type DiscoverFilters = z.infer<typeof DiscoverInput>;
