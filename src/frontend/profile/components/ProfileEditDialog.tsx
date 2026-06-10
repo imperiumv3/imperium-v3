@@ -193,7 +193,7 @@ export function ProfileEditDialog({ open, onClose, profile, section }: Props) {
     }
     if (key === "education") {
       Object.assign(payload, {
-        education: education.filter((x) => hasAnyValue(x as Record<string, unknown>, ["school", "degree", "field", "start", "end", "gpa", "description"])),
+        education: education.filter((x) => hasAnyValue(x as unknown as Record<string, unknown>, ["school", "degree", "field", "start", "end", "gpa", "description"])),
       });
     }
     if (key === "projects") {
@@ -205,12 +205,12 @@ export function ProfileEditDialog({ open, onClose, profile, section }: Props) {
     }
     if (key === "certifications") {
       Object.assign(payload, {
-        certifications: certifications.filter((x) => hasAnyValue(x as Record<string, unknown>, ["name", "issuer", "year", "url"])),
+        certifications: certifications.filter((x) => hasAnyValue(x as unknown as Record<string, unknown>, ["name", "issuer", "year", "url"])),
       });
     }
     if (key === "languages") {
       Object.assign(payload, {
-        languages: languages.filter((x) => hasAnyValue(x as Record<string, unknown>, ["name", "proficiency"])),
+        languages: languages.filter((x) => hasAnyValue(x as unknown as Record<string, unknown>, ["name", "proficiency"])),
       });
     }
   }
