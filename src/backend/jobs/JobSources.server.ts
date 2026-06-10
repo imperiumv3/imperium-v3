@@ -643,7 +643,8 @@ export async function fetchNaukri(role: string, location: string): Promise<RawJo
   }
 
   const out: RawJob[] = [];
-  for (const o of data.jobDetails ?? data.list ?? []) {
+  const rows = data.jobDetails?.length ? data.jobDetails : data.list ?? [];
+  for (const o of rows) {
     const title = String(o.title ?? o.post ?? "");
     const description = stripHtml(String(o.jobDescription ?? o.jobDesc ?? o.tupleDesc ?? ""));
     const text = `${title} ${o.companyName ?? o.CONTCOM ?? ""} ${description} ${o.keywords ?? ""}`;
