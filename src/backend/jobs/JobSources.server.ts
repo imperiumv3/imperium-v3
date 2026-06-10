@@ -951,7 +951,7 @@ export async function fetchInstahyre(role: string, location: string): Promise<Ra
 /* ───────── Hirist (India, tech-only) ───────── */
 export async function fetchHirist(role: string, location: string): Promise<RawJob[]> {
   const slug = `${slugify(role)}-jobs${location ? `-in-${slugify(location)}` : ""}`;
-  const url = `https://www.hirist.com/${slug}`;
+  const url = `https://www.hirist.tech/${slug}`;
   let res: Response;
   try {
     res = await fetchWithRetry(
