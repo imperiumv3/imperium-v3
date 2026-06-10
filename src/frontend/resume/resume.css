@@ -471,6 +471,51 @@
   box-shadow: 0 10px 22px -10px rgba(79, 70, 229, .65);
 }
 
+/* ============= TEMPLATE PICKER ============= */
+.rs-tpl-wrap { position: relative; }
+.rs-tpl-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 320px;
+  max-height: 360px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--rs-border);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px -16px rgba(15, 23, 42, .25);
+  padding: 6px;
+  z-index: 40;
+}
+.rs-tpl-row {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 10px 12px; border-radius: 8px;
+  background: transparent; border: none; cursor: pointer;
+  text-align: left;
+}
+.rs-tpl-row:hover { background: var(--rs-bg); }
+.rs-tpl-row.is-active { background: rgba(79, 70, 229, .08); }
+.rs-tpl-row-main { display: flex; flex-direction: column; gap: 2px; }
+.rs-tpl-name { font-size: 13px; font-weight: 600; color: var(--rs-text); }
+.rs-tpl-cat { font-size: 11px; color: var(--rs-muted); }
+.rs-tpl-row-meta { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--rs-muted); }
+
+/* ============= JD MODAL — editable ============= */
+.rs-jd-textarea {
+  width: 100%; min-height: 220px;
+  padding: 12px; border-radius: 10px;
+  border: 1px solid var(--rs-border);
+  font: inherit; font-size: 13px; line-height: 1.5;
+  resize: vertical; background: #fbfbfd;
+  color: var(--rs-text);
+}
+.rs-jd-textarea:focus { outline: none; border-color: var(--rs-indigo); background: #fff; }
+.rs-modal-foot {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 12px 20px; border-top: 1px solid var(--rs-border);
+}
+
+
 /* ============= MODAL ============= */
 .rs-modal-backdrop {
   position: fixed; inset: 0; z-index: 50;
