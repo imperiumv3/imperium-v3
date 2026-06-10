@@ -607,7 +607,7 @@ export async function fetchNaukri(role: string, location: string): Promise<RawJo
     src: "jobsearchDesk",
     latLong: "",
   });
-  const url = `https://www.naukri.com/jobapi/v3/search?${params.toString()}`;
+  const url = `https://www.naukri.com/jobapi/v2/search?${params.toString()}`;
   let res: Response | null = null;
   try {
     res = await fetchWithRetry(
