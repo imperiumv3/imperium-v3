@@ -5,7 +5,7 @@
  *
  * Returns RawJob[] + per-source status. Pure I/O — no scoring or persistence.
  */
-import { SOURCES, type RawJob } from "@backend/jobs/JobSources.server";
+import { SOURCES, enrichDescriptions, type RawJob } from "@backend/jobs/JobSources.server";
 
 export interface SourceStatus {
   id: string;
@@ -110,6 +110,9 @@ export async function retrieveJobs(
     );
     if (jobs.length >= threshold) break; // enough — stop expanding
   }
+
+  // Best-effort JD enrichment for sources that ship short snippets.
+  try { await enrichDescriptions(jobs, 12); } catch { /* never break retrieval */ }
 
   return { jobs, perSource: Array.from(sourceAgg.values()), expansionsUsed };
 }

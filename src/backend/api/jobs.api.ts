@@ -24,7 +24,7 @@ const DiscoverInput = z.object({
   experience: z.union([ExperienceBucketEnum, z.literal("")]).default(""),
   workMode: z.string().max(50).default(""),
   salaryMin: z.number().int().min(0).max(100_000_000).nullable().optional(),
-  freshnessDays: z.number().int().min(1).max(365).optional().default(15),
+  freshnessDays: z.number().int().min(1).max(365).optional().default(30),
 });
 
 type DiscoverFilters = z.infer<typeof DiscoverInput>;
@@ -69,8 +69,11 @@ export const discoverJobs = createServerFn({ method: "POST" })
     }
 
     if (candidate.experienceBucket) {
+      // Keep jobs we couldn't classify (bucket === null) — the ranker already
+      // applies a small penalty. Only drop jobs whose bucket is known AND
+      // differs from what the candidate wants.
       normalized = normalized.filter(
-        (j) => j.experienceBucket === candidate.experienceBucket,
+        (j) => j.experienceBucket == null || j.experienceBucket === candidate.experienceBucket,
       );
     }
     if (candidate.desiredSalaryMin && candidate.desiredSalaryMin > 0) {

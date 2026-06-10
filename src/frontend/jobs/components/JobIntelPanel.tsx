@@ -64,9 +64,20 @@ export function JobIntelPanel({ job, onApply, applying }: Props) {
         </div>
       )}
 
-      <details className="jobs-intel-jd">
+      <details className="jobs-intel-jd" open>
         <summary>JOB DESCRIPTION OVERVIEW</summary>
-        <p>{job.description.slice(0, 1200) || "Description unavailable."}</p>
+        {job.description && job.description.trim().length >= 80 ? (
+          <p>{job.description.slice(0, 1200)}</p>
+        ) : (
+          <p>
+            The full description isn't included in this listing.{" "}
+            {job.url && (
+              <a href={job.url} target="_blank" rel="noreferrer">
+                View it on {job.source} ↗
+              </a>
+            )}
+          </p>
+        )}
       </details>
     </aside>
   );
