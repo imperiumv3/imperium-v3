@@ -22,9 +22,16 @@ function MoonIcon() {
 export function ApplicationsPage() {
   const search = useApplicationsStore((s) => s.search);
   const setSearch = useApplicationsStore((s) => s.setSearch);
+  const session = useSession();
   // Hydrates the store from Supabase + runs one-time localStorage migration.
   useApplicationsSync();
 
+  const initials = (session?.fullName || session?.email || "?")
+    .split(/\s+|@/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((s) => s[0]?.toUpperCase() ?? "")
+    .join("") || "?";
 
   return (
     <div className="tracker-root">
@@ -48,13 +55,15 @@ export function ApplicationsPage() {
             <BellIcon /><span className="badge" />
           </button>
           <button className="icon-btn" aria-label="Theme"><MoonIcon /></button>
-          <div className="user-chip">
-            <span className="avatar">IM</span>
-            <div>
-              <div className="name">Imperium User</div>
-              <div className="role">Premium</div>
+          {session && (
+            <div className="user-chip">
+              <span className="avatar">{initials}</span>
+              <div>
+                <div className="name">{session.fullName || session.email.split("@")[0]}</div>
+                <div className="role">{session.email}</div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </header>
 
@@ -63,12 +72,6 @@ export function ApplicationsPage() {
       <div className="tracker-section">
         <div className="section-head">
           <h2>Pipeline</h2>
-          <div className="section-head-actions">
-            <select className="filter-select" defaultValue="">
-              <option value="">All Status</option>
-            </select>
-            <button className="filter-clear">⚙ Customize Pipeline</button>
-          </div>
         </div>
         <PipelineBoard />
       </div>
