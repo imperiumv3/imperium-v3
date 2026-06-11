@@ -29,3 +29,19 @@ export interface TemplateProps {
   resume: import("@frontend/resume/schema").ResumeJSON;
   theme: ResumeTheme;
 }
+
+import type { ResumeLanguage } from "@frontend/resume/schema";
+
+/** Format a languages list as a single inline string. */
+export function formatLanguages(langs: ResumeLanguage[]): string {
+  return langs
+    .filter((l) => l && l.name)
+    .map((l) => (l.proficiency ? `${l.name} (${l.proficiency})` : l.name))
+    .join(" · ");
+}
+
+/** Format interests as a single inline string. */
+export function formatInterests(items: string[]): string {
+  return items.filter(Boolean).join(" · ");
+}
+
