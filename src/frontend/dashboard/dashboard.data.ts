@@ -35,6 +35,14 @@ export interface AttributesData {
   atsReadiness: number;
   resumeQuality: number;
   responseRate: number;
+  skillsCovered: number;
+}
+
+export interface WeeklySnapshot {
+  applicationsThisWeek: number;
+  interviewsThisWeek: number;
+  offersThisWeek: number;
+  activeDays: number;
 }
 
 export interface CareerOverviewData {
