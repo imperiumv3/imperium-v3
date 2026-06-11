@@ -60,6 +60,11 @@ export interface ResumeCertification {
   url: string;
 }
 
+export interface ResumeLanguage {
+  name: string;
+  proficiency?: string;
+}
+
 export interface ResumeMeta {
   templateId: string;
   themeId: string;
@@ -76,6 +81,8 @@ export interface ResumeJSON {
   projects: ResumeProject[];
   education: ResumeEducation[];
   certifications: ResumeCertification[];
+  languages: ResumeLanguage[];
+  interests: string[];
   meta: ResumeMeta;
 }
 
@@ -100,6 +107,8 @@ export const EMPTY_RESUME: ResumeJSON = {
   projects: [],
   education: [],
   certifications: [],
+  languages: [],
+  interests: [],
   meta: {
     templateId: "classic-ats",
     themeId: "corporate-blue",
@@ -108,6 +117,7 @@ export const EMPTY_RESUME: ResumeJSON = {
     paper: "A4",
   },
 };
+
 
 export function uid(prefix = "id"): string {
   return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;

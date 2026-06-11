@@ -50,8 +50,21 @@ export function resumeToMarkdown(r: ResumeJSON): string {
     }
   }
 
+  if (r.languages?.length) {
+    out.push("## Languages");
+    out.push(r.languages.map((l) => (l.proficiency ? `${l.name} (${l.proficiency})` : l.name)).join(" · "));
+    out.push("");
+  }
+
+  if (r.interests?.length) {
+    out.push("## Interests");
+    out.push(r.interests.join(" · "));
+    out.push("");
+  }
+
   return out.join("\n").trimEnd();
 }
+
 
 function wrap(text: string, width: number): string {
   const words = text.split(/\s+/);

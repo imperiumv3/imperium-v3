@@ -1,10 +1,10 @@
 /** Minimal — light typography, generous whitespace, ATS-safe. */
 import type { TemplateProps } from "./_shared";
-import { fmtRange, pageStyle } from "./_shared";
+import { fmtRange, pageStyle, formatLanguages, formatInterests } from "./_shared";
 import { themeVars } from "./themes";
 
 export function MinimalTemplate({ resume, theme }: TemplateProps) {
-  const { personal, summary, skills, experience, projects, education, certifications, meta } = resume;
+  const { personal, summary, skills, experience, projects, education, certifications, languages, interests, meta } = resume;
   return (
     <div
       className="resume-page resume-minimal"
@@ -97,6 +97,14 @@ export function MinimalTemplate({ resume, theme }: TemplateProps) {
             </div>
           ))}
         </Section>
+      )}
+
+      {languages && languages.length > 0 && (
+        <Section title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></Section>
+      )}
+
+      {interests && interests.length > 0 && (
+        <Section title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></Section>
       )}
     </div>
   );

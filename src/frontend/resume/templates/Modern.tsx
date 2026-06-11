@@ -1,10 +1,10 @@
 /** Modern — sidebar layout. Left rail = contact + skills, right = content. */
 import type { TemplateProps } from "./_shared";
-import { fmtRange, pageStyle } from "./_shared";
+import { fmtRange, pageStyle, formatLanguages, formatInterests } from "./_shared";
 import { themeVars } from "./themes";
 
 export function ModernTemplate({ resume, theme }: TemplateProps) {
-  const { personal, summary, skills, experience, projects, education, certifications, meta } = resume;
+  const { personal, summary, skills, experience, projects, education, certifications, languages, interests, meta } = resume;
   return (
     <div
       className="resume-page resume-modern"
@@ -106,6 +106,14 @@ export function ModernTemplate({ resume, theme }: TemplateProps) {
             ))}
           </MainSection>
         )}
+
+        {languages && languages.length > 0 && (
+          <MainSection title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></MainSection>
+        )}
+
+        {interests && interests.length > 0 && (
+          <MainSection title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></MainSection>
+        )}
       </main>
     </div>
   );
@@ -119,6 +127,7 @@ function SideBlock({ title, children }: { title: string; children: React.ReactNo
     </div>
   );
 }
+
 
 function MainSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
