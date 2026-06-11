@@ -196,23 +196,74 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
     return False
 
 
+def _scroll_form(driver, root) -> None:
+    """Scroll inside the Easy Apply dialog so lazy-rendered fields show up."""
+    try:
+        driver.execute_script(
+            "var r=arguments[0];"
+            "if(r && r.scrollTo){r.scrollTo(0, r.scrollHeight);} "
+            "else {window.scrollTo(0, document.body.scrollHeight);}",
+            root if hasattr(root, "tag_name") else None,
+        )
+    except WebDriverException:
+        pass
+
+
+def _click_submit_and_dismiss(driver, emit: Emit, root) -> bool:
+    """Click the Submit button and dismiss the post-submit 'Save app' modal."""
+    btn = find_submit_button(driver, root=root) or find_submit_button(driver)
+    if not btn:
+        return False
+    emit("submit", f"Clicking submit: {btn.text or btn.get_attribute('aria-label') or 'button'}",
+         level="success")
+    try:
+        btn.click()
+    except WebDriverException:
+        driver.execute_script("arguments[0].click();", btn)
+    time.sleep(2.5)
+    # LinkedIn often shows a "Save this application?" dismiss modal after submit.
+    click_first(driver, [
+        "button[aria-label='Dismiss']",
+        "button[aria-label*='Dismiss' i]",
+        "button[aria-label*='Done' i]",
+    ], timeout=2)
+    return True
+
+
 def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
-                             max_steps: int = 8) -> str:
-    """Walk the Easy Apply wizard: fill -> Next -> Review. Stops at Review."""
+                             max_steps: int = 14) -> str:
+    """Walk the Easy Apply wizard end-to-end: fill -> Next -> ... -> Review -> Submit.
+
+    Fully automatic — never returns 'awaiting_approval'. Returns 'submitted'
+    on success, or 'needs_human' only if truly stuck after retries.
+    """
     job_context = ""
     try:
         job_context = driver.find_element(By.CSS_SELECTOR, ".jobs-description").text[:2000]
     except WebDriverException:
         pass
 
+    stuck_rounds = 0
     for step in range(max_steps):
         time.sleep(1)
         root = active_form_root(driver)
+
+        # Scroll inside the dialog so every required field is in the DOM
+        # before we try to fill it.
+        _scroll_form(driver, root)
+        time.sleep(0.3)
+
         maybe_upload_resume(driver, emit, profile, root=root)
         n = fill_visible_fields(driver, emit, profile, job_context, root=root)
         n += fill_choice_controls(driver, emit, profile, job_context, root=root)
         emit("easy_apply", f"Step {step+1}: filled {n} field(s)")
 
+        # 1) Submit if visible (last step) — fully automatic.
+        if _click_submit_and_dismiss(driver, emit, root):
+            emit("submitted", "Application submitted", level="success")
+            return "submitted"
+
+        # 2) Review → click, then loop again so next iteration finds Submit.
         if click_first(driver, [
             "button[aria-label*='Review your application' i]",
             "button[aria-label='Review your application']",
@@ -220,10 +271,11 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
             ".//button[not(@disabled) and contains(translate(normalize-space(.),"
             "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'review')]",
         ], timeout=1, root=root):
-            emit("easy_apply", "Reached Review step", level="success")
+            emit("easy_apply", "Reached Review step — proceeding to submit", level="success")
             time.sleep(1.5)
-            return "awaiting_approval"
+            continue
 
+        # 3) Otherwise Next / Continue.
         moved = click_first(driver, [
             "button[aria-label='Continue to next step']",
             "button[aria-label*='Continue' i]",
@@ -235,13 +287,22 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
             "or contains(translate(normalize-space(.),"
             "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'continue'))]",
         ], timeout=1, root=root)
-        if not moved:
-            if find_submit_button(driver, root=root):
-                emit("easy_apply", "Reached Submit step", level="success")
-                return "awaiting_approval"
-            emit("easy_apply", "Stuck — no Next/Review/Submit visible", level="warn")
+
+        if moved:
+            stuck_rounds = 0
+            time.sleep(1.2)
+            continue
+
+        # No Next/Review/Submit found. Try once more with a scroll, then bail.
+        stuck_rounds += 1
+        if stuck_rounds >= 2:
+            emit("easy_apply",
+                 "Stuck — no Next/Review/Submit visible after retry. "
+                 "A required field is probably missing.", level="warn")
             return "needs_human"
-        time.sleep(1.2)
+        emit("easy_apply", "No Next button visible — scrolling and retrying", level="warn")
+        _scroll_form(driver, root)
+        time.sleep(1)
 
     emit("easy_apply", "Exceeded max wizard steps", level="warn")
     return "needs_human"
@@ -252,7 +313,7 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
 # ============================================================
 
 def external_form_flow(driver, emit: Emit, profile: Dict[str, Any]) -> str:
-    """Generic Greenhouse / Lever / Ashby / Workday handler."""
+    """Generic Greenhouse / Lever / Ashby / Workday handler. Fully automatic."""
     time.sleep(1.5)
     click_first(driver, [
         "a.postings-btn[href*='apply']",         # Lever
@@ -267,12 +328,40 @@ def external_form_flow(driver, emit: Emit, profile: Dict[str, Any]) -> str:
     except WebDriverException:
         pass
 
-    maybe_upload_resume(driver, emit, profile)
-    n = fill_visible_fields(driver, emit, profile, job_context)
+    # Multiple passes: scroll, upload, fill, then try submit.
+    total = 0
+    for pass_idx in range(3):
+        try:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        except WebDriverException:
+            pass
+        time.sleep(0.5)
+        maybe_upload_resume(driver, emit, profile)
+        total += fill_visible_fields(driver, emit, profile, job_context)
+        total += fill_choice_controls(driver, emit, profile, job_context)
+        try:
+            driver.execute_script("window.scrollTo(0, 0);")
+        except WebDriverException:
+            pass
+        time.sleep(0.3)
+
     host = driver.current_url.split("/")[2] if "://" in driver.current_url else "site"
-    emit("external", f"Filled {n} field(s) on {host}",
-         level="success" if n else "warn")
-    return "awaiting_approval"
+    emit("external", f"Filled {total} field(s) on {host}",
+         level="success" if total else "warn")
+
+    btn = find_submit_button(driver)
+    if btn:
+        emit("submit", f"Clicking submit on {host}", level="success")
+        try:
+            btn.click()
+        except WebDriverException:
+            driver.execute_script("arguments[0].click();", btn)
+        time.sleep(3)
+        emit("submitted", "Application submitted", level="success")
+        return "submitted"
+
+    emit("external", "Filled form but no Submit button visible", level="warn")
+    return "needs_human"
 
 
 # ============================================================
