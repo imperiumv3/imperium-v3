@@ -123,7 +123,7 @@
   background: var(--dash-card);
   border-radius: var(--dash-radius);
   box-shadow: var(--dash-shadow);
-  padding: clamp(16px, 1.4vw, 22px);
+  padding: clamp(14px, 1.2vw, 18px);
 }
 .dash-card-title {
   font-family: "Inter Tight", "Inter", sans-serif;
