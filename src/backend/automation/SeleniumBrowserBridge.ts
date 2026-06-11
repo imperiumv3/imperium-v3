@@ -62,11 +62,29 @@ export const localAgentApply = (job_url: string, profile: Record<string, unknown
     body: JSON.stringify({ job_url, profile }),
   });
 
+/** Rich dispatch: full payload (job + profile + resume PDF + answers). */
+export const localAgentDispatch = (payload: Record<string, unknown>) =>
+  call<{ job_id: string }>("/apply", { method: "POST", body: JSON.stringify(payload) });
+
 export const localAgentApprove = (job_id: string) =>
   call<{ ok: boolean }>("/approve", { method: "POST", body: JSON.stringify({ job_id }) });
 
 export const localAgentReject = (job_id: string) =>
   call<{ ok: boolean }>("/reject", { method: "POST", body: JSON.stringify({ job_id }) });
+
+export const localAgentCancel = (job_id: string) =>
+  call<{ ok: boolean }>(`/cancel/${job_id}`, { method: "POST" });
+
+export const localAgentResume = (job_id: string, answers: Record<string, unknown>) =>
+  call<{ ok: boolean }>(`/resume/${job_id}`, { method: "POST", body: JSON.stringify({ answers }) });
+
+export const localAgentStatus = (job_id: string) => call<LocalAgentRun>(`/status/${job_id}`);
+export const localAgentRunDetails = (job_id: string) => call<LocalAgentRun>(`/runs/${job_id}`).catch(() => localAgentStatus(job_id));
+
+export const localAgentEvents = (job_id: string) =>
+  call<{ events: LocalAgentEvent[]; status: string; progress: number }>(`/events/${job_id}`);
+
+export const localAgentRuns = () => call<LocalAgentRun[]>("/runs");
 
 export const localAgentStatus = (job_id: string) => call<LocalAgentRun>(`/status/${job_id}`);
 
