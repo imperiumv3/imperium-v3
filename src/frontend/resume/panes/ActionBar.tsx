@@ -241,11 +241,10 @@ export function ActionBar({
               email: resume.personal.email,
               phone: resume.personal.phone,
               location: resume.personal.location,
-              links: {
-                linkedin: resume.personal.linkedin_url,
-                github: resume.personal.github_url,
-                portfolio: resume.personal.portfolio_url,
-              },
+              links: resume.personal.links,
+              summary: resume.summary,
+              skills: resume.skills.flatMap((g) => g.items),
+            };
               summary: resume.summary,
               skills: resume.skills.flatMap((g) => g.items),
             };
