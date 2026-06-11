@@ -25,9 +25,15 @@ DOM directly — that's delegated to ``automation/*`` modules.
 """
 from __future__ import annotations
 
+import threading
 import time
 import traceback
 from typing import Any, Dict, Optional
+
+# Global lock: only one Chrome instance may own the dedicated profile at a time.
+# Without this, two concurrent /apply requests both try to launch Chrome against
+# the same --user-data-dir and the second one fails with "chrome not reachable".
+_CHROME_LOCK = threading.Lock()
 
 from selenium.common.exceptions import TimeoutException, WebDriverException
 
@@ -78,6 +84,17 @@ def run_job(job_id: str) -> None:
         return
     url = run["job_url"]
     profile = run.get("profile") or {}
+
+    # If another run is already driving Chrome, wait for it. Chrome cannot open
+    # the same user-data-dir twice — a second concurrent launch fails with
+    # "session not created: cannot connect to chrome ... chrome not reachable".
+    if not _CHROME_LOCK.acquire(blocking=False):
+        models.update(job_id, status="queued", current_step="waiting",
+                      current_action="Another application is running. Waiting for Chrome to free up.")
+        models.emit(job_id, "queued",
+                    "Another run is using Chrome. Waiting for it to finish before starting.",
+                    level="warn")
+        _CHROME_LOCK.acquire()  # block until free
 
     models.update(job_id, status="running", progress=5, current_step="boot",
                   current_action="Starting Chrome")
@@ -217,3 +234,7 @@ def run_job(job_id: str) -> None:
                 driver.quit()
             except Exception:
                 pass
+        try:
+            _CHROME_LOCK.release()
+        except RuntimeError:
+            pass
