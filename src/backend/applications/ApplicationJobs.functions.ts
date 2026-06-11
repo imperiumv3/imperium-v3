@@ -28,6 +28,15 @@ const TERMINAL: ApplicationJobStatus[] = ["submitted", "failed", "cancelled", "a
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyClient = any;
 
+type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
+type JsonObject = { [k: string]: JsonValue };
+
+const j = (v: unknown): JsonValue => JSON.parse(JSON.stringify(v ?? null)) as JsonValue;
+const jObj = (v: unknown): JsonObject => {
+  const out = j(v);
+  return out && typeof out === "object" && !Array.isArray(out) ? (out as JsonObject) : {};
+};
+
 /* ---------- enqueue ---------- */
 
 const EnqueueInput = z.object({
