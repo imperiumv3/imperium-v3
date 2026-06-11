@@ -245,9 +245,6 @@ export function ActionBar({
               summary: resume.summary,
               skills: resume.skills.flatMap((g) => g.items),
             };
-              summary: resume.summary,
-              skills: resume.skills.flatMap((g) => g.items),
-            };
             const res = await localAgentDispatch({
               job_url: jobUrl,
               profile,
