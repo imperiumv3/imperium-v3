@@ -203,7 +203,7 @@ export const listApplicationJobs = createServerFn({ method: "POST" })
     if (data.applicationId) q = q.eq("application_id", data.applicationId);
     const { data: rows, error } = await q.limit(100);
     if (error) throw new Error(error.message);
-    return (rows ?? []) as Array<Record<string, unknown>>;
+    return ((rows ?? []) as unknown[]).map((r) => jObj(r));
   });
 
 const EventsInput = z.object({
