@@ -87,3 +87,56 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
 
   pdf.save(`${filename}.pdf`);
 }
+
+/**
+ * Same render pipeline as exportResumeToPdf but returns the PDF as a Blob
+ * + base64 instead of triggering a download. Used by the Apply pipeline to
+ * upload the rendered resume to storage and dispatch it to the local agent.
+ */
+export async function renderResumeToPdfBlob(
+  node: HTMLElement,
+  resume: ResumeJSON,
+): Promise<{ blob: Blob; base64: string; filename: string }> {
+  if (!node) throw new Error("Preview not ready");
+  const filename =
+    `${resume.personal.name || "resume"}-${resume.meta.templateId}`
+      .toLowerCase()
+      .replace(/\s+/g, "-") + ".pdf";
+
+  try {
+    const fonts = (document as Document & { fonts?: { ready?: Promise<unknown> } }).fonts;
+    if (fonts?.ready) await fonts.ready;
+  } catch { /* ignore */ }
+
+  const canvas = await html2canvas(node, {
+    scale: 2,
+    backgroundColor: "#ffffff",
+    useCORS: true,
+    logging: false,
+    windowWidth: node.scrollWidth,
+    windowHeight: node.scrollHeight,
+  });
+
+  const isA4 = resume.meta.paper === "A4";
+  const pdf = new jsPDF({ unit: "pt", format: isA4 ? "a4" : "letter", orientation: "portrait", compress: true });
+  const pageW = pdf.internal.pageSize.getWidth();
+  const pageH = pdf.internal.pageSize.getHeight();
+  const imgW = pageW;
+  const imgH = (canvas.height * imgW) / canvas.width;
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
+  let remaining = imgH;
+  let position = 0;
+  pdf.addImage(dataUrl, "JPEG", 0, position, imgW, imgH, undefined, "FAST");
+  remaining -= pageH;
+  while (remaining > 0) {
+    position -= pageH;
+    pdf.addPage();
+    pdf.addImage(dataUrl, "JPEG", 0, position, imgW, imgH, undefined, "FAST");
+    remaining -= pageH;
+  }
+
+  const blob = pdf.output("blob") as Blob;
+  const dataUriBase64 = pdf.output("datauristring") as string;
+  const base64 = dataUriBase64.split(",")[1] ?? "";
+  return { blob, base64, filename };
+}
