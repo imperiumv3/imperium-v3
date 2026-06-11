@@ -35,6 +35,14 @@ export interface AttributesData {
   atsReadiness: number;
   resumeQuality: number;
   responseRate: number;
+  skillsCovered: number;
+}
+
+export interface WeeklySnapshot {
+  applicationsThisWeek: number;
+  interviewsThisWeek: number;
+  offersThisWeek: number;
+  activeDays: number;
 }
 
 export interface CareerOverviewData {
@@ -57,6 +65,7 @@ export interface DashboardData {
   identity: IdentityData;
   attributes: AttributesData;
   careerOverview: CareerOverviewData;
+  weekly: WeeklySnapshot;
   recentActivity: ActivityItem[];
   loading: boolean;
   hasAnyData: boolean;
@@ -149,6 +158,16 @@ export function useDashboardData(): DashboardData {
 
   return useMemo<DashboardData>(() => {
     const overview = computeOverview(apps);
+    const skillCount = profilePage.profile?.skills?.length ?? 0;
+    const skillsCovered = Math.min(100, Math.round((skillCount / 15) * 100));
+
+    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const recent = apps.filter((a) => Date.parse(a.appliedAt) >= weekAgo);
+    const recentEvents = events.filter((e) => Date.parse(e.timestamp) >= weekAgo);
+    const interviewsThisWeek = recentEvents.filter((e) => e.type === "interview_scheduled").length;
+    const offersThisWeek = recentEvents.filter((e) => e.type === "offer_received").length;
+    const activeDays = new Set(recentEvents.map((e) => e.timestamp.slice(0, 10))).size;
+
     return {
       identity: {
         fullName: session?.fullName?.split(" ")[0] || "Operator",
@@ -160,8 +179,15 @@ export function useDashboardData(): DashboardData {
         atsReadiness: profilePage.scores.atsReadiness,
         resumeQuality: profilePage.scores.resumeQuality,
         responseRate: overview.responseRatePct,
+        skillsCovered,
       },
       careerOverview: overview,
+      weekly: {
+        applicationsThisWeek: recent.length,
+        interviewsThisWeek,
+        offersThisWeek,
+        activeDays,
+      },
       recentActivity: buildActivity(events, apps),
       loading: appsLoading || profilePage.loading,
       hasAnyData: apps.length > 0,

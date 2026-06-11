@@ -7,8 +7,8 @@ export function RightPanel({ data }: { data: DashboardData }) {
   return (
     <div className="dash-col dash-col-right">
       <ProfileCard data={data} />
+      <ThisWeekCard data={data} />
       <QuickActionsCard />
-      <PipelineCard data={data} />
     </div>
   );
 }
@@ -39,6 +39,27 @@ function ProfileCard({ data }: { data: DashboardData }) {
   );
 }
 
+function ThisWeekCard({ data }: { data: DashboardData }) {
+  const w = data.weekly;
+  const cell = (label: string, value: number, fg: string, bg: string) => (
+    <div style={{ background: bg, borderRadius: 12, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 2 }}>
+      <span style={{ fontSize: 11, color: "var(--dash-muted)", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase" }}>{label}</span>
+      <span style={{ fontFamily: "Inter Tight, sans-serif", fontWeight: 800, fontSize: 22, color: fg, fontVariantNumeric: "tabular-nums" }}>{value}</span>
+    </div>
+  );
+  return (
+    <div className="dash-card">
+      <div className="dash-card-title">This Week</div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        {cell("Applications", w.applicationsThisWeek, "#ee7b5a", "#fde2d7")}
+        {cell("Interviews",   w.interviewsThisWeek,   "#8c79c4", "#e6dff6")}
+        {cell("Offers",       w.offersThisWeek,       "#39a896", "#d6efe9")}
+        {cell("Active Days",  w.activeDays,           "#cc9a1e", "#fceeca")}
+      </div>
+    </div>
+  );
+}
+
 function QuickActionsCard() {
   const linkStyle: React.CSSProperties = {
     display: "flex", alignItems: "center", gap: 10,
@@ -50,7 +71,7 @@ function QuickActionsCard() {
   return (
     <div className="dash-card">
       <div className="dash-card-title">Quick Actions</div>
-      <div style={{ display: "grid", gap: 10 }}>
+      <div style={{ display: "grid", gap: 8 }}>
         <Link to="/jobs" style={linkStyle}><IconBriefcase width={16} height={16}/> Discover Jobs</Link>
         <Link to="/resume" style={linkStyle}><IconDoc width={16} height={16}/> Open Resume Studio</Link>
         <Link to="/applications" style={linkStyle}><IconUsers width={16} height={16}/> Application Tracker</Link>
@@ -60,25 +81,3 @@ function QuickActionsCard() {
   );
 }
 
-function PipelineCard({ data }: { data: DashboardData }) {
-  const o = data.careerOverview;
-  const row = (label: string, value: number, suffix = "") => (
-    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px dashed #f1e2d6", fontSize: 13 }}>
-      <span style={{ color: "var(--dash-muted)" }}>{label}</span>
-      <span style={{ fontWeight: 700 }}>{value}{suffix}</span>
-    </div>
-  );
-  return (
-    <div className="dash-card">
-      <div className="dash-card-title">Pipeline</div>
-      <div>
-        {row("Jobs Discovered", o.jobsDiscovered)}
-        {row("Applications Submitted", o.applications)}
-        {row("Under Review", o.underReview)}
-        {row("Interviews", o.interviews)}
-        {row("Offers", o.offers)}
-        {row("Response Rate", o.responseRatePct, "%")}
-      </div>
-    </div>
-  );
-}
