@@ -265,9 +265,34 @@ def _scroll_form(driver, root) -> None:
     try:
         driver.execute_script(
             "var r=arguments[0];"
-            "if(r && r.scrollTo){r.scrollTo(0, r.scrollHeight);} "
-            "else {window.scrollTo(0, document.body.scrollHeight);}",
+            "var nodes=[];"
+            "if(r){nodes=[r].concat(Array.from(r.querySelectorAll('*')));}"
+            "var did=false;"
+            "for(var i=0;i<nodes.length;i++){var n=nodes[i];"
+            " if(n && n.scrollHeight>n.clientHeight+40){n.scrollTop=n.scrollHeight;did=true;}"
+            "}"
+            "if(!did){window.scrollTo(0, document.body.scrollHeight);}",
             root if hasattr(root, "tag_name") else None,
+        )
+    except WebDriverException:
+        pass
+
+
+def _scroll_form_to(driver, root, position: str) -> None:
+    """Scroll dialog/page to top, middle, or bottom."""
+    ratio = 0 if position == "top" else 0.5 if position == "middle" else 1
+    try:
+        driver.execute_script(
+            "var ratio=arguments[1]; var r=arguments[0];"
+            "var nodes=[];"
+            "if(r){nodes=[r].concat(Array.from(r.querySelectorAll('*')));}"
+            "var did=false;"
+            "for(var i=0;i<nodes.length;i++){var n=nodes[i];"
+            " if(n && n.scrollHeight>n.clientHeight+40){n.scrollTop=n.scrollHeight*ratio;did=true;}"
+            "}"
+            "if(!did){window.scrollTo(0, document.body.scrollHeight*ratio);}",
+            root if hasattr(root, "tag_name") else None,
+            ratio,
         )
     except WebDriverException:
         pass
@@ -312,14 +337,17 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
         time.sleep(1)
         root = active_form_root(driver)
 
-        # Scroll inside the dialog so every required field is in the DOM
-        # before we try to fill it.
+        # LinkedIn lazy-renders fields while scrolling. Fill top/middle/bottom
+        # before trying Next, and leave the dialog at the bottom where buttons live.
+        n = 0
+        for pos in ("top", "middle", "bottom"):
+            _scroll_form_to(driver, root, pos)
+            time.sleep(0.35)
+            maybe_upload_resume(driver, emit, profile, root=root)
+            n += fill_visible_fields(driver, emit, profile, job_context, root=root)
+            n += fill_choice_controls(driver, emit, profile, job_context, root=root)
         _scroll_form(driver, root)
         time.sleep(0.3)
-
-        maybe_upload_resume(driver, emit, profile, root=root)
-        n = fill_visible_fields(driver, emit, profile, job_context, root=root)
-        n += fill_choice_controls(driver, emit, profile, job_context, root=root)
         emit("easy_apply", f"Step {step+1}: filled {n} field(s)")
 
         # 1) Submit if visible (last step) — fully automatic.
