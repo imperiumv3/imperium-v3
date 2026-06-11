@@ -65,6 +65,7 @@ export interface DashboardData {
   identity: IdentityData;
   attributes: AttributesData;
   careerOverview: CareerOverviewData;
+  weekly: WeeklySnapshot;
   recentActivity: ActivityItem[];
   loading: boolean;
   hasAnyData: boolean;
