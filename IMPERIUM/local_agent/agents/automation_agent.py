@@ -234,3 +234,7 @@ def run_job(job_id: str) -> None:
                 driver.quit()
             except Exception:
                 pass
+        try:
+            _CHROME_LOCK.release()
+        except RuntimeError:
+            pass
