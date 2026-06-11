@@ -108,10 +108,11 @@ def _profile_years(profile: Dict[str, Any], skill: str = "") -> int:
 
 def _years_question(q: str) -> Optional[str]:
     """Extract the technology/skill the question is asking 'years of' about."""
-    m = re.search(r"years?(?:\s+of)?(?:\s+experience)?(?:\s+(?:in|with|using))?\s+([A-Za-z0-9+./# -]{2,40})", q, re.I)
+    # Prefer explicit "in/with/using X" anchor first.
+    m = re.search(r"\b(?:in|with|using|of)\s+([A-Za-z0-9+./# -]{2,40})\?*\s*$", q, re.I)
     if m:
         return m.group(1).strip(" ?.,")
-    m = re.search(r"how\s+(?:much|many\s+years)\s+(?:of\s+)?experience.*?(?:in|with)\s+([A-Za-z0-9+./# -]{2,40})", q, re.I)
+    m = re.search(r"years?\s+(?:of\s+)?(?:experience\s+)?(?:in|with|using)\s+([A-Za-z0-9+./# -]{2,40})", q, re.I)
     if m:
         return m.group(1).strip(" ?.,")
     return None
