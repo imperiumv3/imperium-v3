@@ -25,9 +25,15 @@ DOM directly — that's delegated to ``automation/*`` modules.
 """
 from __future__ import annotations
 
+import threading
 import time
 import traceback
 from typing import Any, Dict, Optional
+
+# Global lock: only one Chrome instance may own the dedicated profile at a time.
+# Without this, two concurrent /apply requests both try to launch Chrome against
+# the same --user-data-dir and the second one fails with "chrome not reachable".
+_CHROME_LOCK = threading.Lock()
 
 from selenium.common.exceptions import TimeoutException, WebDriverException
 
