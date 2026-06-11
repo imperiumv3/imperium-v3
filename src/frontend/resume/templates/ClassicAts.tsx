@@ -1,10 +1,11 @@
 /** Classic ATS-safe single-column template. Theme-aware. */
 import type { TemplateProps } from "./_shared";
-import { fmtRange, pageStyle } from "./_shared";
+import { fmtRange, pageStyle, formatLanguages, formatInterests } from "./_shared";
 import { themeVars } from "./themes";
 
 export function ClassicAtsTemplate({ resume, theme }: TemplateProps) {
-  const { personal, summary, skills, experience, projects, education, certifications, meta } = resume;
+  const { personal, summary, skills, experience, projects, education, certifications, languages, interests, meta } = resume;
+
   return (
     <div
       className="resume-page resume-classic-ats"
