@@ -265,5 +265,5 @@ export const retryApplicationJob = createServerFn({ method: "POST" })
       .select("*")
       .single();
     if (iErr) throw new Error(iErr.message);
-    return created as Record<string, unknown>;
+    return jObj(created);
   });
