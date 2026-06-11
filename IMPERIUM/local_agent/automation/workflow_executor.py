@@ -106,7 +106,7 @@ def _linkedin_find_external_apply_link(driver) -> str:
     try:
         anchors = driver.find_elements(
             By.CSS_SELECTOR,
-            "a[href^='http']:not([href*='linkedin.com'])",
+            "a[href^='http'], a[href*='/jobs/view/externalApply/'], a[href*='/jobs/view/externalapply/']",
         )
     except WebDriverException:
         return ""
@@ -115,13 +115,78 @@ def _linkedin_find_external_apply_link(driver) -> str:
             txt = (a.text or "").strip().lower()
             label = (a.get_attribute("aria-label") or "").lower()
             data = (a.get_attribute("data-control-name") or "").lower()
+            href = a.get_attribute("href") or ""
+            href_low = href.lower()
+            if "authwall" in href_low or "share" in href_low:
+                continue
+            if "externalapply" in href_low:
+                return href
             if "apply" in txt or "apply" in label or "apply" in data:
-                href = a.get_attribute("href") or ""
                 if href.startswith("http") and "linkedin.com" not in href:
                     return href
         except WebDriverException:
             continue
     return ""
+
+
+def _click_best_linkedin_apply(driver) -> bool:
+    """Click the best visible LinkedIn Apply/Easy Apply control on this job page."""
+    try:
+        driver.execute_script("window.scrollTo(0, 0);")
+    except WebDriverException:
+        pass
+    time.sleep(0.4)
+    candidates = []
+    try:
+        for el in driver.find_elements(By.CSS_SELECTOR, "button, a, [role='button']"):
+            try:
+                if not el.is_displayed() or not el.is_enabled():
+                    continue
+                txt = (el.text or "").strip().lower()
+                label = (el.get_attribute("aria-label") or "").strip().lower()
+                data = (el.get_attribute("data-control-name") or "").strip().lower()
+                hay = f"{txt} {label} {data}"
+                if "apply" not in hay:
+                    continue
+                if any(bad in hay for bad in ("saved", "save job", "share", "dismiss")):
+                    continue
+                score = 10
+                if "easy apply" in hay:
+                    score += 100
+                if "jobdetails_topcard_inapply" in hay or "jobs-apply-button" in (el.get_attribute("class") or ""):
+                    score += 50
+                if txt in {"apply", "easy apply"} or label.startswith(("apply", "easy apply")):
+                    score += 20
+                candidates.append((score, el))
+            except WebDriverException:
+                continue
+    except WebDriverException:
+        pass
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    for _, el in candidates[:6]:
+        try:
+            driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
+            time.sleep(0.2)
+            try:
+                el.click()
+            except WebDriverException:
+                driver.execute_script("arguments[0].click();", el)
+            return True
+        except WebDriverException:
+            continue
+    return click_first(driver, [
+        "button.jobs-apply-button",
+        "button[aria-label*='Easy Apply' i]",
+        "button[aria-label*='Apply' i]",
+        "button[data-control-name='jobdetails_topcard_inapply']",
+        "a.jobs-apply-button",
+        "a[aria-label*='Apply' i]",
+    ], timeout=4) or click_xpath(driver, [
+        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+        ".//a[contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+    ], timeout=2)
 
 
 def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
