@@ -171,10 +171,12 @@ def _group_radios(fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 def run_fixture(html: str, profile: Dict[str, Any]) -> Dict[str, Any]:
     parser = _FormParser()
     parser.feed(html or "")
-    # Wire "label for=id" backfills.
+    # Wire "label for=id" backfills, then fall back to id/name/data-test.
     for f in parser.fields:
         if not f.get("label") and f.get("id") and f["id"] in parser.labels_by_for:
             f["label"] = parser.labels_by_for[f["id"]]
+        if not f.get("label"):
+            f["label"] = f.get("name") or f.get("id") or ""
 
     fields = _group_radios(parser.fields)
 
