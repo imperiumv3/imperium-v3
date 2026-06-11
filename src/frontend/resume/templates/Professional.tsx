@@ -58,7 +58,7 @@ export function ProfessionalTemplate({ resume, theme }: TemplateProps) {
         <Section title="Skills">
           {skills.map((g) => (
             <div key={g.category} className="r-block" style={{ marginBottom: 4 }}>
-              {skills.length > 1 && <strong style={{ color: "var(--rt-accent-dark)" }}>{g.category}: </strong>}
+              {g.category && g.category !== "Skills" && <strong style={{ color: "var(--rt-accent-dark)" }}>{g.category}: </strong>}
               {g.items.join(" · ")}
             </div>
           ))}

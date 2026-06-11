@@ -39,7 +39,7 @@ export function DeveloperTemplate({ resume, theme }: TemplateProps) {
         <Section title="// stack">
           {skills.map((g) => (
             <div key={g.category} className="r-block" style={{ marginBottom: 4, fontFamily: '"JetBrains Mono", monospace', fontSize: 10.8 }}>
-              {skills.length > 1 && <span style={{ color: "var(--rt-accent)" }}>{g.category}: </span>}
+              {g.category && g.category !== "Skills" && <span style={{ color: "var(--rt-accent)" }}>{g.category}: </span>}
               {g.items.join(" · ")}
             </div>
           ))}

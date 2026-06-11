@@ -13,6 +13,7 @@ import { PreviewPane } from "./panes/PreviewPane";
 import { analyzeJdMatch } from "./ats/JdMatchEngine";
 import "./resume.css";
 import { useResumeStore } from "./state/useResumeStore";
+import { categorizeResumeSkills } from "./utils/skillCategorizer";
 
 
 interface ResumePageProps {
@@ -63,7 +64,12 @@ export function ResumePage({ jobId }: ResumePageProps) {
                 ].filter(Boolean) as { label: string; url: string }[],
               },
               summary: profile.summary || "",
-              skills: profile.skills?.length ? [{ category: "Skills", items: profile.skills }] : [],
+              skills: profile.skills?.length ? categorizeResumeSkills(profile.skills) : [],
+              languages: (profile.languages ?? []).map((l: { name: string; proficiency?: string }) => ({
+                name: l.name,
+                proficiency: l.proficiency,
+              })),
+              interests: profile.interests ?? [],
               experience: (profile.experience || []).map((e: any, idx: number) => ({
                 id: `exp_${Date.now()}_${idx}`,
                 company: e.company || "",
