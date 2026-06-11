@@ -40,6 +40,7 @@ except Exception:  # noqa: BLE001
     pass
 
 from shared import models
+from shared.artifacts import list_artifacts, artifact_path
 from automation.selenium_driver import SELENIUM_OK, HEADLESS
 from agents.automation_agent import run_job
 
