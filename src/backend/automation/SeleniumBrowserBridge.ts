@@ -85,10 +85,3 @@ export const localAgentEvents = (job_id: string) =>
   call<{ events: LocalAgentEvent[]; status: string; progress: number }>(`/events/${job_id}`);
 
 export const localAgentRuns = () => call<LocalAgentRun[]>("/runs");
-
-export const localAgentStatus = (job_id: string) => call<LocalAgentRun>(`/status/${job_id}`);
-
-export const localAgentEvents = (job_id: string) =>
-  call<{ events: LocalAgentEvent[]; status: string; progress: number }>(`/events/${job_id}`);
-
-export const localAgentRuns = () => call<LocalAgentRun[]>("/runs");
