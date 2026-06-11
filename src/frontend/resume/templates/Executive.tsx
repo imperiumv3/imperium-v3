@@ -98,6 +98,7 @@ export function ExecutiveTemplate({ resume, theme }: TemplateProps) {
             <div key={c.id} className="r-block">{c.name}{c.issuer && ` — ${c.issuer}`}{c.date && ` (${c.date})`}</div>
           ))}
         </Section>
+      )}
 
       {languages && languages.length > 0 && (
         <Section title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></Section>
@@ -105,7 +106,6 @@ export function ExecutiveTemplate({ resume, theme }: TemplateProps) {
 
       {interests && interests.length > 0 && (
         <Section title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></Section>
-      )}
       )}
     </div>
   );

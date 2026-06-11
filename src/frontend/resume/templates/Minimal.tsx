@@ -97,6 +97,7 @@ export function MinimalTemplate({ resume, theme }: TemplateProps) {
             </div>
           ))}
         </Section>
+      )}
 
       {languages && languages.length > 0 && (
         <Section title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></Section>
@@ -104,7 +105,6 @@ export function MinimalTemplate({ resume, theme }: TemplateProps) {
 
       {interests && interests.length > 0 && (
         <Section title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></Section>
-      )}
       )}
     </div>
   );
