@@ -218,23 +218,36 @@ def find_submit_button(driver, root=None):
 
 # ---------------- field filling ----------------
 
+def _looks_like_urn(s: str) -> bool:
+    s = (s or "").strip().lower()
+    return s.startswith("urn:") or s.startswith("ember") or len(s) > 120
+
+
 def _label_text(driver, el) -> str:
-    for attr in ("aria-label", "placeholder", "name", "id", "data-test", "data-testid"):
-        v = el.get_attribute(attr) or ""
-        if v.strip():
-            return v.strip()
+    # Prefer real label element / aria-label / placeholder before falling
+    # back to id/name (which on LinkedIn are URNs like urn:li:fsd_formElement:…).
     try:
         eid = el.get_attribute("id")
         if eid:
             lab = driver.find_elements(By.CSS_SELECTOR, f"label[for='{eid}']")
-            if lab and lab[0].text:
-                return lab[0].text.strip()
+            if lab:
+                txt = (lab[0].text or lab[0].get_attribute("textContent") or "").strip()
+                if txt and not _looks_like_urn(txt):
+                    return txt
     except WebDriverException:
         pass
     try:
-        return (el.find_element(By.XPATH, "./ancestor::label[1]").text or "").strip()
+        anc = el.find_element(By.XPATH, "./ancestor::label[1]")
+        txt = (anc.text or anc.get_attribute("textContent") or "").strip()
+        if txt and not _looks_like_urn(txt):
+            return txt
     except WebDriverException:
-        return ""
+        pass
+    for attr in ("aria-label", "placeholder", "data-test", "data-testid", "name"):
+        v = (el.get_attribute(attr) or "").strip()
+        if v and not _looks_like_urn(v):
+            return v
+    return ""
 
 
 PROFILE_MAP = [
