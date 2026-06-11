@@ -50,12 +50,12 @@ def _safe_classify(snapshot: Dict[str, Any]) -> str:
     url = (snapshot.get("url") or "").lower()
     if "linkedin.com" in url and snapshot.get("has_dialog"):
         return classify_page(snapshot)
+    if "linkedin.com/jobs/view" in url and not snapshot.get("has_dialog"):
+        return "job_detail"
     if "linkedin.com/jobs/search" in url or "linkedin.com/jobs/collections" in url:
         return "job_listing"
     if "linkedin.com/jobs" in url and snapshot.get("job_cards") and not snapshot.get("has_dialog"):
         return "job_listing"
-    if "linkedin.com/jobs/view" in url and not snapshot.get("has_dialog"):
-        return "job_detail"
     return classify_page(snapshot)
 
 

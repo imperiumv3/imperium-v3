@@ -106,7 +106,7 @@ def _linkedin_find_external_apply_link(driver) -> str:
     try:
         anchors = driver.find_elements(
             By.CSS_SELECTOR,
-            "a[href^='http']:not([href*='linkedin.com'])",
+            "a[href^='http'], a[href*='/jobs/view/externalApply/'], a[href*='/jobs/view/externalapply/']",
         )
     except WebDriverException:
         return ""
@@ -115,13 +115,78 @@ def _linkedin_find_external_apply_link(driver) -> str:
             txt = (a.text or "").strip().lower()
             label = (a.get_attribute("aria-label") or "").lower()
             data = (a.get_attribute("data-control-name") or "").lower()
+            href = a.get_attribute("href") or ""
+            href_low = href.lower()
+            if "authwall" in href_low or "share" in href_low:
+                continue
+            if "externalapply" in href_low:
+                return href
             if "apply" in txt or "apply" in label or "apply" in data:
-                href = a.get_attribute("href") or ""
                 if href.startswith("http") and "linkedin.com" not in href:
                     return href
         except WebDriverException:
             continue
     return ""
+
+
+def _click_best_linkedin_apply(driver) -> bool:
+    """Click the best visible LinkedIn Apply/Easy Apply control on this job page."""
+    try:
+        driver.execute_script("window.scrollTo(0, 0);")
+    except WebDriverException:
+        pass
+    time.sleep(0.4)
+    candidates = []
+    try:
+        for el in driver.find_elements(By.CSS_SELECTOR, "button, a, [role='button']"):
+            try:
+                if not el.is_displayed() or not el.is_enabled():
+                    continue
+                txt = (el.text or "").strip().lower()
+                label = (el.get_attribute("aria-label") or "").strip().lower()
+                data = (el.get_attribute("data-control-name") or "").strip().lower()
+                hay = f"{txt} {label} {data}"
+                if "apply" not in hay:
+                    continue
+                if any(bad in hay for bad in ("saved", "save job", "share", "dismiss")):
+                    continue
+                score = 10
+                if "easy apply" in hay:
+                    score += 100
+                if "jobdetails_topcard_inapply" in hay or "jobs-apply-button" in (el.get_attribute("class") or ""):
+                    score += 50
+                if txt in {"apply", "easy apply"} or label.startswith(("apply", "easy apply")):
+                    score += 20
+                candidates.append((score, el))
+            except WebDriverException:
+                continue
+    except WebDriverException:
+        pass
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    for _, el in candidates[:6]:
+        try:
+            driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
+            time.sleep(0.2)
+            try:
+                el.click()
+            except WebDriverException:
+                driver.execute_script("arguments[0].click();", el)
+            return True
+        except WebDriverException:
+            continue
+    return click_first(driver, [
+        "button.jobs-apply-button",
+        "button[aria-label*='Easy Apply' i]",
+        "button[aria-label*='Apply' i]",
+        "button[data-control-name='jobdetails_topcard_inapply']",
+        "a.jobs-apply-button",
+        "a[aria-label*='Apply' i]",
+    ], timeout=4) or click_xpath(driver, [
+        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+        ".//a[contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+    ], timeout=2)
 
 
 def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
@@ -131,19 +196,7 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
     before_url = driver.current_url
     before_handles = list(driver.window_handles)
 
-    clicked = click_first(driver, [
-        "button.jobs-apply-button",
-        "button[aria-label*='Easy Apply' i]",
-        "button[aria-label*='Apply' i]",
-        "button[data-control-name='jobdetails_topcard_inapply']",
-        "a.jobs-apply-button",
-        "a[aria-label*='Apply' i]",
-    ], timeout=6) or click_xpath(driver, [
-        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
-        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
-        ".//a[contains(translate(normalize-space(.),"
-        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
-    ], timeout=3)
+    clicked = _click_best_linkedin_apply(driver)
 
     if clicked:
         time.sleep(2.5)
@@ -158,6 +211,17 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
         if active_dialog(driver):
             emit("easy_apply", "Opened Easy Apply modal", level="success")
             return True
+        external = _linkedin_find_external_apply_link(driver)
+        if external:
+            emit("external_apply",
+                 f"Apply click exposed external apply link, navigating to {external}",
+                 level="success", url=external)
+            try:
+                driver.get(external)
+            except WebDriverException:
+                pass
+            time.sleep(2)
+            return False
         if "linkedin.com" not in driver.current_url or driver.current_url != before_url:
             emit("external_apply", "Opened external application page",
                  level="success", url=driver.current_url)
@@ -201,9 +265,34 @@ def _scroll_form(driver, root) -> None:
     try:
         driver.execute_script(
             "var r=arguments[0];"
-            "if(r && r.scrollTo){r.scrollTo(0, r.scrollHeight);} "
-            "else {window.scrollTo(0, document.body.scrollHeight);}",
+            "var nodes=[];"
+            "if(r){nodes=[r].concat(Array.from(r.querySelectorAll('*')));}"
+            "var did=false;"
+            "for(var i=0;i<nodes.length;i++){var n=nodes[i];"
+            " if(n && n.scrollHeight>n.clientHeight+40){n.scrollTop=n.scrollHeight;did=true;}"
+            "}"
+            "if(!did){window.scrollTo(0, document.body.scrollHeight);}",
             root if hasattr(root, "tag_name") else None,
+        )
+    except WebDriverException:
+        pass
+
+
+def _scroll_form_to(driver, root, position: str) -> None:
+    """Scroll dialog/page to top, middle, or bottom."""
+    ratio = 0 if position == "top" else 0.5 if position == "middle" else 1
+    try:
+        driver.execute_script(
+            "var ratio=arguments[1]; var r=arguments[0];"
+            "var nodes=[];"
+            "if(r){nodes=[r].concat(Array.from(r.querySelectorAll('*')));}"
+            "var did=false;"
+            "for(var i=0;i<nodes.length;i++){var n=nodes[i];"
+            " if(n && n.scrollHeight>n.clientHeight+40){n.scrollTop=n.scrollHeight*ratio;did=true;}"
+            "}"
+            "if(!did){window.scrollTo(0, document.body.scrollHeight*ratio);}",
+            root if hasattr(root, "tag_name") else None,
+            ratio,
         )
     except WebDriverException:
         pass
@@ -248,14 +337,17 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
         time.sleep(1)
         root = active_form_root(driver)
 
-        # Scroll inside the dialog so every required field is in the DOM
-        # before we try to fill it.
+        # LinkedIn lazy-renders fields while scrolling. Fill top/middle/bottom
+        # before trying Next, and leave the dialog at the bottom where buttons live.
+        n = 0
+        for pos in ("top", "middle", "bottom"):
+            _scroll_form_to(driver, root, pos)
+            time.sleep(0.35)
+            maybe_upload_resume(driver, emit, profile, root=root)
+            n += fill_visible_fields(driver, emit, profile, job_context, root=root)
+            n += fill_choice_controls(driver, emit, profile, job_context, root=root)
         _scroll_form(driver, root)
         time.sleep(0.3)
-
-        maybe_upload_resume(driver, emit, profile, root=root)
-        n = fill_visible_fields(driver, emit, profile, job_context, root=root)
-        n += fill_choice_controls(driver, emit, profile, job_context, root=root)
         emit("easy_apply", f"Step {step+1}: filled {n} field(s)")
 
         # 1) Submit if visible (last step) — fully automatic.

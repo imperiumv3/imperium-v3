@@ -25,9 +25,8 @@ Flow orchestration per site. Generic form mechanics live in
 """
 from __future__ import annotations
 
-import os
 import time
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -42,12 +41,6 @@ from automation.form_parser import (
 from automation.resume_uploader import maybe_upload_resume
 
 Emit = Callable[..., None]
-
-# B6 — configurable wizard-step timeout; surfaces clearer failure causes.
-EASY_APPLY_STEP_TIMEOUT_S = float(os.environ.get("LINKEDIN_STEP_TIMEOUT", "20"))
-# B6 — optional per-step approval gate (default off to preserve current UX).
-EASY_APPLY_PER_STEP_APPROVAL = os.environ.get("LINKEDIN_APPROVAL_PER_STEP") == "1"
-
 
 
 # ============================================================
@@ -107,20 +100,110 @@ def linkedin_pick_first_job(driver, emit: Emit) -> bool:
     return True
 
 
-def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
-    before_url = driver.current_url
-    before_handles = list(driver.window_handles)
-    if click_first(driver, [
+def _linkedin_find_external_apply_link(driver) -> str:
+    """Scan the job detail page for an off-site apply link (fallback when
+    LinkedIn renders an <a> instead of a button, or the button is hidden)."""
+    try:
+        anchors = driver.find_elements(
+            By.CSS_SELECTOR,
+            "a[href^='http'], a[href*='/jobs/view/externalApply/'], a[href*='/jobs/view/externalapply/']",
+        )
+    except WebDriverException:
+        return ""
+    for a in anchors[:60]:
+        try:
+            txt = (a.text or "").strip().lower()
+            label = (a.get_attribute("aria-label") or "").lower()
+            data = (a.get_attribute("data-control-name") or "").lower()
+            href = a.get_attribute("href") or ""
+            href_low = href.lower()
+            if "authwall" in href_low or "share" in href_low:
+                continue
+            if "externalapply" in href_low:
+                return href
+            if "apply" in txt or "apply" in label or "apply" in data:
+                if href.startswith("http") and "linkedin.com" not in href:
+                    return href
+        except WebDriverException:
+            continue
+    return ""
+
+
+def _click_best_linkedin_apply(driver) -> bool:
+    """Click the best visible LinkedIn Apply/Easy Apply control on this job page."""
+    try:
+        driver.execute_script("window.scrollTo(0, 0);")
+    except WebDriverException:
+        pass
+    time.sleep(0.4)
+    candidates = []
+    try:
+        for el in driver.find_elements(By.CSS_SELECTOR, "button, a, [role='button']"):
+            try:
+                if not el.is_displayed() or not el.is_enabled():
+                    continue
+                txt = (el.text or "").strip().lower()
+                label = (el.get_attribute("aria-label") or "").strip().lower()
+                data = (el.get_attribute("data-control-name") or "").strip().lower()
+                hay = f"{txt} {label} {data}"
+                if "apply" not in hay:
+                    continue
+                if any(bad in hay for bad in ("saved", "save job", "share", "dismiss")):
+                    continue
+                score = 10
+                if "easy apply" in hay:
+                    score += 100
+                if "jobdetails_topcard_inapply" in hay or "jobs-apply-button" in (el.get_attribute("class") or ""):
+                    score += 50
+                if txt in {"apply", "easy apply"} or label.startswith(("apply", "easy apply")):
+                    score += 20
+                candidates.append((score, el))
+            except WebDriverException:
+                continue
+    except WebDriverException:
+        pass
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    for _, el in candidates[:6]:
+        try:
+            driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
+            time.sleep(0.2)
+            try:
+                el.click()
+            except WebDriverException:
+                driver.execute_script("arguments[0].click();", el)
+            return True
+        except WebDriverException:
+            continue
+    return click_first(driver, [
         "button.jobs-apply-button",
         "button[aria-label*='Easy Apply' i]",
         "button[aria-label*='Apply' i]",
         "button[data-control-name='jobdetails_topcard_inapply']",
-    ], timeout=8):
-        time.sleep(2)
+        "a.jobs-apply-button",
+        "a[aria-label*='Apply' i]",
+    ], timeout=4) or click_xpath(driver, [
+        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+        ".//a[contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+    ], timeout=2)
+
+
+def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
+    """Return True only when a real Easy Apply modal opens. For external
+    apply jobs, switch into the external tab/page and return False so the
+    caller routes into the ATS flow."""
+    before_url = driver.current_url
+    before_handles = list(driver.window_handles)
+
+    clicked = _click_best_linkedin_apply(driver)
+
+    if clicked:
+        time.sleep(2.5)
         try:
             if len(driver.window_handles) > len(before_handles):
                 driver.switch_to.window(driver.window_handles[-1])
-                emit("external", "Opened external application tab",
+                emit("external_apply", "Opened external application tab",
                      level="success", url=driver.current_url)
                 return False
         except WebDriverException:
@@ -128,25 +211,120 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
         if active_dialog(driver):
             emit("easy_apply", "Opened Easy Apply modal", level="success")
             return True
+        external = _linkedin_find_external_apply_link(driver)
+        if external:
+            emit("external_apply",
+                 f"Apply click exposed external apply link, navigating to {external}",
+                 level="success", url=external)
+            try:
+                driver.get(external)
+            except WebDriverException:
+                pass
+            time.sleep(2)
+            return False
         if "linkedin.com" not in driver.current_url or driver.current_url != before_url:
-            emit("external", "Opened external application page",
+            emit("external_apply", "Opened external application page",
                  level="success", url=driver.current_url)
             return False
         emit("easy_apply", "Clicked Apply, but no modal opened yet", level="warn")
+        # fall through to off-site link scan below
+
+    # Fallback: no button matched (or click did nothing) — look for an
+    # off-site apply link rendered as an <a>. Common on LinkedIn jobs that
+    # delegate to the company's ATS.
+    external = _linkedin_find_external_apply_link(driver)
+    if external:
+        emit("external_apply",
+             f"No Easy Apply — found external apply link, navigating to {external}",
+             level="success", url=external)
+        try:
+            driver.execute_script("window.open(arguments[0], '_blank');", external)
+            time.sleep(1.5)
+            if len(driver.window_handles) > len(before_handles):
+                driver.switch_to.window(driver.window_handles[-1])
+            else:
+                driver.get(external)
+        except WebDriverException:
+            try:
+                driver.get(external)
+            except WebDriverException:
+                pass
+        time.sleep(2)
         return False
-    emit("easy_apply", "No Apply button found", level="warn")
+
+    if not clicked:
+        emit("easy_apply",
+             "No Apply button or external apply link found. Open the job in "
+             "Chrome and finish manually, then Approve/Reject.",
+             level="warn")
     return False
 
 
-def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
-                             max_steps: int = 8) -> str:
-    """Walk the Easy Apply wizard: fill -> Next -> Review. Stops at Review.
+def _scroll_form(driver, root) -> None:
+    """Scroll inside the Easy Apply dialog so lazy-rendered fields show up."""
+    try:
+        driver.execute_script(
+            "var r=arguments[0];"
+            "var nodes=[];"
+            "if(r){nodes=[r].concat(Array.from(r.querySelectorAll('*')));}"
+            "var did=false;"
+            "for(var i=0;i<nodes.length;i++){var n=nodes[i];"
+            " if(n && n.scrollHeight>n.clientHeight+40){n.scrollTop=n.scrollHeight;did=true;}"
+            "}"
+            "if(!did){window.scrollTo(0, document.body.scrollHeight);}",
+            root if hasattr(root, "tag_name") else None,
+        )
+    except WebDriverException:
+        pass
 
-    B6 hardening:
-      - Per-step timeout (LINKEDIN_STEP_TIMEOUT, default 20s) instead of unbounded waits.
-      - Optional per-step approval gate (LINKEDIN_APPROVAL_PER_STEP=1).
-      - When stuck, surface unfilled field labels at error level so the
-        operator knows exactly what to look at.
+
+def _scroll_form_to(driver, root, position: str) -> None:
+    """Scroll dialog/page to top, middle, or bottom."""
+    ratio = 0 if position == "top" else 0.5 if position == "middle" else 1
+    try:
+        driver.execute_script(
+            "var ratio=arguments[1]; var r=arguments[0];"
+            "var nodes=[];"
+            "if(r){nodes=[r].concat(Array.from(r.querySelectorAll('*')));}"
+            "var did=false;"
+            "for(var i=0;i<nodes.length;i++){var n=nodes[i];"
+            " if(n && n.scrollHeight>n.clientHeight+40){n.scrollTop=n.scrollHeight*ratio;did=true;}"
+            "}"
+            "if(!did){window.scrollTo(0, document.body.scrollHeight*ratio);}",
+            root if hasattr(root, "tag_name") else None,
+            ratio,
+        )
+    except WebDriverException:
+        pass
+
+
+def _click_submit_and_dismiss(driver, emit: Emit, root) -> bool:
+    """Click the Submit button and dismiss the post-submit 'Save app' modal."""
+    btn = find_submit_button(driver, root=root) or find_submit_button(driver)
+    if not btn:
+        return False
+    emit("submit", f"Clicking submit: {btn.text or btn.get_attribute('aria-label') or 'button'}",
+         level="success")
+    try:
+        btn.click()
+    except WebDriverException:
+        driver.execute_script("arguments[0].click();", btn)
+    time.sleep(2.5)
+    # LinkedIn often shows a "Save this application?" dismiss modal after submit.
+    click_first(driver, [
+        "button[aria-label='Dismiss']",
+        "button[aria-label*='Dismiss' i]",
+        "button[aria-label*='Done' i]",
+    ], timeout=2)
+    return True
+
+
+def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
+                             max_steps: int = 14) -> str:
+    """Walk the Easy Apply wizard end-to-end: fill -> Next -> ... -> Review -> Submit.
+
+    Fully automatic — never returns 'awaiting_approval'. Returns 'submitted'
+    on success, or 'needs_human' only if truly stuck after retries.
     """
     job_context = ""
     try:
@@ -154,21 +332,30 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
     except WebDriverException:
         pass
 
+    stuck_rounds = 0
     for step in range(max_steps):
-        step_started = time.time()
         time.sleep(1)
         root = active_form_root(driver)
-        maybe_upload_resume(driver, emit, profile, root=root)
-        n = fill_visible_fields(driver, emit, profile, job_context, root=root)
-        n += fill_choice_controls(driver, emit, profile, job_context, root=root)
+
+        # LinkedIn lazy-renders fields while scrolling. Fill top/middle/bottom
+        # before trying Next, and leave the dialog at the bottom where buttons live.
+        n = 0
+        for pos in ("top", "middle", "bottom"):
+            _scroll_form_to(driver, root, pos)
+            time.sleep(0.35)
+            maybe_upload_resume(driver, emit, profile, root=root)
+            n += fill_visible_fields(driver, emit, profile, job_context, root=root)
+            n += fill_choice_controls(driver, emit, profile, job_context, root=root)
+        _scroll_form(driver, root)
+        time.sleep(0.3)
         emit("easy_apply", f"Step {step+1}: filled {n} field(s)")
 
-        if EASY_APPLY_PER_STEP_APPROVAL:
-            emit("approval",
-                 f"Per-step approval gate: review step {step+1} in Chrome, "
-                 f"then Approve to advance.", level="warn")
-            return "awaiting_approval"
+        # 1) Submit if visible (last step) — fully automatic.
+        if _click_submit_and_dismiss(driver, emit, root):
+            emit("submitted", "Application submitted", level="success")
+            return "submitted"
 
+        # 2) Review → click, then loop again so next iteration finds Submit.
         if click_first(driver, [
             "button[aria-label*='Review your application' i]",
             "button[aria-label='Review your application']",
@@ -176,10 +363,11 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
             ".//button[not(@disabled) and contains(translate(normalize-space(.),"
             "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'review')]",
         ], timeout=1, root=root):
-            emit("easy_apply", "Reached Review step", level="success")
+            emit("easy_apply", "Reached Review step — proceeding to submit", level="success")
             time.sleep(1.5)
-            return "awaiting_approval"
+            continue
 
+        # 3) Otherwise Next / Continue.
         moved = click_first(driver, [
             "button[aria-label='Continue to next step']",
             "button[aria-label*='Continue' i]",
@@ -191,61 +379,25 @@ def linkedin_easy_apply_loop(driver, emit: Emit, profile: Dict[str, Any],
             "or contains(translate(normalize-space(.),"
             "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'continue'))]",
         ], timeout=1, root=root)
-        if not moved:
-            if find_submit_button(driver, root=root):
-                emit("easy_apply", "Reached Submit step", level="success")
-                return "awaiting_approval"
-            unfilled = _list_unfilled_labels(driver, root=root)
-            if unfilled:
-                emit("easy_apply",
-                     "Stuck — these fields appear unfilled: " + ", ".join(unfilled[:6]),
-                     level="error")
-            else:
-                emit("easy_apply", "Stuck — no Next/Review/Submit visible "
-                                   "and no obviously empty fields", level="error")
-            return "needs_human"
-        # Per-step soft timeout: not an exception, just a logged note.
-        if time.time() - step_started > EASY_APPLY_STEP_TIMEOUT_S:
+
+        if moved:
+            stuck_rounds = 0
+            time.sleep(1.2)
+            continue
+
+        # No Next/Review/Submit found. Try once more with a scroll, then bail.
+        stuck_rounds += 1
+        if stuck_rounds >= 2:
             emit("easy_apply",
-                 f"Step {step+1} took {int(time.time() - step_started)}s "
-                 f"(over {EASY_APPLY_STEP_TIMEOUT_S}s soft limit) — continuing.",
-                 level="warn")
-        time.sleep(1.2)
+                 "Stuck — no Next/Review/Submit visible after retry. "
+                 "A required field is probably missing.", level="warn")
+            return "needs_human"
+        emit("easy_apply", "No Next button visible — scrolling and retrying", level="warn")
+        _scroll_form(driver, root)
+        time.sleep(1)
 
     emit("easy_apply", "Exceeded max wizard steps", level="warn")
     return "needs_human"
-
-
-def _list_unfilled_labels(driver, root=None) -> List[str]:
-    """Best-effort: return labels of inputs that are visible, required, empty."""
-    scope = root if root is not None else driver
-    labels: List[str] = []
-    try:
-        inputs = scope.find_elements(
-            By.CSS_SELECTOR,
-            "input[required], select[required], textarea[required], "
-            "input[aria-required='true'], select[aria-required='true'], textarea[aria-required='true']",
-        )
-        for el in inputs[:20]:
-            try:
-                if not el.is_displayed():
-                    continue
-                val = (el.get_attribute("value") or "").strip()
-                if val:
-                    continue
-                label = (
-                    el.get_attribute("aria-label")
-                    or el.get_attribute("name")
-                    or el.get_attribute("id")
-                    or "(unnamed field)"
-                )
-                labels.append(label.strip()[:60])
-            except WebDriverException:
-                continue
-    except WebDriverException:
-        pass
-    return labels
-
 
 
 # ============================================================
@@ -253,7 +405,7 @@ def _list_unfilled_labels(driver, root=None) -> List[str]:
 # ============================================================
 
 def external_form_flow(driver, emit: Emit, profile: Dict[str, Any]) -> str:
-    """Generic Greenhouse / Lever / Ashby / Workday handler."""
+    """Generic Greenhouse / Lever / Ashby / Workday handler. Fully automatic."""
     time.sleep(1.5)
     click_first(driver, [
         "a.postings-btn[href*='apply']",         # Lever
@@ -268,80 +420,39 @@ def external_form_flow(driver, emit: Emit, profile: Dict[str, Any]) -> str:
     except WebDriverException:
         pass
 
-    maybe_upload_resume(driver, emit, profile)
-    n = fill_visible_fields(driver, emit, profile, job_context)
+    # Multiple passes: scroll, upload, fill, then try submit.
+    total = 0
+    for pass_idx in range(3):
+        try:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        except WebDriverException:
+            pass
+        time.sleep(0.5)
+        maybe_upload_resume(driver, emit, profile)
+        total += fill_visible_fields(driver, emit, profile, job_context)
+        total += fill_choice_controls(driver, emit, profile, job_context)
+        try:
+            driver.execute_script("window.scrollTo(0, 0);")
+        except WebDriverException:
+            pass
+        time.sleep(0.3)
+
     host = driver.current_url.split("/")[2] if "://" in driver.current_url else "site"
-    emit("external", f"Filled {n} field(s) on {host}",
-         level="success" if n else "warn")
-    return "awaiting_approval"
+    emit("external", f"Filled {total} field(s) on {host}",
+         level="success" if total else "warn")
 
+    btn = find_submit_button(driver)
+    if btn:
+        emit("submit", f"Clicking submit on {host}", level="success")
+        try:
+            btn.click()
+        except WebDriverException:
+            driver.execute_script("arguments[0].click();", btn)
+        time.sleep(3)
+        emit("submitted", "Application submitted", level="success")
+        return "submitted"
 
-# ============================================================
-#                  Naukri (B7)
-# ============================================================
-#
-# Naukri.com Apply UX differs fundamentally from LinkedIn:
-#   - "Apply" (in-app) sends the saved profile snapshot to the recruiter.
-#   - "Apply on company site" redirects to an external ATS.
-#   - "Chat-Apply" opens a chatbot with free-form questions.
-#
-# We try in-app Apply, detect redirect → external ATS handler, otherwise
-# fill any visible popup fields and surface awaiting_approval / needs_human
-# so the orchestrator can flip the app to ManualApplyPending (B9).
-
-def naukri_apply_flow(driver, emit: Emit, profile: Dict[str, Any]) -> str:
-    before_url = driver.current_url
-    before_handles = list(driver.window_handles)
-
-    clicked = click_first(driver, [
-        "button#apply-button",
-        "button.apply-button",
-        "button[id*='apply' i]",
-        "a[id*='apply' i]",
-        "button[class*='apply' i]",
-    ], timeout=6) or click_xpath(driver, [
-        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
-        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
-    ], timeout=2)
-
-    if not clicked:
-        emit("naukri", "No Apply button found on Naukri job page", level="warn")
-        return "needs_human"
-
-    time.sleep(2.5)
-    try:
-        if len(driver.window_handles) > len(before_handles):
-            driver.switch_to.window(driver.window_handles[-1])
-    except WebDriverException:
-        pass
-
-    cur = driver.current_url or ""
-    if "naukri.com" not in cur.lower() and cur != before_url:
-        emit("external", "Naukri redirected to external ATS",
-             level="success", url=cur)
-        return external_form_flow(driver, emit, profile)
-
-    body_text = ""
-    try:
-        body_text = driver.find_element(By.TAG_NAME, "body").text.lower()
-    except WebDriverException:
-        pass
-    if any(t in body_text for t in (
-        "successfully applied", "application submitted", "you have applied",
-    )):
-        emit("naukri", "In-app Apply succeeded", level="success")
-        return "awaiting_approval"
-
-    root = active_form_root(driver) or active_dialog(driver)
-    if root is not None:
-        n = fill_visible_fields(driver, emit, profile, "", root=root)
-        n += fill_choice_controls(driver, emit, profile, "", root=root)
-        emit("naukri", f"Filled {n} field(s) in Naukri popup — verify in Chrome",
-             level="success" if n else "warn")
-        return "awaiting_approval"
-
-    emit("naukri", "Apply clicked but Naukri response unclear — verify in Chrome",
-         level="warn")
+    emit("external", "Filled form but no Submit button visible", level="warn")
     return "needs_human"
 
 
@@ -368,19 +479,26 @@ def run_adapter(kind: str, driver, emit: Emit, profile: Dict[str, Any]) -> str:
             return "needs_human"
 
     if kind == "job_detail":
-        cur = (driver.current_url or "").lower()
-        if "naukri.com" in cur:
-            return naukri_apply_flow(driver, emit, profile)
-        if "linkedin.com" in cur:
+        if "linkedin.com" in driver.current_url:
             if linkedin_click_easy_apply(driver, emit):
                 return linkedin_easy_apply_loop(driver, emit, profile)
+            # Easy Apply didn't open. Switch to any new tab, and if we
+            # ended up off LinkedIn, treat it as an external ATS flow.
             try:
                 if len(driver.window_handles) > 1:
                     driver.switch_to.window(driver.window_handles[-1])
             except WebDriverException:
                 pass
             if "linkedin.com" not in driver.current_url:
+                emit("external_apply",
+                     f"Routing into external ATS at {driver.current_url}",
+                     level="info", url=driver.current_url)
                 return external_form_flow(driver, emit, profile)
+            emit("external_apply",
+                 "This job has no Easy Apply and no detectable external "
+                 "link. Finish the application in Chrome, then click "
+                 "Approve to mark it submitted or Reject to skip.",
+                 level="warn", url=driver.current_url)
             return "needs_human"
         return external_form_flow(driver, emit, profile)
 
