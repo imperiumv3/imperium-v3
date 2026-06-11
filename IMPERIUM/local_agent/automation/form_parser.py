@@ -295,7 +295,8 @@ def fill_visible_fields(driver, emit: Emit, profile: Dict[str, Any],
                     options = [o.text.strip() for o in el.find_elements(By.TAG_NAME, "option") if o.text]
                 except WebDriverException:
                     pass
-                ans = answer_question(label, profile, job_context, choices=options)
+                ans = rule_answer(label, profile, choices=options) \
+                    or answer_question(label, profile, job_context, choices=options)
                 if not ans:
                     continue
                 for o in el.find_elements(By.TAG_NAME, "option"):
@@ -310,6 +311,8 @@ def fill_visible_fields(driver, emit: Emit, profile: Dict[str, Any],
                 continue
 
             val = _direct_profile_value(label, profile, name_parts)
+            if not val:
+                val = rule_answer(label, profile)
             if not val:
                 val = answer_question(label, profile, job_context)
             if not val:
