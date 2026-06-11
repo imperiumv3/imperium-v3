@@ -112,7 +112,7 @@ export const enqueueApplicationJob = createServerFn({ method: "POST" })
       url: data.jobUrl,
     });
 
-    return { jobId, payload: JSON.parse(JSON.stringify(payload)) as Record<string, unknown> };
+    return { jobId, payload: jObj(payload) };
   });
 
 /* ---------- status / event mutations ---------- */
