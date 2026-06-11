@@ -85,9 +85,21 @@ def run_job(job_id: str) -> None:
     url = run["job_url"]
     profile = run.get("profile") or {}
 
-    models.update(job_id, status="running", progress=5, current_step="boot",
-                  current_action="Starting Chrome")
-    models.emit(job_id, "boot", "Launching local Chrome with Selenium")
+    # If another run is already driving Chrome, wait for it. Chrome cannot open
+    # the same user-data-dir twice — a second concurrent launch fails with
+    # "session not created: cannot connect to chrome ... chrome not reachable".
+    if not _CHROME_LOCK.acquire(blocking=False):
+        models.update(job_id, status="queued", current_step="waiting",
+                      current_action="Another application is running. Waiting for Chrome to free up.")
+        models.emit(job_id, "queued",
+                    "Another run is using Chrome. Waiting for it to finish before starting.",
+                    level="warn")
+        _CHROME_LOCK.acquire()  # block until free
+
+    try:
+        models.update(job_id, status="running", progress=5, current_step="boot",
+                      current_action="Starting Chrome")
+        models.emit(job_id, "boot", "Launching local Chrome with Selenium")
     models.emit(job_id, "brain",
                 f"Ollama brain {'AVAILABLE' if llm_available() else 'OFFLINE — using heuristics'}",
                 level="info" if llm_available() else "warn")
