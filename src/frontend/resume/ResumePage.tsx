@@ -119,6 +119,7 @@ export function ResumePage({ jobId }: ResumePageProps) {
               company: job.company,
               title: job.title,
               description: job.description,
+              url: (job as { url?: string }).url,
             });
           }
           setLoadingJob(false);
