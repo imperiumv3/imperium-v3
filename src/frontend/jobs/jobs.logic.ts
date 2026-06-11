@@ -98,6 +98,7 @@ export function useSelectJob() {
           company: job.company,
           title: job.title,
           description: job.description,
+          url: job.url,
         });
       }
       navigate({ to: "/resume", search: { jobId: res.jobId } as never }).catch(() => {
