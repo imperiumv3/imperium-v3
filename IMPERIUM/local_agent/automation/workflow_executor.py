@@ -301,13 +301,23 @@ def run_adapter(kind: str, driver, emit: Emit, profile: Dict[str, Any]) -> str:
         if "linkedin.com" in driver.current_url:
             if linkedin_click_easy_apply(driver, emit):
                 return linkedin_easy_apply_loop(driver, emit, profile)
+            # Easy Apply didn't open. Switch to any new tab, and if we
+            # ended up off LinkedIn, treat it as an external ATS flow.
             try:
                 if len(driver.window_handles) > 1:
                     driver.switch_to.window(driver.window_handles[-1])
             except WebDriverException:
                 pass
             if "linkedin.com" not in driver.current_url:
+                emit("external_apply",
+                     f"Routing into external ATS at {driver.current_url}",
+                     level="info", url=driver.current_url)
                 return external_form_flow(driver, emit, profile)
+            emit("external_apply",
+                 "This job has no Easy Apply and no detectable external "
+                 "link. Finish the application in Chrome, then click "
+                 "Approve to mark it submitted or Reject to skip.",
+                 level="warn", url=driver.current_url)
             return "needs_human"
         return external_form_flow(driver, emit, profile)
 
