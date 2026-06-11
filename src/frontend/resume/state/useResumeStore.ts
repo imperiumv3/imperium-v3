@@ -13,43 +13,9 @@ import {
   EMPTY_RESUME,
   uid,
 } from "@frontend/resume/schema";
+import { categorizeResumeSkills } from "@frontend/resume/utils/skillCategorizer";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-
-/* ── Skill categorisation (frontend-safe copy of backend buckets) ── */
-const SKILL_CATEGORIES: Array<{ label: string; match: RegExp }> = [
-  { label: "Languages", match: /^(python|javascript|typescript|java|c\+\+|c#|go|golang|rust|kotlin|swift|ruby|php|scala|r|dart)$/i },
-  { label: "Frontend", match: /(react|next\.?js|vue|angular|svelte|html5?|css3?|tailwind|redux|zustand|sass|scss)/i },
-  { label: "Backend", match: /(node\.?js|express|fastapi|django|flask|spring|nest|rails|laravel|graphql|grpc|rest|api)/i },
-  { label: "Databases", match: /(postgres|mysql|mongo|redis|sqlite|dynamodb|snowflake|bigquery|elasticsearch|sql)/i },
-  { label: "Cloud & DevOps", match: /(aws|gcp|azure|cloudflare|vercel|docker|kubernetes|k8s|terraform|jenkins|ci\/cd|github actions)/i },
-  { label: "AI & ML", match: /(pytorch|tensorflow|keras|scikit|pandas|numpy|langchain|llamaindex|huggingface|openai|gemini|rag|llm|embeddings|ai agent|machine learning)/i },
-  { label: "Tools", match: /(git|github|jira|figma|postman|linux|bash|vs ?code|notion|confluence)/i },
-  { label: "Core Concepts", match: /(data structures|algorithms|oop|system design|problem solving)/i },
-  { label: "Soft Skills", match: /^(communication|team collaboration|adaptability|ownership|time management|leadership|critical thinking)$/i },
-];
-
-function categorizeResumeSkills(skills: string[]): { category: string; items: string[] }[] {
-  const buckets = new Map<string, string[]>();
-  const other: string[] = [];
-  for (const s of skills) {
-    const v = (s ?? "").trim();
-    if (!v) continue;
-    const rule = SKILL_CATEGORIES.find((r) => r.match.test(v));
-    if (rule) {
-      const list = buckets.get(rule.label) ?? [];
-      if (!list.some((x) => x.toLowerCase() === v.toLowerCase())) list.push(v);
-      buckets.set(rule.label, list);
-    } else {
-      if (!other.some((x) => x.toLowerCase() === v.toLowerCase())) other.push(v);
-    }
-  }
-  const ordered = SKILL_CATEGORIES.map((r) => r.label)
-    .filter((l) => (buckets.get(l)?.length ?? 0) > 0)
-    .map((l) => ({ category: l, items: buckets.get(l)! }));
-  if (other.length) ordered.push({ category: "Other", items: other });
-  return ordered;
-}
 
 function seedFromProfile(p: Pick<
   ImperiumProfile,
