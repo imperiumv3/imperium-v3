@@ -86,7 +86,7 @@ export const aiGenerateSummary = createServerFn({ method: "POST" })
   .inputValidator((data: { resume: ResumeContext; jd?: string }) => data)
   .handler(async ({ data }) => {
     const sys =
-      'You write concise, ATS-friendly resume summaries. Output ONLY a JSON object {"summary": string}. Two to three sentences, max 60 words, no fluff, no first person.';
+      'You write ATS-grade resume summaries. Output ONLY a JSON object {"summary": string}. Exactly 3 sentences (60-90 words): (1) role + years/level + 3-5 core technologies, (2) concrete delivery proof drawn from the provided projects/experience (never invent metrics), (3) target alignment statement. Third person, no fluff, no "I", no "passionate", no "results-driven". Use ATS keywords from skills + JD verbatim.';
     const user = JSON.stringify({
       role: data.resume.title || "Candidate",
       skills: data.resume.skills.slice(0, 12),
