@@ -108,16 +108,17 @@ def _profile_years(profile: Dict[str, Any], skill: str = "") -> int:
 
 def _years_question(q: str) -> Optional[str]:
     """Extract the technology/skill the question is asking 'years of' about.
-    Takes the LAST in/with/using/of anchor to skip filler words like
-    'experience' and 'do you have'."""
-    matches = list(re.finditer(r"\b(?:in|with|using|of)\s+([A-Za-z0-9+./#-][A-Za-z0-9+./# -]{0,38}[A-Za-z0-9+./#])\b", q, re.I))
-    if not matches:
-        return None
-    raw = matches[-1].group(1).strip(" ?.,")
-    # Drop obvious filler words if they slipped in.
-    filler = {"experience", "experiences", "years", "year", "do", "you", "have", "the", "a", "an"}
-    parts = [p for p in raw.split() if p.lower() not in filler]
-    return " ".join(parts) if parts else None
+    Captures a SHORT token (1-3 words, no filler) after in/with/using."""
+    # Single-token anchor first (catches "with AWS", "using React").
+    matches = list(re.finditer(
+        r"\b(?:in|with|using)\s+([A-Za-z0-9+./#][A-Za-z0-9+./#-]{0,30})\b", q, re.I))
+    if matches:
+        return matches[-1].group(1).strip(" ?.,")
+    # Two-word skills like "machine learning", "data science" after the same anchors.
+    m = re.search(r"\b(?:in|with|using)\s+([A-Za-z][A-Za-z+]{2,20}\s+[A-Za-z][A-Za-z+]{2,20})\b", q, re.I)
+    if m:
+        return m.group(1).strip(" ?.,")
+    return None
 
 
 def _is_numeric_field(q: str) -> bool:
