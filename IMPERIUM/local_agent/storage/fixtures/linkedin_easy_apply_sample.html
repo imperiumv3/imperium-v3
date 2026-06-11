@@ -1,0 +1,79 @@
+<!--
+  Synthetic LinkedIn Easy Apply fixture used by /test.
+  Mirrors the field shapes the real modal emits: text inputs with
+  aria-labels, radio fieldsets for yes/no questions, a select for years
+  of experience, and a couple of EEO controls.
+-->
+<div role="dialog" class="jobs-easy-apply-modal">
+  <h2>Apply to Senior Python Engineer</h2>
+
+  <label for="f-name">Full name</label>
+  <input id="f-name" type="text" />
+
+  <label for="f-email">Email address</label>
+  <input id="f-email" type="email" />
+
+  <label for="f-phone">Mobile phone number</label>
+  <input id="f-phone" type="tel" />
+
+  <fieldset>
+    <legend>Are you legally authorized to work in the United States?</legend>
+    <label><input type="radio" name="q-auth" value="yes" /> Yes</label>
+    <label><input type="radio" name="q-auth" value="no" /> No</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Will you now or in the future require sponsorship for employment visa status?</legend>
+    <label><input type="radio" name="q-sponsor" value="yes" /> Yes</label>
+    <label><input type="radio" name="q-sponsor" value="no" /> No</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Are you willing to relocate?</legend>
+    <label><input type="radio" name="q-reloc" value="yes" /> Yes</label>
+    <label><input type="radio" name="q-reloc" value="no" /> No</label>
+  </fieldset>
+
+  <label for="f-yoe-py">How many years of experience do you have with Python?</label>
+  <select id="f-yoe-py">
+    <option value="">Select an option</option>
+    <option>0</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>5</option>
+    <option>7</option>
+    <option>10+</option>
+  </select>
+
+  <label for="f-yoe-aws">How many years of experience do you have using AWS?</label>
+  <input id="f-yoe-aws" type="number" />
+
+  <label for="f-notice">Notice period (in days)</label>
+  <input id="f-notice" type="number" />
+
+  <label for="f-salary">Expected salary (USD)</label>
+  <input id="f-salary" type="text" />
+
+  <fieldset>
+    <legend>Gender</legend>
+    <label><input type="radio" name="q-gender" value="m" /> Male</label>
+    <label><input type="radio" name="q-gender" value="f" /> Female</label>
+    <label><input type="radio" name="q-gender" value="x" /> Decline to answer</label>
+  </fieldset>
+
+  <label for="f-edu">Highest level of education</label>
+  <select id="f-edu">
+    <option>High School</option>
+    <option>Bachelor's Degree</option>
+    <option>Master's Degree</option>
+    <option>PhD</option>
+  </select>
+
+  <label>
+    <input type="checkbox" name="agree" />
+    I certify that the information provided is accurate.
+  </label>
+
+  <button type="submit">Submit application</button>
+</div>
