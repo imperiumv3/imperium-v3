@@ -180,21 +180,65 @@ def run_fixture(html: str, profile: Dict[str, Any]) -> Dict[str, Any]:
 
     fields = _group_radios(parser.fields)
 
+    # Mirror form_parser's profile-map and "agree/certify" checkbox heuristic
+    # so the coverage report reflects what the live driver would actually do.
+    parts = (profile.get("name") or "").split(" ", 1)
+    name_parts = {"first": parts[0] if parts else "",
+                  "last":  parts[1] if len(parts) > 1 else ""}
+
+    def _profile_map(label: str) -> Optional[str]:
+        low = (label or "").lower()
+        table = [
+            (("first name", "given name"),               name_parts["first"]),
+            (("last name", "surname", "family name"),    name_parts["last"]),
+            (("full name", "your name", "legal name", "name"), profile.get("name")),
+            (("email", "e-mail"),                        profile.get("email")),
+            (("phone", "mobile", "telephone"),           profile.get("phone")),
+            (("address", "city", "location"),            profile.get("location")),
+            (("linkedin",),                              profile.get("linkedin_url") or profile.get("linkedin")),
+            (("github",),                                profile.get("github_url") or profile.get("github")),
+            (("portfolio", "website"),                   profile.get("portfolio_url") or profile.get("portfolio")),
+        ]
+        for needles, value in table:
+            if value and any(n in low for n in needles):
+                return str(value)
+        return None
+
+    AGREE_WORDS = ("agree", "confirm", "certify", "consent", "acknowledge")
+
     results: List[Dict[str, Any]] = []
-    rule_hits = 0
+    rule_hits = profile_hits = 0
     answered = 0
     for f in fields:
         label = f.get("label") or f.get("name") or ""
+        ftype = f.get("type")
         choices: Optional[List[str]] = f.get("choices") or None
-        ans = rule_answer(label, profile, choices=choices)
-        source = "rule" if ans is not None else "llm-or-human"
+
+        ans: Optional[str] = None
+        source = "llm-or-human"
+
+        if ftype == "checkbox" and any(w in label.lower() for w in AGREE_WORDS):
+            ans = "checked"
+            source = "agree-heuristic"
+        else:
+            pm = _profile_map(label)
+            if pm:
+                ans = pm
+                source = "profile-map"
+                profile_hits += 1
+            else:
+                ra = rule_answer(label, profile, choices=choices)
+                if ra is not None:
+                    ans = ra
+                    source = "rule"
+                    rule_hits += 1
+
         if ans is not None:
-            rule_hits += 1
             answered += 1
         results.append({
             "label": label[:160],
             "kind": f.get("tag"),
-            "type": f.get("type"),
+            "type": ftype,
             "choices": choices or [],
             "answer": ans,
             "source": source,
@@ -208,7 +252,8 @@ def run_fixture(html: str, profile: Dict[str, Any]) -> Dict[str, Any]:
             "answered": answered,
             "unanswered": total - answered,
             "rule_hits": rule_hits,
-            "llm_needed": total - rule_hits,
-            "coverage_pct": round((rule_hits / total) * 100, 1) if total else 0.0,
+            "profile_hits": profile_hits,
+            "llm_needed": total - answered,
+            "coverage_pct": round((answered / total) * 100, 1) if total else 0.0,
         },
     }
