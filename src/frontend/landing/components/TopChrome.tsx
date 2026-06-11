@@ -54,6 +54,18 @@ export default function TopChrome({ progressRef, cta }: Props) {
         >
           Home
         </Link>
+        <Link
+          to="/dashboard"
+          className="rounded-full px-4 py-2 text-[13px] font-medium text-white/85 hover:bg-white/10 md:px-5"
+        >
+          Dashboard
+        </Link>
+        <Link
+          to="/profile"
+          className="rounded-full px-4 py-2 text-[13px] font-medium text-white/85 hover:bg-white/10 md:px-5"
+        >
+          Profile
+        </Link>
       </nav>
 
       {/* TR: progress */}
