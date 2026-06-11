@@ -16,21 +16,60 @@ interface ResumeContext {
   projectSnippets: string[];
 }
 
-function fallbackSummary(resume: ResumeContext, jd?: string): string {
-  const skills = resume.skills.slice(0, 5).filter(Boolean);
-  const roleHint = jd?.match(
-    /(?:engineer|developer|analyst|manager|designer|architect|consultant|specialist)[^.,\n]*/i,
-  )?.[0];
-  const role = roleHint || resume.title || "professional";
-  const proof =
-    resume.experienceSnippets[0] ||
-    resume.projectSnippets[0] ||
-    "delivering practical, measurable work across complex projects";
-  const skillText = skills.length
-    ? ` with strengths in ${skills.join(", ")}`
-    : " with a strong execution focus";
-  return `${resume.name || "Candidate"} is a ${role}${skillText}. Brings hands-on experience ${proof.replace(/[.]+$/, "")}, with a resume tailored to the target role and its core requirements.`;
+function detectRole(jd?: string, fallback?: string): string {
+  if (jd) {
+    const m = jd.match(/\b(senior |lead |principal |staff )?(full[- ]stack|backend|front[- ]end|frontend|software|data|ml|ai|cloud|devops|platform|mobile|security|qa)\s+(engineer|developer|scientist|analyst|architect)\b/i);
+    if (m) return m[0].replace(/\s+/g, " ").trim().replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return (fallback || "Software Engineer").trim();
 }
+
+function bucketSkills(skills: string[]): string[] {
+  const lang: string[] = [];
+  const frame: string[] = [];
+  const cloud: string[] = [];
+  const other: string[] = [];
+  for (const s of skills) {
+    if (/^(python|javascript|typescript|java|c\+\+|c#|go|rust|kotlin|swift|ruby|php|scala)$/i.test(s)) lang.push(s);
+    else if (/(react|next|vue|angular|svelte|node|express|fastapi|django|flask|spring|nest|rails)/i.test(s)) frame.push(s);
+    else if (/(aws|gcp|azure|docker|kubernetes|terraform|cloudflare|vercel)/i.test(s)) cloud.push(s);
+    else other.push(s);
+  }
+  const ordered = [...lang.slice(0, 4), ...frame.slice(0, 3), ...cloud.slice(0, 2), ...other.slice(0, 2)];
+  // De-dupe while preserving order
+  const seen = new Set<string>();
+  return ordered.filter((s) => {
+    const k = s.toLowerCase();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  }).slice(0, 8);
+}
+
+function fallbackSummary(resume: ResumeContext, jd?: string): string {
+  const role = detectRole(jd, resume.title);
+  const topSkills = bucketSkills(resume.skills);
+  const techPhrase = topSkills.length ? topSkills.join(", ") : "modern web and backend technologies";
+
+  const projectProof = resume.projectSnippets[0]?.replace(/[.]+$/, "");
+  const expProof = resume.experienceSnippets[0]?.replace(/[.]+$/, "");
+
+  const sentences: string[] = [];
+  sentences.push(`${role} with hands-on experience designing, building, and shipping production-grade software using ${techPhrase}.`);
+
+  if (projectProof) {
+    sentences.push(`Delivered project work including ${projectProof.slice(0, 140)}, focused on measurable user impact and clean engineering.`);
+  } else if (expProof) {
+    sentences.push(`Professional track record of ${expProof.slice(0, 140)}, with emphasis on reliability and maintainability.`);
+  } else {
+    sentences.push(`Strong foundations in data structures, algorithms, and system design, validated through end-to-end project execution.`);
+  }
+
+  sentences.push(`Seeking ${role.toLowerCase()} roles where I can contribute scalable, well-tested solutions aligned to product and business goals.`);
+
+  return sentences.join(" ");
+}
+
 
 function safeParse<T>(text: string, fallback: T): T {
   try {
