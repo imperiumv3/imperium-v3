@@ -32,6 +32,7 @@ from typing import Any, Dict, Optional
 from selenium.common.exceptions import TimeoutException, WebDriverException
 
 from shared import models
+from shared.artifacts import capture as capture_artifact
 from shared.llm_brain import classify_page, llm_available
 from automation.selenium_driver import build_driver, SELENIUM_OK
 from automation.form_parser import page_snapshot, find_submit_button
