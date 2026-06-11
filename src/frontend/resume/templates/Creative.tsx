@@ -1,10 +1,10 @@
 /** Creative — colored header band, two-column grid for skills/contact. */
 import type { TemplateProps } from "./_shared";
-import { fmtRange, pageStyle } from "./_shared";
+import { fmtRange, pageStyle, formatLanguages, formatInterests } from "./_shared";
 import { themeVars } from "./themes";
 
 export function CreativeTemplate({ resume, theme }: TemplateProps) {
-  const { personal, summary, skills, experience, projects, education, certifications, meta } = resume;
+  const { personal, summary, skills, experience, projects, education, certifications, languages, interests, meta } = resume;
   return (
     <div
       className="resume-page resume-creative"
@@ -91,6 +91,14 @@ export function CreativeTemplate({ resume, theme }: TemplateProps) {
                 <div key={c.id} className="r-block">{c.name}{c.issuer && ` — ${c.issuer}`}{c.date && ` (${c.date})`}</div>
               ))}
             </Section>
+
+      {languages && languages.length > 0 && (
+        <Section title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></Section>
+      )}
+
+      {interests && interests.length > 0 && (
+        <Section title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></Section>
+      )}
           )}
         </div>
       </div>
