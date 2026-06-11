@@ -57,7 +57,9 @@ class _FormParser(HTMLParser):
         return {k.lower(): (v or "") for k, v in attrs}
 
     def _label_for(self, attrs: Dict[str, str]) -> str:
-        for key in ("aria-label", "placeholder", "name", "id", "data-test"):
+        # Real <label> text takes priority — return only aria-label /
+        # placeholder here. id/name are filled later as a last resort.
+        for key in ("aria-label", "placeholder"):
             v = attrs.get(key)
             if v:
                 return v
