@@ -196,19 +196,7 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
     before_url = driver.current_url
     before_handles = list(driver.window_handles)
 
-    clicked = click_first(driver, [
-        "button.jobs-apply-button",
-        "button[aria-label*='Easy Apply' i]",
-        "button[aria-label*='Apply' i]",
-        "button[data-control-name='jobdetails_topcard_inapply']",
-        "a.jobs-apply-button",
-        "a[aria-label*='Apply' i]",
-    ], timeout=6) or click_xpath(driver, [
-        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
-        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
-        ".//a[contains(translate(normalize-space(.),"
-        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
-    ], timeout=3)
+    clicked = _click_best_linkedin_apply(driver)
 
     if clicked:
         time.sleep(2.5)
@@ -223,6 +211,17 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
         if active_dialog(driver):
             emit("easy_apply", "Opened Easy Apply modal", level="success")
             return True
+        external = _linkedin_find_external_apply_link(driver)
+        if external:
+            emit("external_apply",
+                 f"Apply click exposed external apply link, navigating to {external}",
+                 level="success", url=external)
+            try:
+                driver.get(external)
+            except WebDriverException:
+                pass
+            time.sleep(2)
+            return False
         if "linkedin.com" not in driver.current_url or driver.current_url != before_url:
             emit("external_apply", "Opened external application page",
                  level="success", url=driver.current_url)
