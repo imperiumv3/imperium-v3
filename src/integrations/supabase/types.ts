@@ -14,6 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
+      application_job_events: {
+        Row: {
+          id: string
+          job_id: string
+          level: string
+          message: string
+          screenshot_url: string
+          step: string
+          ts: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          job_id: string
+          level?: string
+          message?: string
+          screenshot_url?: string
+          step?: string
+          ts?: string
+          url?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          job_id?: string
+          level?: string
+          message?: string
+          screenshot_url?: string
+          step?: string
+          ts?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_job_events_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "application_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      application_jobs: {
+        Row: {
+          agent_run_id: string
+          application_id: string
+          attempts: number
+          created_at: string
+          current_step: string
+          error: Json | null
+          finished_at: string | null
+          id: string
+          job_source: string
+          job_url: string
+          payload: Json
+          pending_question: Json | null
+          resume_pdf_path: string
+          resume_version: string
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_run_id?: string
+          application_id: string
+          attempts?: number
+          created_at?: string
+          current_step?: string
+          error?: Json | null
+          finished_at?: string | null
+          id?: string
+          job_source?: string
+          job_url?: string
+          payload?: Json
+          pending_question?: Json | null
+          resume_pdf_path?: string
+          resume_version?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_run_id?: string
+          application_id?: string
+          attempts?: number
+          created_at?: string
+          current_step?: string
+          error?: Json | null
+          finished_at?: string | null
+          id?: string
+          job_source?: string
+          job_url?: string
+          payload?: Json
+          pending_question?: Json | null
+          resume_pdf_path?: string
+          resume_version?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           achievements: Json
