@@ -80,6 +80,7 @@ interface SelectedJob {
   company: string;
   title: string;
   description: string;
+  url?: string;
 }
 
 export interface VersionScores {

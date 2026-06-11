@@ -220,7 +220,54 @@ export function ActionBar({
       }
       setApplied(true);
       toast.success(`Added to tracker: ${selectedJob.title} @ ${selectedJob.company}`);
-      setTimeout(() => navigate({ to: "/applications" }), 600);
+
+      // Fire-and-forget: dispatch to local agent if available.
+      const jobUrl = selectedJob.url?.trim();
+      if (!jobUrl) {
+        toast.message("No job URL available — local agent skipped");
+      } else {
+        void (async () => {
+          try {
+            const { localAgentHealth, localAgentDispatch } = await import(
+              "@backend/automation/SeleniumBrowserBridge"
+            );
+            const health = await localAgentHealth().catch(() => null);
+            if (!health?.ok) {
+              toast.message("Local agent offline — start it on 127.0.0.1:8000 to auto-apply");
+              return;
+            }
+            const profile = {
+              name: resume.personal.name,
+              email: resume.personal.email,
+              phone: resume.personal.phone,
+              location: resume.personal.location,
+              links: resume.personal.links,
+              summary: resume.summary,
+              skills: resume.skills.flatMap((g) => g.items),
+            };
+            const res = await localAgentDispatch({
+              job_url: jobUrl,
+              profile,
+              job: {
+                title: selectedJob.title,
+                company: selectedJob.company,
+                description: selectedJob.description,
+              },
+              application_id: app.id,
+            });
+            toast.success(`Local agent started (run ${res.job_id.slice(0, 8)}…)`);
+          } catch (err) {
+            console.error("[ActionBar] local agent dispatch failed:", err);
+            toast.error(
+              err instanceof Error
+                ? `Local agent error: ${err.message}`
+                : "Local agent dispatch failed",
+            );
+          }
+        })();
+      }
+
+      setTimeout(() => navigate({ to: "/applications" }), 800);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to submit application";
       toast.error(msg);
