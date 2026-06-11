@@ -116,7 +116,7 @@
   .dash-grid { grid-template-columns: 1fr; }
 }
 
-.dash-col { display: flex; flex-direction: column; gap: clamp(14px, 1.4vw, 20px); }
+.dash-col { display: flex; flex-direction: column; gap: clamp(10px, 1vw, 14px); }
 
 /* Cards */
 .dash-card {
