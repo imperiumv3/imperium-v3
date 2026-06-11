@@ -32,6 +32,7 @@ from typing import Any, Dict, Optional
 from selenium.common.exceptions import TimeoutException, WebDriverException
 
 from shared import models
+from shared.artifacts import capture as capture_artifact
 from shared.llm_brain import classify_page, llm_available
 from automation.selenium_driver import build_driver, SELENIUM_OK
 from automation.form_parser import page_snapshot, find_submit_button
@@ -135,11 +136,17 @@ def run_job(job_id: str) -> None:
             time.sleep(1.5)
 
         if outcome == "submitted":
+            capture_artifact(driver, job_id, "already_submitted")
             models.update(job_id, status="submitted", progress=100,
                           current_step="submitted", current_action="Already submitted")
             return
 
         if outcome == "needs_human":
+            info = capture_artifact(driver, job_id, "needs_human")
+            if info:
+                models.emit(job_id, "artifact",
+                            f"Saved debug snapshot {info.get('png') or info.get('html')}",
+                            level="info", url=info.get("url", ""))
             models.update(job_id, status="awaiting_approval", progress=70,
                           current_step="needs_human",
                           current_action="Agent is stuck. Take over in the Chrome window, "
@@ -148,6 +155,7 @@ def run_job(job_id: str) -> None:
                         "Agent paused — finish manually in Chrome, then Approve/Reject.",
                         level="warn")
         else:
+            capture_artifact(driver, job_id, "awaiting_approval")
             models.update(job_id, status="awaiting_approval", progress=85,
                           current_step="approval",
                           current_action="Form filled. Waiting for human approval.")
@@ -171,10 +179,12 @@ def run_job(job_id: str) -> None:
                 except WebDriverException:
                     driver.execute_script("arguments[0].click();", submit)
                 time.sleep(3)
+                capture_artifact(driver, job_id, "submitted")
                 models.update(job_id, status="submitted", progress=100,
                               current_step="submitted", current_action="Application submitted")
                 models.emit(job_id, "submitted", "Application submitted", level="success")
             else:
+                capture_artifact(driver, job_id, "no_submit_button")
                 models.update(job_id, status="failed", error="No submit button found")
                 models.emit(job_id, "submit",
                             "Could not find a submit button. The form may need you to click "
@@ -186,13 +196,18 @@ def run_job(job_id: str) -> None:
         elif decision == "cancel":
             models.emit(job_id, "cancel", "Cancelled", level="warn")
         else:
+            capture_artifact(driver, job_id, "approval_timeout")
             models.update(job_id, status="failed", error="Approval timeout")
             models.emit(job_id, "timeout", "Timed out waiting for approval", level="error")
 
     except TimeoutException as exc:
+        try: capture_artifact(driver, job_id, "timeout_error")
+        except Exception: pass
         models.update(job_id, status="failed", error=f"Timeout: {exc.msg}")
         models.emit(job_id, "error", f"Page timed out: {exc.msg}", level="error")
     except Exception as exc:  # noqa: BLE001
+        try: capture_artifact(driver, job_id, "unhandled_error")
+        except Exception: pass
         models.update(job_id, status="failed", error=str(exc))
         models.emit(job_id, "error", f"Unhandled error: {exc}", level="error")
         traceback.print_exc()

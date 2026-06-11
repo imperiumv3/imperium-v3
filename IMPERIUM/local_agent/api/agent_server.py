@@ -40,6 +40,7 @@ except Exception:  # noqa: BLE001
     pass
 
 from shared import models
+from shared.artifacts import list_artifacts, artifact_path
 from automation.selenium_driver import SELENIUM_OK, HEADLESS
 from agents.automation_agent import run_job
 
@@ -121,7 +122,30 @@ class Handler(BaseHTTPRequestHandler):
                 "events": run["events"],
                 "status": run["status"],
                 "progress": run["progress"],
+                "artifacts": list_artifacts(job_id),
             })
+
+        if path.startswith("/artifacts/"):
+            # /artifacts/{job_id}            -> list
+            # /artifacts/{job_id}/{filename} -> raw file
+            rest = path[len("/artifacts/"):].split("/", 1)
+            job_id = rest[0]
+            if len(rest) == 1:
+                return self._send_json(200, {"artifacts": list_artifacts(job_id)})
+            fp = artifact_path(job_id, rest[1])
+            if not fp:
+                return self._send_json(404, {"error": "artifact not found"})
+            ext = fp.suffix.lower()
+            mime = {".png": "image/png", ".html": "text/html; charset=utf-8",
+                    ".json": "application/json"}.get(ext, "application/octet-stream")
+            data = fp.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", mime)
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(data)
+            return
 
         self._send_json(404, {"error": "not found"})
 

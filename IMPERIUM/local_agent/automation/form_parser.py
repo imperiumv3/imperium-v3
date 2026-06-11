@@ -39,6 +39,7 @@ from selenium.common.exceptions import (
 )
 
 from shared.llm_brain import answer_question
+from shared.question_bank import answer as rule_answer
 
 Emit = Callable[..., None]
 
@@ -294,7 +295,8 @@ def fill_visible_fields(driver, emit: Emit, profile: Dict[str, Any],
                     options = [o.text.strip() for o in el.find_elements(By.TAG_NAME, "option") if o.text]
                 except WebDriverException:
                     pass
-                ans = answer_question(label, profile, job_context, choices=options)
+                ans = rule_answer(label, profile, choices=options) \
+                    or answer_question(label, profile, job_context, choices=options)
                 if not ans:
                     continue
                 for o in el.find_elements(By.TAG_NAME, "option"):
@@ -309,6 +311,8 @@ def fill_visible_fields(driver, emit: Emit, profile: Dict[str, Any],
                 continue
 
             val = _direct_profile_value(label, profile, name_parts)
+            if not val:
+                val = rule_answer(label, profile)
             if not val:
                 val = answer_question(label, profile, job_context)
             if not val:
@@ -380,8 +384,9 @@ def fill_choice_controls(driver, emit: Emit, profile: Dict[str, Any],
                 except WebDriverException:
                     pass
                 choices.append(txt or (r.get_attribute("value") or ""))
-            answer = answer_question(question, profile, job_context,
-                                     choices=[c for c in choices if c])
+            answer = rule_answer(question, profile, choices=[c for c in choices if c]) \
+                or answer_question(question, profile, job_context,
+                                   choices=[c for c in choices if c])
             target = None
             if answer:
                 for r, choice in zip(group, choices):
