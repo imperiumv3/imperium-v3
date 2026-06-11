@@ -225,7 +225,7 @@ export const listApplicationJobEvents = createServerFn({ method: "POST" })
       .order("ts", { ascending: true })
       .limit(data.limit);
     if (error) throw new Error(error.message);
-    return (rows ?? []) as Array<Record<string, unknown>>;
+    return ((rows ?? []) as unknown[]).map((r) => jObj(r));
   });
 
 /* ---------- retry ---------- */
