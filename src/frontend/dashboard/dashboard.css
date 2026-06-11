@@ -23,7 +23,7 @@
     var(--dash-bg);
   color: var(--dash-text);
   font-family: "Inter", system-ui, sans-serif;
-  padding: clamp(16px, 2vw, 32px);
+  padding: clamp(12px, 1.4vw, 22px);
 }
 
 /* Top bar */
