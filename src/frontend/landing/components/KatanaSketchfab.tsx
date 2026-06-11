@@ -281,6 +281,18 @@ export default function KatanaSketchfab({ progressRef }: Props) {
         }}
       />
 
+      {/* Static katana fallback — visible until the 3D model is ready
+          (and remains as a graceful fallback if Sketchfab never loads). */}
+      {!ready && (
+        <div className="absolute inset-0 grid place-items-center">
+          <img
+            src={new URL("../assets/katana_horizontal.png", import.meta.url).href}
+            alt=""
+            className="w-[85%] max-w-[1100px] -rotate-12 opacity-80 drop-shadow-[0_20px_60px_rgba(255,180,120,0.25)]"
+          />
+        </div>
+      )}
+
       <iframe
         ref={iframeRef}
         title="REAL Katana"
@@ -294,7 +306,8 @@ export default function KatanaSketchfab({ progressRef }: Props) {
           top: "-10%",
           width: "130%",
           height: "120%",
-          opacity: ready ? 1 : 0.85,
+          opacity: ready ? 1 : 0,
+          pointerEvents: ready ? "auto" : "none",
           transition: "opacity 600ms ease-out",
         }}
       />
