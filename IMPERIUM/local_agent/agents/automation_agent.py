@@ -96,10 +96,9 @@ def run_job(job_id: str) -> None:
                     level="warn")
         _CHROME_LOCK.acquire()  # block until free
 
-    try:
-        models.update(job_id, status="running", progress=5, current_step="boot",
-                      current_action="Starting Chrome")
-        models.emit(job_id, "boot", "Launching local Chrome with Selenium")
+    models.update(job_id, status="running", progress=5, current_step="boot",
+                  current_action="Starting Chrome")
+    models.emit(job_id, "boot", "Launching local Chrome with Selenium")
     models.emit(job_id, "brain",
                 f"Ollama brain {'AVAILABLE' if llm_available() else 'OFFLINE — using heuristics'}",
                 level="info" if llm_available() else "warn")
