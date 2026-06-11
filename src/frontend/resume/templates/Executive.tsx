@@ -60,7 +60,7 @@ export function ExecutiveTemplate({ resume, theme }: TemplateProps) {
         <Section title="Core Competencies">
           {skills.map((g) => (
             <div key={g.category} className="r-block">
-              {skills.length > 1 && <strong>{g.category}: </strong>}
+              {g.category && g.category !== "Skills" && <strong>{g.category}: </strong>}
               {g.items.join("  ·  ")}
             </div>
           ))}

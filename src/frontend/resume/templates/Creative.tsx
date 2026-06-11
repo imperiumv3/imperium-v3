@@ -55,7 +55,7 @@ export function CreativeTemplate({ resume, theme }: TemplateProps) {
             <Section title="Skills">
               {skills.map((g) => (
                 <div key={g.category} className="r-block" style={{ marginBottom: 6 }}>
-                  {skills.length > 1 && <div style={{ fontWeight: 600, color: "var(--rt-accent-dark)", fontSize: 11 }}>{g.category}</div>}
+                  {g.category && g.category !== "Skills" && <div style={{ fontWeight: 600, color: "var(--rt-accent-dark)", fontSize: 11 }}>{g.category}</div>}
                   <div>{g.items.join(" · ")}</div>
                 </div>
               ))}

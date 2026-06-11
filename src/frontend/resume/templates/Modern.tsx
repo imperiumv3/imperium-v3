@@ -36,7 +36,7 @@ export function ModernTemplate({ resume, theme }: TemplateProps) {
           <SideBlock title="Skills">
             {skills.map((g) => (
               <div key={g.category} className="r-block" style={{ marginBottom: 8 }}>
-                {skills.length > 1 && <div style={{ fontWeight: 600, fontSize: 10.5, opacity: 0.9, marginBottom: 2 }}>{g.category}</div>}
+                {g.category && g.category !== "Skills" && <div style={{ fontWeight: 600, fontSize: 10.5, opacity: 0.9, marginBottom: 2 }}>{g.category}</div>}
                 <div style={{ fontSize: 11 }}>{g.items.join(", ")}</div>
               </div>
             ))}
