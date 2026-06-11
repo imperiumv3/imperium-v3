@@ -384,8 +384,9 @@ def fill_choice_controls(driver, emit: Emit, profile: Dict[str, Any],
                 except WebDriverException:
                     pass
                 choices.append(txt or (r.get_attribute("value") or ""))
-            answer = answer_question(question, profile, job_context,
-                                     choices=[c for c in choices if c])
+            answer = rule_answer(question, profile, choices=[c for c in choices if c]) \
+                or answer_question(question, profile, job_context,
+                                   choices=[c for c in choices if c])
             target = None
             if answer:
                 for r, choice in zip(group, choices):
