@@ -1,9 +1,10 @@
 /**
- * PDF Export — opens the rendered template in a print window and triggers
- * the browser's native "Save as PDF". This is dramatically more reliable
- * than html2canvas, which crashes on web fonts, external images, and
- * complex CSS. The user gets a true vector PDF with selectable text.
+ * PDF Export — renders the resume node to a canvas via html2canvas and
+ * stitches it into a paginated PDF with jsPDF. The browser downloads the
+ * .pdf file directly — no print dialog, no print preview.
  */
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import type { ResumeJSON } from "@frontend/resume/schema";
 
 export interface PrintValidation {
@@ -36,22 +37,6 @@ export function validatePrintLayout(node: HTMLElement, resume: ResumeJSON): Prin
   return { warnings, estimatedPages, overflow };
 }
 
-function collectDocumentStyles(): string {
-  const parts: string[] = [];
-  for (const sheet of Array.from(document.styleSheets)) {
-    try {
-      const rules = sheet.cssRules;
-      if (!rules) continue;
-      for (const rule of Array.from(rules)) parts.push(rule.cssText);
-    } catch {
-      // Cross-origin sheet — fall back to <link> tag
-      const href = (sheet as CSSStyleSheet).href;
-      if (href) parts.push(`@import url("${href}");`);
-    }
-  }
-  return parts.join("\n");
-}
-
 export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): Promise<void> {
   if (!node) throw new Error("Preview not ready — please wait a moment and try again.");
 
@@ -59,77 +44,46 @@ export async function exportResumeToPdf(node: HTMLElement, resume: ResumeJSON): 
     .toLowerCase()
     .replace(/\s+/g, "-");
 
-  const paper = resume.meta.paper === "A4" ? "A4" : "letter";
-  const styles = collectDocumentStyles();
-  const html = node.outerHTML;
-
-  const iframe = document.createElement("iframe");
-  iframe.setAttribute("title", "Resume PDF export");
-  iframe.style.position = "fixed";
-  iframe.style.right = "0";
-  iframe.style.bottom = "0";
-  iframe.style.width = "0";
-  iframe.style.height = "0";
-  iframe.style.border = "0";
-  iframe.style.opacity = "0";
-  document.body.appendChild(iframe);
-
-  const win = iframe.contentWindow;
-  const doc = iframe.contentDocument ?? win?.document;
-  if (!win || !doc) {
-    iframe.remove();
-    throw new Error("PDF export could not start — please try again.");
-  }
-
-  doc.write(`<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>${filename}</title>
-  <style>
-    ${styles}
-    @page { size: ${paper}; margin: 0; }
-    html, body { margin: 0; padding: 0; background: #fff; }
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .resume-print-root, #resume-print-root { box-shadow: none !important; }
-  </style>
-</head>
-<body>${html}</body>
-</html>`);
-  doc.close();
-
-  // Wait for fonts + images before printing
-  await new Promise<void>((resolve) => {
-    const ready = () => {
-      const imgs = Array.from(doc.images);
-      const pending = imgs.filter((i) => !i.complete);
-      if (pending.length === 0) {
-        resolve();
-        return;
-      }
-      let left = pending.length;
-      pending.forEach((i) => {
-        const done = () => {
-          if (--left === 0) resolve();
-        };
-        i.addEventListener("load", done, { once: true });
-        i.addEventListener("error", done, { once: true });
-      });
-    };
-    if (doc.readyState === "complete") ready();
-    else win.addEventListener("load", ready, { once: true });
-    // Hard timeout — never hang the UI
-    setTimeout(resolve, 2500);
-  });
-
   try {
-    const fonts = (doc as Document & { fonts?: { ready?: Promise<unknown> } }).fonts;
-    if (fonts && fonts.ready) await fonts.ready;
+    const fonts = (document as Document & { fonts?: { ready?: Promise<unknown> } }).fonts;
+    if (fonts?.ready) await fonts.ready;
   } catch {
     // ignore
   }
 
-  win.focus();
-  win.print();
-  setTimeout(() => iframe.remove(), 1000);
+  const canvas = await html2canvas(node, {
+    scale: 2,
+    backgroundColor: "#ffffff",
+    useCORS: true,
+    logging: false,
+    windowWidth: node.scrollWidth,
+    windowHeight: node.scrollHeight,
+  });
+
+  const isA4 = resume.meta.paper === "A4";
+  const pdf = new jsPDF({
+    unit: "pt",
+    format: isA4 ? "a4" : "letter",
+    orientation: "portrait",
+    compress: true,
+  });
+
+  const pageW = pdf.internal.pageSize.getWidth();
+  const pageH = pdf.internal.pageSize.getHeight();
+  const imgW = pageW;
+  const imgH = (canvas.height * imgW) / canvas.width;
+
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
+  let remaining = imgH;
+  let position = 0;
+  pdf.addImage(dataUrl, "JPEG", 0, position, imgW, imgH, undefined, "FAST");
+  remaining -= pageH;
+  while (remaining > 0) {
+    position -= pageH;
+    pdf.addPage();
+    pdf.addImage(dataUrl, "JPEG", 0, position, imgW, imgH, undefined, "FAST");
+    remaining -= pageH;
+  }
+
+  pdf.save(`${filename}.pdf`);
 }
