@@ -39,10 +39,15 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
+from pathlib import Path
+
 from shared import models
 from shared.artifacts import list_artifacts, artifact_path
+from shared.fixture_tester import run_fixture
 from automation.selenium_driver import SELENIUM_OK, HEADLESS
 from agents.automation_agent import run_job
+
+FIXTURE_DIR = Path(__file__).resolve().parent.parent / "storage" / "fixtures"
 
 
 HOST = os.environ.get("HOST", "127.0.0.1")
@@ -147,6 +152,13 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(data)
             return
 
+        if path == "/test":
+            # List available fixtures.
+            fixtures = []
+            if FIXTURE_DIR.exists():
+                fixtures = sorted(p.name for p in FIXTURE_DIR.glob("*.html"))
+            return self._send_json(200, {"fixtures": fixtures, "dir": str(FIXTURE_DIR)})
+
         self._send_json(404, {"error": "not found"})
 
     def do_POST(self) -> None:  # noqa: N802
@@ -180,6 +192,29 @@ class Handler(BaseHTTPRequestHandler):
                 level="success" if approved else "warn",
             )
             return self._send_json(200, {"ok": True})
+
+        if path == "/test":
+            # POST { fixture: "name.html" }  OR  { html: "<form>...</form>" }
+            # Optional: { profile: {...} }
+            profile = body.get("profile") or {}
+            if not isinstance(profile, dict):
+                return self._send_json(400, {"error": "profile must be an object"})
+            html = body.get("html") or ""
+            fixture = (body.get("fixture") or "").strip()
+            if fixture:
+                # Prevent path traversal.
+                safe = Path(fixture).name
+                fp = FIXTURE_DIR / safe
+                if not fp.exists():
+                    return self._send_json(404, {"error": f"fixture not found: {safe}"})
+                html = fp.read_text(encoding="utf-8")
+            if not html:
+                return self._send_json(400, {"error": "html or fixture is required"})
+            try:
+                result = run_fixture(html, profile)
+            except Exception as exc:  # noqa: BLE001
+                return self._send_json(500, {"error": f"fixture run failed: {exc}"})
+            return self._send_json(200, result)
 
         self._send_json(404, {"error": "not found"})
 
