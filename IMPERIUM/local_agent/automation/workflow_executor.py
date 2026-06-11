@@ -100,20 +100,57 @@ def linkedin_pick_first_job(driver, emit: Emit) -> bool:
     return True
 
 
+def _linkedin_find_external_apply_link(driver) -> str:
+    """Scan the job detail page for an off-site apply link (fallback when
+    LinkedIn renders an <a> instead of a button, or the button is hidden)."""
+    try:
+        anchors = driver.find_elements(
+            By.CSS_SELECTOR,
+            "a[href^='http']:not([href*='linkedin.com'])",
+        )
+    except WebDriverException:
+        return ""
+    for a in anchors[:60]:
+        try:
+            txt = (a.text or "").strip().lower()
+            label = (a.get_attribute("aria-label") or "").lower()
+            data = (a.get_attribute("data-control-name") or "").lower()
+            if "apply" in txt or "apply" in label or "apply" in data:
+                href = a.get_attribute("href") or ""
+                if href.startswith("http") and "linkedin.com" not in href:
+                    return href
+        except WebDriverException:
+            continue
+    return ""
+
+
 def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
+    """Return True only when a real Easy Apply modal opens. For external
+    apply jobs, switch into the external tab/page and return False so the
+    caller routes into the ATS flow."""
     before_url = driver.current_url
     before_handles = list(driver.window_handles)
-    if click_first(driver, [
+
+    clicked = click_first(driver, [
         "button.jobs-apply-button",
         "button[aria-label*='Easy Apply' i]",
         "button[aria-label*='Apply' i]",
         "button[data-control-name='jobdetails_topcard_inapply']",
-    ], timeout=8):
-        time.sleep(2)
+        "a.jobs-apply-button",
+        "a[aria-label*='Apply' i]",
+    ], timeout=6) or click_xpath(driver, [
+        ".//button[not(@disabled) and contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+        ".//a[contains(translate(normalize-space(.),"
+        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'apply')]",
+    ], timeout=3)
+
+    if clicked:
+        time.sleep(2.5)
         try:
             if len(driver.window_handles) > len(before_handles):
                 driver.switch_to.window(driver.window_handles[-1])
-                emit("external", "Opened external application tab",
+                emit("external_apply", "Opened external application tab",
                      level="success", url=driver.current_url)
                 return False
         except WebDriverException:
@@ -122,12 +159,40 @@ def linkedin_click_easy_apply(driver, emit: Emit) -> bool:
             emit("easy_apply", "Opened Easy Apply modal", level="success")
             return True
         if "linkedin.com" not in driver.current_url or driver.current_url != before_url:
-            emit("external", "Opened external application page",
+            emit("external_apply", "Opened external application page",
                  level="success", url=driver.current_url)
             return False
         emit("easy_apply", "Clicked Apply, but no modal opened yet", level="warn")
+        # fall through to off-site link scan below
+
+    # Fallback: no button matched (or click did nothing) — look for an
+    # off-site apply link rendered as an <a>. Common on LinkedIn jobs that
+    # delegate to the company's ATS.
+    external = _linkedin_find_external_apply_link(driver)
+    if external:
+        emit("external_apply",
+             f"No Easy Apply — found external apply link, navigating to {external}",
+             level="success", url=external)
+        try:
+            driver.execute_script("window.open(arguments[0], '_blank');", external)
+            time.sleep(1.5)
+            if len(driver.window_handles) > len(before_handles):
+                driver.switch_to.window(driver.window_handles[-1])
+            else:
+                driver.get(external)
+        except WebDriverException:
+            try:
+                driver.get(external)
+            except WebDriverException:
+                pass
+        time.sleep(2)
         return False
-    emit("easy_apply", "No Apply button found", level="warn")
+
+    if not clicked:
+        emit("easy_apply",
+             "No Apply button or external apply link found. Open the job in "
+             "Chrome and finish manually, then Approve/Reject.",
+             level="warn")
     return False
 
 
