@@ -226,24 +226,33 @@
   position: relative;
   border-radius: var(--dash-radius);
   overflow: hidden;
-  height: clamp(280px, 38vw, 460px);
-  display: grid; place-items: center;
+  height: clamp(220px, 30vw, 360px);
+  display: grid; place-items: end center;
   background: transparent;
+  margin-top: -8px;
 }
 .dash-hero .halo {
-  position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
-  width: clamp(220px, 28vw, 360px); aspect-ratio: 1;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%);
+  width: clamp(200px, 26vw, 320px); aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle, #fce0ce 0%, #fce0ce 60%, transparent 70%);
 }
 .dash-hero .dots {
-  position: absolute; right: 6%; top: 22%;
+  position: absolute; right: 6%; top: 18%;
   width: 90px; height: 60px;
   background-image: radial-gradient(circle, var(--dash-coral) 1.5px, transparent 1.5px);
   background-size: 12px 12px; opacity: .6;
 }
 .dash-hero img {
   position: relative; height: 100%; width: auto; object-fit: contain; z-index: 2;
+}
+.dash-hero img.dash-hero-avatar {
+  height: 88%;
+  width: 88%;
+  max-width: 320px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(217, 140, 110, 0.25);
 }
 
 /* Career overview */
