@@ -106,6 +106,14 @@ export function ModernTemplate({ resume, theme }: TemplateProps) {
             ))}
           </MainSection>
         )}
+
+        {languages && languages.length > 0 && (
+          <MainSection title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></MainSection>
+        )}
+
+        {interests && interests.length > 0 && (
+          <MainSection title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></MainSection>
+        )}
       </main>
     </div>
   );
@@ -116,17 +124,10 @@ function SideBlock({ title, children }: { title: string; children: React.ReactNo
     <div style={{ marginTop: 20 }}>
       <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1.2, opacity: 0.7, marginBottom: 6 }}>{title}</div>
       <div style={{ fontSize: 11.5, lineHeight: 1.55 }}>{children}</div>
-
-      {languages && languages.length > 0 && (
-        <Section title="Languages"><p style={{ margin: 0 }}>{formatLanguages(languages)}</p></Section>
-      )}
-
-      {interests && interests.length > 0 && (
-        <Section title="Interests"><p style={{ margin: 0 }}>{formatInterests(interests)}</p></Section>
-      )}
     </div>
   );
 }
+
 
 function MainSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
