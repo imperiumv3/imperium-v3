@@ -4,6 +4,10 @@
  * An application_job is the *execution record* for one automation attempt.
  * The user-facing applications row stays unchanged; retries create new jobs
  * pointing at the same application_id.
+ *
+ * Tables `application_jobs` and `application_job_events` were added in a
+ * migration after DatabaseTypes was generated, so we type the supabase
+ * client as `any` here.
  */
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
@@ -20,6 +24,9 @@ export type ApplicationJobStatus =
   | "agent_offline";
 
 const TERMINAL: ApplicationJobStatus[] = ["submitted", "failed", "cancelled", "agent_offline"];
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyClient = any;
 
 /* ---------- enqueue ---------- */
 
@@ -39,7 +46,8 @@ export const enqueueApplicationJob = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => EnqueueInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+    const supabase = context.supabase as AnyClient;
+    const userId = context.userId;
 
     let resumePdfPath = "";
     if (data.resumePdfBase64) {
@@ -49,7 +57,7 @@ export const enqueueApplicationJob = createServerFn({ method: "POST" })
         .from("resumes")
         .upload(path, bytes, { contentType: "application/pdf", upsert: true });
       if (!upErr) resumePdfPath = path;
-      // upload failures are non-fatal — the agent can still apply using the base64 in payload.
+      // upload failures are non-fatal — agent still receives base64 in payload.
     }
 
     const payload = {
@@ -79,21 +87,23 @@ export const enqueueApplicationJob = createServerFn({ method: "POST" })
         resume_version: data.resumeVersion,
         payload,
         attempts: 1,
-      } as never)
+      })
       .select("*")
       .single();
     if (error) throw new Error(error.message);
 
+    const jobId = (row as { id: string }).id;
+
     await supabase.from("application_job_events").insert({
       user_id: userId,
-      job_id: (row as { id: string }).id,
+      job_id: jobId,
       level: "info",
       step: "queued",
       message: `Queued for ${data.jobSource}`,
       url: data.jobUrl,
-    } as never);
+    });
 
-    return { jobId: (row as { id: string }).id, payload };
+    return { jobId, payload: JSON.parse(JSON.stringify(payload)) as Record<string, unknown> };
   });
 
 /* ---------- status / event mutations ---------- */
@@ -114,7 +124,8 @@ export const updateApplicationJobStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => StatusInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+    const supabase = context.supabase as AnyClient;
+    const userId = context.userId;
     const patch: Record<string, unknown> = {
       status: data.status,
       updated_at: new Date().toISOString(),
@@ -128,7 +139,7 @@ export const updateApplicationJobStatus = createServerFn({ method: "POST" })
 
     const { error } = await supabase
       .from("application_jobs")
-      .update(patch as never)
+      .update(patch)
       .eq("id", data.jobId)
       .eq("user_id", userId);
     if (error) throw new Error(error.message);
@@ -149,7 +160,8 @@ export const appendApplicationJobEvent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => EventInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+    const supabase = context.supabase as AnyClient;
+    const userId = context.userId;
     const { error } = await supabase.from("application_job_events").insert({
       user_id: userId,
       job_id: data.jobId,
@@ -159,7 +171,7 @@ export const appendApplicationJobEvent = createServerFn({ method: "POST" })
       url: data.url,
       screenshot_url: data.screenshotUrl,
       ...(data.ts ? { ts: data.ts } : {}),
-    } as never);
+    });
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -172,21 +184,30 @@ export const listApplicationJobs = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => ListInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    let q = supabase.from("application_jobs").select("*").eq("user_id", userId).order("created_at", { ascending: false });
+    const supabase = context.supabase as AnyClient;
+    const userId = context.userId;
+    let q = supabase
+      .from("application_jobs")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
     if (data.applicationId) q = q.eq("application_id", data.applicationId);
     const { data: rows, error } = await q.limit(100);
     if (error) throw new Error(error.message);
-    return rows ?? [];
+    return (rows ?? []) as Array<Record<string, unknown>>;
   });
 
-const EventsInput = z.object({ jobId: z.string().uuid(), limit: z.number().int().min(1).max(500).default(200) });
+const EventsInput = z.object({
+  jobId: z.string().uuid(),
+  limit: z.number().int().min(1).max(500).default(200),
+});
 
 export const listApplicationJobEvents = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => EventsInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+    const supabase = context.supabase as AnyClient;
+    const userId = context.userId;
     const { data: rows, error } = await supabase
       .from("application_job_events")
       .select("*")
@@ -195,7 +216,7 @@ export const listApplicationJobEvents = createServerFn({ method: "POST" })
       .order("ts", { ascending: true })
       .limit(data.limit);
     if (error) throw new Error(error.message);
-    return rows ?? [];
+    return (rows ?? []) as Array<Record<string, unknown>>;
   });
 
 /* ---------- retry ---------- */
@@ -206,7 +227,8 @@ export const retryApplicationJob = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) => RetryInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+    const supabase = context.supabase as AnyClient;
+    const userId = context.userId;
     const { data: prev, error: rErr } = await supabase
       .from("application_jobs")
       .select("*")
@@ -230,9 +252,9 @@ export const retryApplicationJob = createServerFn({ method: "POST" })
         resume_version: row.resume_version as string,
         payload: row.payload,
         attempts: ((row.attempts as number) ?? 0) + 1,
-      } as never)
+      })
       .select("*")
       .single();
     if (iErr) throw new Error(iErr.message);
-    return created;
+    return created as Record<string, unknown>;
   });
