@@ -39,6 +39,7 @@ from selenium.common.exceptions import (
 )
 
 from shared.llm_brain import answer_question
+from shared.question_bank import answer as rule_answer
 
 Emit = Callable[..., None]
 
