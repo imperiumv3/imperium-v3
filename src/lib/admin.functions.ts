@@ -43,39 +43,27 @@ export const adminLogin = createServerFn({ method: "POST" })
     const password = data.password || "";
     if (!email || !password) return { ok: false as const, error: "Email and password required" };
 
-    // 1) Try Supabase admin_users (bcrypt via pgcrypto)
+    // 1) Try Supabase admin_users via bcrypt-verified RPC
     const sb = await getAdmin();
     if (sb) {
       try {
-        const { data: row, error } = await sb
-          .from("admin_users")
-          .select("email,password_hash")
-          .eq("email", email)
-          .maybeSingle();
-        if (!error && row?.password_hash) {
-          const { data: match } = await sb.rpc("crypt_check" as never, {
-            plain: password,
-            hash: row.password_hash,
-          } as never) as { data: boolean | null };
-          // Fallback: use a direct SQL-level check via a small helper if RPC absent
-          let verified = match === true;
-          if (!verified) {
-            // Use raw SQL via .from query alternative — but simplest is a tiny SECURITY DEFINER fn.
-            // If RPC not installed, fall through to env check below.
-          }
-          if (verified) {
-            return {
-              ok: true as const,
-              token: issueAdminToken(email, "supabase"),
-              email,
-              source: "supabase" as const,
-            };
-          }
+        const { data: ok } = await sb.rpc("verify_admin_password" as never, {
+          _email: email,
+          _password: password,
+        } as never) as { data: boolean | null };
+        if (ok === true) {
+          return {
+            ok: true as const,
+            token: issueAdminToken(email, "supabase"),
+            email,
+            source: "supabase" as const,
+          };
         }
       } catch {
-        // ignore, fall through to env check
+        // ignore, fall through
       }
     }
+
 
     // 2) ENV-based fallback (local mode or Supabase-table miss)
     if (email === envAdminEmail().toLowerCase() && password === envAdminPassword()) {
