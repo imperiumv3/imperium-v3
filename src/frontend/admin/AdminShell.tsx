@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { clearAdminSession, getAdminSession } from "./adminSession";
+import adminBg from "@/assets/admin/admin-bg.png.asset.json";
 import "./admin.css";
 
 const NAV = [
@@ -34,6 +35,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="admin-root">
+      <div
+        className="admin-bg"
+        style={{ backgroundImage: `url(${adminBg.url})` }}
+        aria-hidden="true"
+      />
+      <div className="admin-bg-veil" aria-hidden="true" />
       <div className="admin-shell">
         <aside className="admin-sidebar">
           <div className="brand"><span className="dot" /> Imperium Admin</div>
