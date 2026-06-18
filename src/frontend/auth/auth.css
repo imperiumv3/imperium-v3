@@ -287,32 +287,32 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 440px;
+  max-width: 340px;
   margin: 0 auto;
   width: 100%;
 }
 
-.imp-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 48px; }
+.imp-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
 .imp-brand-text { display: flex; flex-direction: column; line-height: 1; }
-.imp-brand-name { font-size: 22px; font-weight: 600; letter-spacing: 0.32em; }
-.imp-brand-sub { font-size: 9px; letter-spacing: 0.4em; color: #9ca3af; margin-top: 6px; }
+.imp-brand-name { font-size: 17px; font-weight: 600; letter-spacing: 0.32em; }
+.imp-brand-sub { font-size: 8px; letter-spacing: 0.4em; color: #9ca3af; margin-top: 5px; }
 
 .imp-h1 {
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(22px, 2.3vw, 32px);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.01em;
-  margin: 0 0 14px;
+  margin: 0 0 10px;
 }
 .imp-h1-accent { color: #dc2626; }
-.imp-sub { color: #9ca3af; font-size: 14px; margin: 0 0 28px; }
+.imp-sub { color: #9ca3af; font-size: 11px; margin: 0 0 20px; }
 
-.imp-form { display: flex; flex-direction: column; gap: 6px; }
+.imp-form { display: flex; flex-direction: column; gap: 4px; }
 .imp-label {
-  font-size: 11px;
+  font-size: 9px;
   letter-spacing: 0.22em;
   color: #9ca3af;
-  margin: 14px 0 6px;
+  margin: 10px 0 4px;
 }
 
 /* override pill look inside imperium form */
@@ -320,28 +320,28 @@
 .imp-form .auth-pill {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 14px 16px;
+  border-radius: 10px;
+  padding: 10px 14px;
   backdrop-filter: blur(20px);
 }
 .imp-form .auth-pill:focus-within { border-color: rgba(220,38,38,0.5); }
-.imp-form .auth-pill input { color: #fff; font-size: 14px; }
+.imp-form .auth-pill input { color: #fff; font-size: 12px; }
 .imp-form .auth-pill input::placeholder { color: #6b7280; }
 
 .imp-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 14px 0 18px;
-  font-size: 13px;
+  margin: 10px 0 12px;
+  font-size: 12px;
 }
 .imp-check {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 8px;
   color: #cbd5e1; cursor: pointer; user-select: none;
 }
 .imp-check input { position: absolute; opacity: 0; pointer-events: none; }
 .imp-check-box {
-  width: 16px; height: 16px; border-radius: 4px;
+  width: 14px; height: 14px; border-radius: 4px;
   border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.03);
   display: inline-block; position: relative;
@@ -352,22 +352,22 @@
 }
 .imp-check input:checked + .imp-check-box::after {
   content: ""; position: absolute; left: 4px; top: 1px;
-  width: 5px; height: 9px; border: solid #fff;
+  width: 4px; height: 7px; border: solid #fff;
   border-width: 0 2px 2px 0; transform: rotate(45deg);
 }
-.imp-forgot { color: #9ca3af; text-decoration: none; font-size: 13px; }
+.imp-forgot { color: #9ca3af; text-decoration: none; font-size: 12px; }
 .imp-forgot:hover { color: #fff; }
 
 .imp-submit {
   position: relative;
-  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   width: 100%;
-  padding: 16px 20px;
+  padding: 12px 16px;
   border: 1px solid rgba(220,38,38,0.6);
-  border-radius: 14px;
+  border-radius: 12px;
   background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
   color: #fff;
-  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.2em;
   cursor: pointer;
   box-shadow: 0 12px 40px -12px rgba(220,38,38,0.55), inset 0 1px 0 rgba(255,255,255,0.1);
   transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
@@ -375,25 +375,25 @@
 .imp-submit:hover { filter: brightness(1.08); box-shadow: 0 16px 50px -10px rgba(220,38,38,0.7); }
 .imp-submit:active { transform: translateY(1px); }
 .imp-submit:disabled { opacity: 0.7; cursor: progress; }
-.imp-submit-arrow { font-size: 18px; }
+.imp-submit-arrow { font-size: 16px; }
 
 .imp-error {
-  margin-top: 12px; padding: 10px 14px;
+  margin-top: 10px; padding: 8px 12px;
   border: 1px solid rgba(220,38,38,0.35); background: rgba(220,38,38,0.08);
-  color: #fca5a5; border-radius: 10px; font-size: 13px;
+  color: #fca5a5; border-radius: 8px; font-size: 12px;
 }
 
 .imp-switch {
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  margin-top: 24px;
-  padding-top: 18px;
+  margin-top: 16px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255,255,255,0.06);
-  color: #cbd5e1; text-decoration: none; font-size: 13px;
+  color: #cbd5e1; text-decoration: none; font-size: 12px;
 }
 .imp-switch:hover { color: #fff; }
 
 .imp-footer {
-  font-size: 11px; letter-spacing: 0.15em; color: #6b7280; margin-top: 24px;
+  font-size: 10px; letter-spacing: 0.15em; color: #6b7280; margin-top: 16px;
 }
 
 /* ---------- RIGHT PANEL (Stage) ---------- */
@@ -427,9 +427,9 @@
 
 .imp-sword {
   position: absolute;
-  left: 38%;
+  left: 48%;
   top: 50%;
-  height: 130%;
+  height: 118%;
   width: auto;
   transform: translate(-50%, -50%);
   z-index: 3;
@@ -440,7 +440,7 @@
 
 .imp-commander-wrap {
   position: absolute;
-  left: 55%;
+  left: 56%;
   top: 50%;
   height: 130%;
   transform: translate(-50%, -50%);
