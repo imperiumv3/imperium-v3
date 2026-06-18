@@ -54,6 +54,3 @@ export const submitFeedback = createServerFn({ method: "POST" })
     if (error) return { ok: false as const, error: error.message };
     return { ok: true as const };
   });
-
-// Re-export for tree-shaking convenience
-void browserSupabase;
