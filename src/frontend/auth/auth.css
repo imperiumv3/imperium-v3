@@ -427,9 +427,9 @@
 
 .imp-sword {
   position: absolute;
-  left: 69%;
+  left: 58%;
   top: 50%;
-  height: 118%;
+  height: 105%;
   width: auto;
   transform: translate(-50%, -50%);
   z-index: 3;
