@@ -84,14 +84,10 @@ export function ImperiumStage() {
   const gX = useTransform(sx, (v) => v * 55);
   const gY = useTransform(sy, (v) => v * 35);
 
-  // commander 3D tilt (clamp)
-  const rotY = useTransform(sx, (v) => Math.max(-8, Math.min(8, v * 8)));
-  const rotX = useTransform(sy, (v) => Math.max(-5, Math.min(5, -v * 5)));
-
   function onMove(e: React.MouseEvent<HTMLDivElement>) {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
-    const px = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
+    const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
     mx.set(px);
     my.set(py);
@@ -133,25 +129,17 @@ export function ImperiumStage() {
         draggable={false}
       />
 
-      {/* Layer 3: commander with 3D tilt */}
-      <motion.div
-        className="imp-commander-wrap"
-        style={{ x: coX, y: coY, rotateX: rotX, rotateY: rotY }}
-        whileHover={{ scale: 1.02 }}
-        transition={{ type: "spring", stiffness: 120, damping: 14 }}
+      {/* Layer 3: commander (parallax only, no 3D tilt/hover) */}
+      <motion.img
+        src={commanderAsset.url}
+        alt=""
+        className="imp-layer imp-commander"
+        style={{ x: coX, y: coY }}
         initial={{ opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: 0 }}
-      >
-        <motion.img
-          src={commanderAsset.url}
-          alt=""
-          className="imp-commander"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.0, delay: 0.4, ease: "easeOut" }}
-          draggable={false}
-        />
-      </motion.div>
+        transition={{ duration: 1.0, delay: 0.4, ease: "easeOut" }}
+        draggable={false}
+      />
 
       {/* Layer 4 & 5: glass widgets */}
       <motion.div className="imp-cards" style={{ x: gX, y: gY }}>
