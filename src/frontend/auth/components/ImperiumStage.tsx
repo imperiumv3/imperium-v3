@@ -1,8 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import bgAsset from "../assets/bg-clock.png.asset.json";
-import swordAsset from "../assets/sword.png.asset.json";
-import commanderAsset from "../assets/commander.png.asset.json";
+import heroAsset from "../assets/hero-combined.jpeg.asset.json";
 
 function GlassWidget({
   className,
@@ -74,13 +72,8 @@ export function ImperiumStage() {
   const sx = useSpring(mx, { stiffness: 80, damping: 20, mass: 0.6 });
   const sy = useSpring(my, { stiffness: 80, damping: 20, mass: 0.6 });
 
-  // layer translations
-  const bgX = useTransform(sx, (v) => v * 8);
-  const bgY = useTransform(sy, (v) => v * 6);
-  const swX = useTransform(sx, (v) => v * 20);
-  const swY = useTransform(sy, (v) => v * 14);
-  const coX = useTransform(sx, (v) => v * 40);
-  const coY = useTransform(sy, (v) => v * 24);
+  const heroX = useTransform(sx, (v) => v * 30);
+  const heroY = useTransform(sy, (v) => v * 20);
   const gX = useTransform(sx, (v) => v * 55);
   const gY = useTransform(sy, (v) => v * 35);
 
@@ -105,43 +98,19 @@ export function ImperiumStage() {
       onMouseLeave={onLeave}
       aria-hidden
     >
-      {/* Layer 1: background */}
-      <motion.div
-        className="imp-layer imp-layer-bg"
-        style={{ x: bgX, y: bgY, backgroundImage: `url(${bgAsset.url})` }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      />
-
-      {/* edge fade into left form panel */}
-      <div className="imp-stage-fade" />
-
-      {/* Layer 2: sword */}
+      {/* Combined hero artwork (sword + commander) */}
       <motion.img
-        src={swordAsset.url}
+        src={heroAsset.url}
         alt=""
-        className="imp-layer imp-sword"
-        style={{ x: swX, y: swY }}
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-        draggable={false}
-      />
-
-      {/* Layer 3: commander (parallax only, no 3D tilt/hover) */}
-      <motion.img
-        src={commanderAsset.url}
-        alt=""
-        className="imp-layer imp-commander"
-        style={{ x: coX, y: coY }}
+        className="imp-layer imp-hero"
+        style={{ x: heroX, y: heroY }}
         initial={{ opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.0, delay: 0.4, ease: "easeOut" }}
+        transition={{ duration: 1.0, delay: 0.2, ease: "easeOut" }}
         draggable={false}
       />
 
-      {/* Layer 4 & 5: glass widgets */}
+      {/* Glass widgets */}
       <motion.div className="imp-cards" style={{ x: gX, y: gY }}>
         <GlassWidget
           className="imp-card-top"
