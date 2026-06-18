@@ -6,7 +6,6 @@ import { supabase } from "@backend/database/SupabaseClient";
 import { PillInput } from "./components/PillInput";
 import { ImperiumStage } from "./components/ImperiumStage";
 import { signUpSchema } from "./validation";
-import bgAsset from "./assets/bg-clock.png.asset.json";
 
 function LogoMark() {
   return (
@@ -85,7 +84,7 @@ export function SignUpPage() {
   }
 
   return (
-    <div className="imp-shell" style={{ backgroundImage: `url(${bgAsset.url})` }}>
+    <div className="imp-shell">
       <div className="imp-left">
         <Link to="/" className="imp-back">
           <span aria-hidden>←</span> BACK
