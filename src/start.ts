@@ -2,6 +2,8 @@ import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "@shared/utils/errorPage";
 import { attachSupabaseAuth } from "@backend/database/AuthAttacher";
+import { attachAdminToken } from "@/lib/admin-attacher";
+
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
