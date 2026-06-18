@@ -168,6 +168,20 @@ export const adminSetUserStatus = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
+export const adminDeleteUser = createServerFn({ method: "POST" })
+  .inputValidator((d: { userId: string }) => d)
+  .handler(async ({ data }) => {
+    await requireAdminClaims();
+    const sb = await getAdmin();
+    if (!sb) return { ok: false as const, error: "Supabase not configured" };
+    // Best-effort cleanup of dependent rows (FKs may be ON DELETE CASCADE, but be safe)
+    try { await sb.from("user_status").delete().eq("user_id", data.userId); } catch { /* ignore */ }
+    try { await sb.from("profiles").delete().eq("id", data.userId); } catch { /* ignore */ }
+    const { error } = await sb.auth.admin.deleteUser(data.userId);
+    if (error) return { ok: false as const, error: error.message };
+    return { ok: true as const };
+  });
+
 // ============================================================
 // ANNOUNCEMENTS
 // ============================================================

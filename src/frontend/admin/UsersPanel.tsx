@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { adminListUsers, adminSetUserStatus } from "@/lib/admin.functions";
+import { adminListUsers, adminSetUserStatus, adminDeleteUser } from "@/lib/admin.functions";
 import { AdminShell } from "./AdminShell";
 
 type User = { id: string; email: string; name: string; status: string; created_at: string };
@@ -42,13 +42,28 @@ export function UsersPanel() {
     } finally { setBusy(null); }
   }
 
+  async function remove(u: User) {
+    const confirmed = window.confirm(
+      `Permanently delete ${u.email}?\n\nThis removes their auth account, profile, and status. This cannot be undone.`
+    );
+    if (!confirmed) return;
+    setBusy(u.id); setErr(null);
+    try {
+      const res = await adminDeleteUser({ data: { userId: u.id } });
+      if (!res.ok) setErr(res.error || "Failed to delete user");
+      else await load();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed");
+    } finally { setBusy(null); }
+  }
+
   return (
     <AdminShell>
       <h1 className="admin-h1">
         Users
         {localMode && <span className="admin-local-badge">Local mode</span>}
       </h1>
-      <p className="admin-sub">Enable or disable user access.</p>
+      <p className="admin-sub">Enable, disable, or permanently remove user accounts.</p>
       {err && <div className="admin-error">{err}</div>}
       <div className="admin-panel">
         <div className="admin-toolbar">
@@ -64,7 +79,7 @@ export function UsersPanel() {
         ) : (
           <table className="admin-table">
             <thead>
-              <tr><th>Name</th><th>Email</th><th>Status</th><th>Created</th><th></th></tr>
+              <tr><th>Name</th><th>Email</th><th>Status</th><th>Created</th><th style={{ textAlign: "right" }}>Actions</th></tr>
             </thead>
             <tbody>
               {filtered.map((u) => (
@@ -78,12 +93,21 @@ export function UsersPanel() {
                   </td>
                   <td>{new Date(u.created_at).toLocaleDateString()}</td>
                   <td>
-                    <button
-                      className="admin-btn" disabled={busy === u.id}
-                      onClick={() => toggle(u)}
-                    >
-                      {u.status === "ACTIVE" ? "Disable" : "Enable"}
-                    </button>
+                    <div className="admin-row-actions">
+                      <button
+                        className="admin-btn" disabled={busy === u.id}
+                        onClick={() => toggle(u)}
+                      >
+                        {u.status === "ACTIVE" ? "Disable" : "Enable"}
+                      </button>
+                      <button
+                        className="admin-btn danger" disabled={busy === u.id}
+                        onClick={() => remove(u)}
+                        title="Permanently delete user"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
