@@ -245,3 +245,273 @@
 }
 .auth-rules li.ok { color: rgba(150,220,170,0.95); }
 .auth-rules li.ok::before { content: "●"; color: rgba(150,220,170,0.95); }
+
+/* =========================================================
+   IMPERIUM Login (SignInPage) — layered composition
+   ========================================================= */
+.imp-shell {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  background: #050816;
+  color: #ffffff;
+  font-family: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* ---------- LEFT PANEL ---------- */
+.imp-left {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: 36px clamp(28px, 4vw, 72px) 28px;
+  background: linear-gradient(180deg, #050816 0%, #060a1c 100%);
+}
+.imp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: #cbd5e1;
+  text-decoration: none;
+  width: fit-content;
+}
+.imp-back:hover { color: #fff; }
+
+.imp-left-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.imp-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 48px; }
+.imp-brand-text { display: flex; flex-direction: column; line-height: 1; }
+.imp-brand-name { font-size: 22px; font-weight: 600; letter-spacing: 0.32em; }
+.imp-brand-sub { font-size: 9px; letter-spacing: 0.4em; color: #9ca3af; margin-top: 6px; }
+
+.imp-h1 {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 14px;
+}
+.imp-h1-accent { color: #dc2626; }
+.imp-sub { color: #9ca3af; font-size: 14px; margin: 0 0 28px; }
+
+.imp-form { display: flex; flex-direction: column; gap: 6px; }
+.imp-label {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #9ca3af;
+  margin: 14px 0 6px;
+}
+
+/* override pill look inside imperium form */
+.imp-form .auth-field { margin: 0; }
+.imp-form .auth-pill {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  backdrop-filter: blur(20px);
+}
+.imp-form .auth-pill:focus-within { border-color: rgba(220,38,38,0.5); }
+.imp-form .auth-pill input { color: #fff; font-size: 14px; }
+.imp-form .auth-pill input::placeholder { color: #6b7280; }
+
+.imp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0 18px;
+  font-size: 13px;
+}
+.imp-check {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: #cbd5e1; cursor: pointer; user-select: none;
+}
+.imp-check input { position: absolute; opacity: 0; pointer-events: none; }
+.imp-check-box {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.03);
+  display: inline-block; position: relative;
+  transition: all 0.15s;
+}
+.imp-check input:checked + .imp-check-box {
+  background: #dc2626; border-color: #dc2626;
+}
+.imp-check input:checked + .imp-check-box::after {
+  content: ""; position: absolute; left: 4px; top: 1px;
+  width: 5px; height: 9px; border: solid #fff;
+  border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.imp-forgot { color: #9ca3af; text-decoration: none; font-size: 13px; }
+.imp-forgot:hover { color: #fff; }
+
+.imp-submit {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  width: 100%;
+  padding: 16px 20px;
+  border: 1px solid rgba(220,38,38,0.6);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+  color: #fff;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  cursor: pointer;
+  box-shadow: 0 12px 40px -12px rgba(220,38,38,0.55), inset 0 1px 0 rgba(255,255,255,0.1);
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+}
+.imp-submit:hover { filter: brightness(1.08); box-shadow: 0 16px 50px -10px rgba(220,38,38,0.7); }
+.imp-submit:active { transform: translateY(1px); }
+.imp-submit:disabled { opacity: 0.7; cursor: progress; }
+.imp-submit-arrow { font-size: 18px; }
+
+.imp-error {
+  margin-top: 12px; padding: 10px 14px;
+  border: 1px solid rgba(220,38,38,0.35); background: rgba(220,38,38,0.08);
+  color: #fca5a5; border-radius: 10px; font-size: 13px;
+}
+
+.imp-switch {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: #cbd5e1; text-decoration: none; font-size: 13px;
+}
+.imp-switch:hover { color: #fff; }
+
+.imp-footer {
+  font-size: 11px; letter-spacing: 0.15em; color: #6b7280; margin-top: 24px;
+}
+
+/* ---------- RIGHT PANEL (Stage) ---------- */
+.imp-right {
+  position: relative;
+  overflow: hidden;
+  background: #050816;
+}
+.imp-stage {
+  position: absolute; inset: 0;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+.imp-layer {
+  position: absolute;
+  will-change: transform;
+}
+.imp-layer-bg {
+  inset: -4%;
+  background-size: cover;
+  background-position: center right;
+  filter: saturate(0.95) brightness(0.95);
+}
+.imp-stage-fade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, #050816 0%, rgba(5,8,22,0.55) 8%, rgba(5,8,22,0) 22%),
+    radial-gradient(140% 90% at 70% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none; z-index: 2;
+}
+
+.imp-sword {
+  position: absolute;
+  left: 38%;
+  top: 50%;
+  height: 130%;
+  width: auto;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+}
+
+.imp-commander-wrap {
+  position: absolute;
+  left: 55%;
+  top: 50%;
+  height: 130%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  z-index: 4;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+.imp-commander {
+  height: 100%;
+  width: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
+}
+
+/* hide PillInput crosshair icon inside imperium form, keep input padding */
+.imp-form .auth-pill-icon { display: none; }
+.imp-form .auth-pill input { padding-left: 4px; }
+
+/* glass cards */
+.imp-cards { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.imp-glass {
+  position: absolute;
+  pointer-events: auto;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px -25px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+  padding: 16px 18px;
+  min-width: 220px;
+}
+.imp-card-top { right: 4%; top: 22%; }
+.imp-card-bottom { right: 6%; bottom: 18%; }
+
+.imp-glass-inner { display: flex; gap: 14px; align-items: flex-start; }
+.imp-glass-icon {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e5e7eb;
+}
+.imp-glass-title-row { display: flex; align-items: center; gap: 10px; }
+.imp-glass-title { font-size: 11px; letter-spacing: 0.22em; font-weight: 600; color: #e5e7eb; }
+.imp-glass-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9px; letter-spacing: 0.2em; color: #4ade80;
+}
+.imp-status-dot { width: 6px; height: 6px; border-radius: 999px; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.imp-glass-text { margin-top: 6px; color: #cbd5e1; font-size: 12px; line-height: 1.5; }
+.imp-glass-text p { margin: 0; }
+
+/* pagination dots */
+.imp-dots {
+  position: absolute; right: 24px; bottom: 22px; display: flex; gap: 6px; z-index: 6;
+}
+.imp-dots span {
+  width: 22px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.18);
+}
+.imp-dots span.active { background: #dc2626; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .imp-shell { grid-template-columns: 1fr; }
+  .imp-right { height: 42vh; order: -1; }
+  .imp-left { padding: 24px 24px 32px; }
+  .imp-card-top { right: 4%; top: 6%; min-width: 180px; }
+  .imp-card-bottom { right: 4%; bottom: 6%; min-width: 180px; }
+  .imp-glass { padding: 12px 14px; }
+}
