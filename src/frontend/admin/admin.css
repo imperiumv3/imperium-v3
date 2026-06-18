@@ -282,15 +282,16 @@
   border-radius: 999px; margin-left: 10px; font-weight: 600; vertical-align: middle;
 }
 
-.admin-form { display: grid; gap: 12px; max-width: 640px; }
+.admin-form { display: grid; gap: 14px; max-width: 640px; }
 .admin-form .row { display: grid; gap: 6px; }
-.admin-form label { font-size: 12px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.06em; }
+.admin-form label { font-size: 11px; color: var(--a-text-mute); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
 .admin-form input, .admin-form textarea {
-  padding: 9px 12px; border-radius: 8px; border: 1px solid hsl(var(--border));
-  background: hsl(var(--background)); color: hsl(var(--foreground)); font-size: 13px;
-  font-family: inherit;
+  padding: 10px 14px; border-radius: 10px; border: 1px solid var(--a-border);
+  background: rgba(8, 12, 22, 0.7); color: var(--a-text); font-size: 13px;
+  font-family: inherit; outline: none;
 }
-.admin-form textarea { min-height: 100px; resize: vertical; }
+.admin-form input:focus, .admin-form textarea:focus { border-color: var(--a-primary); }
+.admin-form textarea { min-height: 110px; resize: vertical; }
 .admin-form .actions { display: flex; gap: 10px; }
 
 .admin-switch { display: inline-flex; align-items: center; gap: 10px; }
