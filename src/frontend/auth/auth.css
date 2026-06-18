@@ -415,14 +415,13 @@
 .imp-layer-bg {
   inset: -4%;
   background-size: cover;
-  background-position: center right;
+  background-position: center center;
   filter: saturate(0.95) brightness(0.95);
 }
 .imp-stage-fade {
   position: absolute; inset: 0;
   background:
-    linear-gradient(90deg, #050816 0%, rgba(5,8,22,0.55) 8%, rgba(5,8,22,0) 22%),
-    radial-gradient(140% 90% at 70% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
+    radial-gradient(140% 90% at 60% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.4) 100%);
   pointer-events: none; z-index: 2;
 }
 
