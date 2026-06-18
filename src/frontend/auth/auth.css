@@ -429,8 +429,8 @@
   position: absolute;
   left: 38%;
   top: 50%;
-  height: 96%;
-  max-height: 1080px;
+  height: 130%;
+  width: auto;
   transform: translate(-50%, -50%);
   z-index: 3;
   user-select: none;
@@ -440,10 +440,11 @@
 
 .imp-commander-wrap {
   position: absolute;
-  left: 56%;
+  left: 55%;
   top: 50%;
-  height: 92%;
-  transform-origin: center bottom;
+  height: 130%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
   z-index: 4;
   transform-style: preserve-3d;
   pointer-events: auto;
@@ -456,6 +457,10 @@
   pointer-events: none;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
 }
+
+/* hide PillInput crosshair icon inside imperium form, keep input padding */
+.imp-form .auth-pill-icon { display: none; }
+.imp-form .auth-pill input { padding-left: 4px; }
 
 /* glass cards */
 .imp-cards { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
