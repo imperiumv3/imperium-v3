@@ -510,8 +510,10 @@
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .imp-shell { grid-template-columns: 1fr; }
-  .imp-right { height: 42vh; order: -1; }
+  .imp-right { height: 42vh; order: -1; grid-column: auto; grid-row: auto; }
   .imp-left { padding: 24px 24px 32px; }
+  .imp-sword { left: 48%; }
+  .imp-commander-wrap { left: 56%; }
   .imp-card-top { right: 4%; top: 6%; min-width: 180px; }
   .imp-card-bottom { right: 4%; bottom: 6%; min-width: 180px; }
   .imp-glass { padding: 12px 14px; }
