@@ -87,15 +87,17 @@ export const adminStats = createServerFn({ method: "GET" }).handler(async () => 
   if (!sb) {
     return { ok: true as const, localMode: true, totalUsers: 0, activeUsers: 0, totalApplications: 0, totalFeedback: 0 };
   }
-  const safeCount = async (table: string, filter?: (q: ReturnType<typeof sb.from>) => unknown) => {
+  const client = sb;
+  const safeCount = async (table: string, eqCol?: string, eqVal?: string) => {
     try {
-      let q = sb.from(table as never).select("*", { count: "exact", head: true });
-      if (filter) q = filter(q) as never;
+      let q = client.from(table as never).select("*", { count: "exact", head: true });
+      if (eqCol && eqVal !== undefined) q = (q as never as { eq: (a: string, b: string) => typeof q }).eq(eqCol, eqVal);
       const { count, error } = await q;
       if (error) return 0;
       return count || 0;
     } catch { return 0; }
   };
+
   let totalUsers = 0;
   try {
     const { data } = await sb.auth.admin.listUsers({ page: 1, perPage: 1 });
