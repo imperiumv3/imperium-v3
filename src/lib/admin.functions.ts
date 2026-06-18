@@ -200,21 +200,22 @@ export const adminUpsertAnnouncement = createServerFn({ method: "POST" })
       const { error } = await sb.from("announcements").update({
         title: data.title,
         message: data.message,
-        start_at: data.start_at || null,
-        end_at: data.end_at || null,
+        start_at: data.start_at || undefined,
+        end_at: data.end_at || undefined,
         is_active: data.is_active ?? false,
-      }).eq("id", data.id);
+      } as never).eq("id", data.id);
       if (error) return { ok: false as const, error: error.message };
     } else {
       const { error } = await sb.from("announcements").insert({
         title: data.title,
         message: data.message,
         start_at: data.start_at || new Date().toISOString(),
-        end_at: data.end_at || null,
+        end_at: data.end_at || undefined,
         is_active: data.is_active ?? false,
-      });
+      } as never);
       if (error) return { ok: false as const, error: error.message };
     }
+
     return { ok: true as const };
   });
 
