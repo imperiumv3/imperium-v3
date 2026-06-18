@@ -268,7 +268,6 @@
   display: flex;
   flex-direction: column;
   padding: 36px clamp(28px, 4vw, 72px) 28px;
-  background: linear-gradient(180deg, #050816 0%, #060a1c 100%);
 }
 .imp-back {
   display: inline-flex;
@@ -401,6 +400,8 @@
   position: relative;
   overflow: hidden;
   background: #050816;
+  grid-column: 1 / -1;
+  grid-row: 1;
 }
 .imp-stage {
   position: absolute; inset: 0;
@@ -427,7 +428,7 @@
 
 .imp-sword {
   position: absolute;
-  left: 48%;
+  left: 69%;
   top: 50%;
   height: 118%;
   width: auto;
