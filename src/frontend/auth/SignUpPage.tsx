@@ -1,9 +1,30 @@
 import { useState, type FormEvent } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import "./auth.css";
+import { useNavigate, Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import { supabase } from "@backend/database/SupabaseClient";
-import { AuthShell } from "./components/AuthShell";
 import { PillInput } from "./components/PillInput";
+import { ImperiumStage } from "./components/ImperiumStage";
 import { signUpSchema } from "./validation";
+
+function LogoMark() {
+  return (
+    <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden>
+      <defs>
+        <linearGradient id="impLogoUp" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#ff4b4b" />
+          <stop offset="100%" stopColor="#a30f0f" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M8 6 L24 40 L40 6 L32 6 L24 24 L16 6 Z"
+        fill="url(#impLogoUp)"
+        stroke="#ff6b6b"
+        strokeWidth="1"
+      />
+    </svg>
+  );
+}
 
 export function SignUpPage() {
   const navigate = useNavigate();
@@ -44,10 +65,8 @@ export function SignUpPage() {
         },
       });
       if (error) throw error;
-      // If email confirmation is OFF, the user is signed in; if ON, route to /auth to sign in after confirming.
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        // Seed profile name immediately (trigger creates the row; we update name).
         await supabase
           .from("profiles")
           .update({ name: parsed.data.fullName, email: parsed.data.email })
@@ -65,64 +84,94 @@ export function SignUpPage() {
   }
 
   return (
-    <AuthShell
-      mode="signup"
-      heading="Join Imperium"
-      intro={
-        <>
-          is the AI job agent that orchestrates resumes, applications, and
-          interviews end-to-end. Forge your account to begin.
-        </>
-      }
-    >
-      <form className="auth-form" onSubmit={onSubmit} noValidate>
-        <PillInput
-          type="text"
-          placeholder="full name"
-          autoComplete="name"
-          value={values.fullName}
-          onChange={set("fullName")}
-          error={errors.fullName}
-        />
-        <PillInput
-          type="email"
-          placeholder="enter@your.email"
-          autoComplete="email"
-          value={values.email}
-          onChange={set("email")}
-          error={errors.email}
-        />
-        <PillInput
-          isPassword
-          placeholder="password"
-          autoComplete="new-password"
-          value={values.password}
-          onChange={set("password")}
-          error={errors.password}
-        />
-        <ul className="auth-rules" aria-label="Password requirements">
-          <li className={values.password.length >= 8 ? "ok" : ""}>At least 8 characters</li>
-          <li className={/[A-Z]/.test(values.password) ? "ok" : ""}>One uppercase letter</li>
-          <li className={/[0-9]/.test(values.password) ? "ok" : ""}>One number</li>
-        </ul>
-        <PillInput
-          isPassword
-          placeholder="confirm password"
-          autoComplete="new-password"
-          value={values.confirmPassword}
-          onChange={set("confirmPassword")}
-          error={errors.confirmPassword}
-        />
-        <div className="auth-meta">
-          <span>SIGN UP / 02</span>
-          <span>BY CONTINUING YOU ACCEPT THE CODE</span>
-        </div>
-        <button type="submit" className="auth-submit" disabled={submitting}>
-          {submitting ? "Forging…" : "Forge Account →"}
-        </button>
-        {formError ? <div className="auth-form-error">{formError}</div> : null}
-      </form>
-    </AuthShell>
+    <div className="imp-shell">
+      <div className="imp-left">
+        <Link to="/" className="imp-back">
+          <span aria-hidden>←</span> BACK
+        </Link>
+
+        <motion.div
+          className="imp-left-inner"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div className="imp-brand">
+            <LogoMark />
+            <div className="imp-brand-text">
+              <span className="imp-brand-name">IMPERIUM</span>
+              <span className="imp-brand-sub">AI COMMAND SYSTEM</span>
+            </div>
+          </div>
+
+          <h1 className="imp-h1">
+            Forge your
+            <br />
+            <span className="imp-h1-accent">Empire</span>
+          </h1>
+          <p className="imp-sub">Create your account. Command your agents.</p>
+
+          <form className="imp-form" onSubmit={onSubmit} noValidate>
+            <label className="imp-label">FULL NAME</label>
+            <PillInput
+              type="text"
+              placeholder="Enter your name"
+              autoComplete="name"
+              value={values.fullName}
+              onChange={set("fullName")}
+              error={errors.fullName}
+            />
+
+            <label className="imp-label">EMAIL</label>
+            <PillInput
+              type="email"
+              placeholder="Enter your email"
+              autoComplete="email"
+              value={values.email}
+              onChange={set("email")}
+              error={errors.email}
+            />
+
+            <label className="imp-label">PASSWORD</label>
+            <PillInput
+              isPassword
+              placeholder="Create a password"
+              autoComplete="new-password"
+              value={values.password}
+              onChange={set("password")}
+              error={errors.password}
+            />
+
+            <label className="imp-label">CONFIRM PASSWORD</label>
+            <PillInput
+              isPassword
+              placeholder="Confirm your password"
+              autoComplete="new-password"
+              value={values.confirmPassword}
+              onChange={set("confirmPassword")}
+              error={errors.confirmPassword}
+            />
+
+            <button type="submit" className="imp-submit" disabled={submitting}>
+              <span aria-hidden className="imp-submit-arrow">→</span>
+              {submitting ? "FORGING…" : "FORGE ACCOUNT"}
+            </button>
+
+            {formError ? <div className="imp-error">{formError}</div> : null}
+
+            <Link to="/auth" className="imp-switch">
+              <span aria-hidden>⌥</span> Already have an account? Sign in
+            </Link>
+          </form>
+        </motion.div>
+
+        <div className="imp-footer">© 2025 IMPERIUM. All rights reserved.</div>
+      </div>
+
+      <div className="imp-right">
+        <ImperiumStage />
+      </div>
+    </div>
   );
 }
 
