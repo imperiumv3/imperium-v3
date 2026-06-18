@@ -268,7 +268,7 @@
   display: flex;
   flex-direction: column;
   padding: 36px clamp(28px, 4vw, 72px) 28px;
-  background: #050816;
+  background: linear-gradient(180deg, #050816 0%, #060a1c 100%);
 }
 .imp-back {
   display: inline-flex;
@@ -425,19 +425,37 @@
   pointer-events: none; z-index: 2;
 }
 
-.imp-hero {
+.imp-sword {
   position: absolute;
-  left: 50%;
+  left: 48%;
   top: 50%;
-  height: 108%;
+  height: 118%;
   width: auto;
-  max-width: 96%;
-  object-fit: contain;
   transform: translate(-50%, -50%);
   z-index: 3;
   user-select: none;
   pointer-events: none;
-  filter: drop-shadow(0 40px 80px rgba(0,0,0,0.7));
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+}
+
+.imp-commander-wrap {
+  position: absolute;
+  left: 56%;
+  top: 50%;
+  height: 130%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  z-index: 4;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+.imp-commander {
+  height: 100%;
+  width: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
 }
 
 /* hide PillInput crosshair icon inside imperium form, keep input padding */
