@@ -250,7 +250,7 @@ export const adminSetMaintenance = createServerFn({ method: "POST" })
     const patch: Record<string, unknown> = { is_enabled: data.is_enabled };
     if (typeof data.message === "string") patch.message = data.message;
     if (data.expected_return !== undefined) patch.expected_return = data.expected_return || null;
-    const { error } = await sb.from("maintenance_mode").update(patch).eq("id", 1);
+    const { error } = await sb.from("maintenance_mode").update(patch as never).eq("id", 1);
     if (error) return { ok: false as const, error: error.message };
     return { ok: true as const };
   });
