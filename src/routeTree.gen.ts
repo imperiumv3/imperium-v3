@@ -14,6 +14,12 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminUsersRouteImport } from './routes/admin/users'
+import { Route as AdminMaintenanceRouteImport } from './routes/admin/maintenance'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminFeedbackRouteImport } from './routes/admin/feedback'
+import { Route as AdminAnnouncementsRouteImport } from './routes/admin/announcements'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedResumeRouteImport } from './routes/_authenticated/resume'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
@@ -47,6 +53,36 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMaintenanceRoute = AdminMaintenanceRouteImport.update({
+  id: '/admin/maintenance',
+  path: '/admin/maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminFeedbackRoute = AdminFeedbackRouteImport.update({
+  id: '/admin/feedback',
+  path: '/admin/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAnnouncementsRoute = AdminAnnouncementsRouteImport.update({
+  id: '/admin/announcements',
+  path: '/admin/announcements',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -115,6 +151,12 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/resume': typeof AuthenticatedResumeRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/feedback': typeof AdminFeedbackRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/maintenance': typeof AdminMaintenanceRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/debug/jobs-trace': typeof ApiPublicDebugJobsTraceRoute
 }
 export interface FileRoutesByTo {
@@ -131,6 +173,12 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/resume': typeof AuthenticatedResumeRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/feedback': typeof AdminFeedbackRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/maintenance': typeof AdminMaintenanceRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin': typeof AdminIndexRoute
   '/api/public/debug/jobs-trace': typeof ApiPublicDebugJobsTraceRoute
 }
 export interface FileRoutesById {
@@ -149,6 +197,12 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/resume': typeof AuthenticatedResumeRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/feedback': typeof AdminFeedbackRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/maintenance': typeof AdminMaintenanceRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/public/debug/jobs-trace': typeof ApiPublicDebugJobsTraceRoute
 }
 export interface FileRouteTypes {
@@ -167,6 +221,12 @@ export interface FileRouteTypes {
     | '/profile'
     | '/resume'
     | '/settings'
+    | '/admin/announcements'
+    | '/admin/feedback'
+    | '/admin/login'
+    | '/admin/maintenance'
+    | '/admin/users'
+    | '/admin/'
     | '/api/public/debug/jobs-trace'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -183,6 +243,12 @@ export interface FileRouteTypes {
     | '/profile'
     | '/resume'
     | '/settings'
+    | '/admin/announcements'
+    | '/admin/feedback'
+    | '/admin/login'
+    | '/admin/maintenance'
+    | '/admin/users'
+    | '/admin'
     | '/api/public/debug/jobs-trace'
   id:
     | '__root__'
@@ -200,6 +266,12 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/resume'
     | '/_authenticated/settings'
+    | '/admin/announcements'
+    | '/admin/feedback'
+    | '/admin/login'
+    | '/admin/maintenance'
+    | '/admin/users'
+    | '/admin/'
     | '/api/public/debug/jobs-trace'
   fileRoutesById: FileRoutesById
 }
@@ -209,6 +281,12 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
+  AdminFeedbackRoute: typeof AdminFeedbackRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminMaintenanceRoute: typeof AdminMaintenanceRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   ApiPublicDebugJobsTraceRoute: typeof ApiPublicDebugJobsTraceRoute
 }
 
@@ -247,6 +325,48 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/maintenance': {
+      id: '/admin/maintenance'
+      path: '/admin/maintenance'
+      fullPath: '/admin/maintenance'
+      preLoaderRoute: typeof AdminMaintenanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/feedback': {
+      id: '/admin/feedback'
+      path: '/admin/feedback'
+      fullPath: '/admin/feedback'
+      preLoaderRoute: typeof AdminFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/announcements': {
+      id: '/admin/announcements'
+      path: '/admin/announcements'
+      fullPath: '/admin/announcements'
+      preLoaderRoute: typeof AdminAnnouncementsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/settings': {
@@ -355,6 +475,12 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  AdminAnnouncementsRoute: AdminAnnouncementsRoute,
+  AdminFeedbackRoute: AdminFeedbackRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminMaintenanceRoute: AdminMaintenanceRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
   ApiPublicDebugJobsTraceRoute: ApiPublicDebugJobsTraceRoute,
 }
 export const routeTree = rootRouteImport
