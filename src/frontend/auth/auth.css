@@ -438,21 +438,15 @@
   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
 }
 
-.imp-commander-wrap {
-  position: absolute;
-  left: 74%;
-  top: 50%;
-  height: 130%;
-  transform: translate(-50%, -50%);
-  transform-origin: center center;
-  z-index: 4;
-  transform-style: preserve-3d;
-  pointer-events: auto;
-}
+.imp-commander-wrap,
 .imp-commander {
-  height: 100%;
+  position: absolute;
+  left: 60%;
+  top: 50%;
+  height: 92%;
   width: auto;
-  display: block;
+  transform: translate(-50%, -50%);
+  z-index: 4;
   user-select: none;
   pointer-events: none;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
