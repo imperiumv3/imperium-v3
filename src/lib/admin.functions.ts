@@ -109,7 +109,7 @@ export const adminStats = createServerFn({ method: "GET" }).handler(async () => 
     }
   } catch { totalUsers = 0; }
 
-  const activeUsers = await safeCount("user_status", (q) => (q as never as { eq: (a: string, b: string) => unknown }).eq("status", "ACTIVE"));
+  const activeUsers = await safeCount("user_status", "status", "ACTIVE");
   const totalApplications = await safeCount("application_jobs");
   const totalFeedback = await safeCount("feedback");
 
