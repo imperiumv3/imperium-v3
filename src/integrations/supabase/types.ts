@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          password_hash: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          password_hash: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          password_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      announcements: {
+        Row: {
+          created_at: string
+          end_at: string | null
+          id: string
+          is_active: boolean
+          message: string
+          start_at: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_at?: string | null
+          id?: string
+          is_active?: boolean
+          message: string
+          start_at?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_at?: string | null
+          id?: string
+          is_active?: boolean
+          message?: string
+          start_at?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       application_job_events: {
         Row: {
           id: string
@@ -121,6 +178,60 @@ export type Database = {
         }
         Relationships: []
       }
+      feedback: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          message: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          message: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          message?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      maintenance_mode: {
+        Row: {
+          expected_return: string | null
+          id: number
+          is_enabled: boolean
+          message: string
+          updated_at: string
+        }
+        Insert: {
+          expected_return?: string | null
+          id?: number
+          is_enabled?: boolean
+          message?: string
+          updated_at?: string
+        }
+        Update: {
+          expected_return?: string | null
+          id?: number
+          is_enabled?: boolean
+          message?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           achievements: Json
@@ -211,6 +322,27 @@ export type Database = {
           target_role?: string
           updated_at?: string
           work_mode?: string
+        }
+        Relationships: []
+      }
+      user_status: {
+        Row: {
+          created_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
