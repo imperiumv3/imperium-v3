@@ -251,8 +251,7 @@
    ========================================================= */
 .imp-shell {
   position: relative;
-  height: 100vh;
-  max-height: 100vh;
+  min-height: 100vh;
   width: 100%;
   display: grid;
   grid-template-columns: 40% 60%;
@@ -262,18 +261,15 @@
   overflow: hidden;
 }
 
-
 /* ---------- LEFT PANEL ---------- */
 .imp-left {
   position: relative;
   z-index: 3;
   display: flex;
   flex-direction: column;
-  padding: 24px clamp(24px, 3.5vw, 56px) 20px;
+  padding: 36px clamp(28px, 4vw, 72px) 28px;
   background: linear-gradient(180deg, #050816 0%, #060a1c 100%);
-  overflow-y: auto;
 }
-
 .imp-back {
   display: inline-flex;
   align-items: center;
@@ -296,11 +292,10 @@
   width: 100%;
 }
 
-.imp-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.imp-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 48px; }
 .imp-brand-text { display: flex; flex-direction: column; line-height: 1; }
-.imp-brand-name { font-size: 20px; font-weight: 600; letter-spacing: 0.32em; }
+.imp-brand-name { font-size: 22px; font-weight: 600; letter-spacing: 0.32em; }
 .imp-brand-sub { font-size: 9px; letter-spacing: 0.4em; color: #9ca3af; margin-top: 6px; }
-
 
 .imp-h1 {
   font-size: clamp(28px, 3vw, 40px);
@@ -432,9 +427,9 @@
 
 .imp-sword {
   position: absolute;
-  left: 32%;
+  left: 38%;
   top: 50%;
-  height: 98%;
+  height: 130%;
   width: auto;
   transform: translate(-50%, -50%);
   z-index: 3;
@@ -443,20 +438,25 @@
   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
 }
 
-.imp-commander {
+.imp-commander-wrap {
   position: absolute;
-  left: 52%;
+  left: 55%;
   top: 50%;
-  height: 92%;
-  width: auto;
+  height: 130%;
   transform: translate(-50%, -50%);
+  transform-origin: center center;
   z-index: 4;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+.imp-commander {
+  height: 100%;
+  width: auto;
+  display: block;
   user-select: none;
   pointer-events: none;
-  display: block;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
 }
-
 
 /* hide PillInput crosshair icon inside imperium form, keep input padding */
 .imp-form .auth-pill-icon { display: none; }
