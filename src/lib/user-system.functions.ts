@@ -2,7 +2,7 @@
 // and check own status. These run with the user's bearer token (RLS).
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { supabase as browserSupabase } from "@/integrations/supabase/client";
+
 
 // Public read of maintenance — uses the publishable-key browser client on the SERVER too via
 // a tiny server-local instantiation. anon role is allowed by RLS.
