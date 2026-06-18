@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import "./auth.css";
 import { useNavigate, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { supabase } from "@backend/database/SupabaseClient";
