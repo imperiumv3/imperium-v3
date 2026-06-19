@@ -425,34 +425,16 @@
   pointer-events: none; z-index: 2;
 }
 
-.imp-sword {
+.imp-hero {
   position: absolute;
-  left: 48%;
+  right: 4%;
   top: 50%;
-  height: 118%;
+  height: 96%;
   width: auto;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  user-select: none;
-  pointer-events: none;
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
-}
-
-.imp-commander-wrap {
-  position: absolute;
-  left: 56%;
-  top: 50%;
-  height: 130%;
-  transform: translate(-50%, -50%);
-  transform-origin: center center;
+  max-width: 92%;
+  object-fit: contain;
+  transform: translateY(-50%);
   z-index: 4;
-  transform-style: preserve-3d;
-  pointer-events: auto;
-}
-.imp-commander {
-  height: 100%;
-  width: auto;
-  display: block;
   user-select: none;
   pointer-events: none;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
