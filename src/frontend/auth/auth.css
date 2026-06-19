@@ -415,21 +415,22 @@
 .imp-layer-bg {
   inset: -4%;
   background-size: cover;
-  background-position: center center;
+  background-position: center right;
   filter: saturate(0.95) brightness(0.95);
 }
 .imp-stage-fade {
   position: absolute; inset: 0;
   background:
-    radial-gradient(140% 90% at 60% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.4) 100%);
+    linear-gradient(90deg, #050816 0%, rgba(5,8,22,0.55) 8%, rgba(5,8,22,0) 22%),
+    radial-gradient(140% 90% at 70% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
   pointer-events: none; z-index: 2;
 }
 
 .imp-sword {
   position: absolute;
-  left: 58%;
+  left: 69%;
   top: 50%;
-  height: 105%;
+  height: 118%;
   width: auto;
   transform: translate(-50%, -50%);
   z-index: 3;
@@ -438,15 +439,21 @@
   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
 }
 
-.imp-commander-wrap,
-.imp-commander {
+.imp-commander-wrap {
   position: absolute;
-  left: 60%;
+  left: 74%;
   top: 50%;
-  height: 92%;
-  width: auto;
+  height: 130%;
   transform: translate(-50%, -50%);
+  transform-origin: center center;
   z-index: 4;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+.imp-commander {
+  height: 100%;
+  width: auto;
+  display: block;
   user-select: none;
   pointer-events: none;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
