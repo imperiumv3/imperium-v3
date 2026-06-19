@@ -229,7 +229,7 @@
 .auth-hint-fill:hover { background: rgba(241,236,230,0.08); }
 
 .auth-rules {
-  margin: -4px 4px 0;
+  margin: 6px 4px 2px;
   font-size: 11px;
   letter-spacing: 0.04em;
   color: rgba(241,236,230,0.6);
@@ -245,6 +245,17 @@
 }
 .auth-rules li.ok { color: rgba(150,220,170,0.95); }
 .auth-rules li.ok::before { content: "●"; color: rgba(150,220,170,0.95); }
+
+/* imperium form override */
+.imp-form .auth-rules {
+  margin: 6px 2px 4px;
+  color: #9ca3af;
+}
+.imp-form .auth-rules li::before {
+  color: #6b7280;
+}
+.imp-form .auth-rules li.ok { color: #86efac; }
+.imp-form .auth-rules li.ok::before { color: #86efac; }
 
 /* =========================================================
    IMPERIUM Login (SignInPage) — layered composition
