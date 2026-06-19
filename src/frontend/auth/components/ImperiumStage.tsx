@@ -2,7 +2,7 @@ import { useRef, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const BG_URL = "/auth/bg-clock.jpg";
-const HERO_URL = "/auth/hero.jpg";
+const HERO_URL = "/auth/hero.png";
 
 function GlassWidget({
   className,

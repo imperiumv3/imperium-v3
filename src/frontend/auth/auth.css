@@ -438,6 +438,10 @@
   user-select: none;
   pointer-events: none;
   filter: drop-shadow(0 40px 70px rgba(0,0,0,0.7));
+  transition: filter 0.45s ease, transform 0.45s ease;
+}
+.imp-stage:hover .imp-hero {
+  filter: drop-shadow(0 50px 80px rgba(0,0,0,0.75)) brightness(1.06);
 }
 
 /* hide PillInput crosshair icon inside imperium form, keep input padding */
