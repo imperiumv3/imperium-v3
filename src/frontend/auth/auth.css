@@ -268,6 +268,7 @@
   display: flex;
   flex-direction: column;
   padding: 36px clamp(28px, 4vw, 72px) 28px;
+  background: linear-gradient(180deg, #050816 0%, #060a1c 100%);
 }
 .imp-back {
   display: inline-flex;
@@ -400,8 +401,6 @@
   position: relative;
   overflow: hidden;
   background: #050816;
-  grid-column: 1 / -1;
-  grid-row: 1;
 }
 .imp-stage {
   position: absolute; inset: 0;
@@ -428,7 +427,7 @@
 
 .imp-sword {
   position: absolute;
-  left: 69%;
+  left: 48%;
   top: 50%;
   height: 118%;
   width: auto;
@@ -441,7 +440,7 @@
 
 .imp-commander-wrap {
   position: absolute;
-  left: 74%;
+  left: 56%;
   top: 50%;
   height: 130%;
   transform: translate(-50%, -50%);
@@ -510,10 +509,8 @@
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .imp-shell { grid-template-columns: 1fr; }
-  .imp-right { height: 42vh; order: -1; grid-column: auto; grid-row: auto; }
+  .imp-right { height: 42vh; order: -1; }
   .imp-left { padding: 24px 24px 32px; }
-  .imp-sword { left: 48%; }
-  .imp-commander-wrap { left: 56%; }
   .imp-card-top { right: 4%; top: 6%; min-width: 180px; }
   .imp-card-bottom { right: 4%; bottom: 6%; min-width: 180px; }
   .imp-glass { padding: 12px 14px; }
