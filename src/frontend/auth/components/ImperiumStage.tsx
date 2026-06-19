@@ -1,8 +1,8 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import bgAsset from "../assets/bg-clock.png.asset.json";
-import swordAsset from "../assets/sword.png.asset.json";
-import commanderAsset from "../assets/commander.png.asset.json";
+
+const BG_URL = "/auth/bg-clock.jpg";
+const HERO_URL = "/auth/hero.jpg";
 
 function GlassWidget({
   className,
@@ -108,7 +108,7 @@ export function ImperiumStage() {
       {/* Layer 1: background */}
       <motion.div
         className="imp-layer imp-layer-bg"
-        style={{ x: bgX, y: bgY, backgroundImage: `url(${bgAsset.url})` }}
+        style={{ x: bgX, y: bgY, backgroundImage: `url(${BG_URL})` }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -117,27 +117,15 @@ export function ImperiumStage() {
       {/* edge fade into left form panel */}
       <div className="imp-stage-fade" />
 
-      {/* Layer 2: sword */}
+      {/* Layer 2+3 combined: sword + commander hero */}
       <motion.img
-        src={swordAsset.url}
+        src={HERO_URL}
         alt=""
-        className="imp-layer imp-sword"
-        style={{ x: swX, y: swY }}
+        className="imp-layer imp-hero"
+        style={{ x: coX, y: coY }}
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-        draggable={false}
-      />
-
-      {/* Layer 3: commander (parallax only, no 3D tilt/hover) */}
-      <motion.img
-        src={commanderAsset.url}
-        alt=""
-        className="imp-layer imp-commander"
-        style={{ x: coX, y: coY }}
-        initial={{ opacity: 0, y: 32 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.0, delay: 0.4, ease: "easeOut" }}
+        transition={{ duration: 1.0, delay: 0.25, ease: "easeOut" }}
         draggable={false}
       />
 
