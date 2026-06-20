@@ -1,7 +1,7 @@
 import { createFileRoute, ClientOnly } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 
-const LandingPage = lazy(() => import("@frontend/landing/LandingPage"));
+const LandingPage = lazy(() => import("@frontend/landing-v2/LandingV2Page"));
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -39,7 +39,7 @@ function Landing() {
   return (
     <ClientOnly fallback={<Fallback />}>
       <Suspense fallback={<Fallback />}>
-        <LandingPage cta="/auth" ctaLabel="Enter Imperium" />
+        <LandingPage />
       </Suspense>
     </ClientOnly>
   );
