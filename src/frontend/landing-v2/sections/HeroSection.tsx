@@ -81,8 +81,8 @@ export function HeroSection() {
       const sweep = stage.querySelector(".lv2h-sweep");
       const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 3.1 });
       sweepTl
-        .fromTo(sweep, { xPercent: -120, opacity: 0 }, { xPercent: 120, opacity: 0.45, duration: 1.4, ease: "power1.inOut" })
-        .to(sweep, { opacity: 0, duration: 0.2 }, "-=0.2");
+        .fromTo(sweep, { xPercent: -120, opacity: 0 }, { xPercent: 120, opacity: 0.95, duration: 1.2, ease: "power2.inOut" })
+        .to(sweep, { opacity: 0, duration: 0.25 }, "-=0.2");
 
       // Subtle glitch on outline layer
       const glitchTl = gsap.timeline({ repeat: -1, repeatDelay: 7 });
