@@ -77,22 +77,22 @@ export function HeroSection() {
       stage.addEventListener("pointermove", onMove);
       stage.addEventListener("pointerleave", onLeave);
 
-      // Scan sweep — clearly visible left → right across IMPERIUM
+      // Metallic shine sweep — soft white reflection, every ~5.5s
       const sweep = stage.querySelector(".lv2h-sweep");
-      const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 2.4 });
+      const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 5.5 });
       sweepTl
-        .set(sweep, { xPercent: -180, opacity: 0 })
-        .to(sweep, { opacity: 1, duration: 0.18, ease: "power2.out" })
-        .to(sweep, { xPercent: 520, duration: 1.6, ease: "power2.inOut" }, "<")
-        .to(sweep, { opacity: 0, duration: 0.25, ease: "power2.in" }, "-=0.25");
+        .set(sweep, { xPercent: -200, opacity: 0 })
+        .to(sweep, { opacity: 1, duration: 0.25, ease: "power1.out" })
+        .to(sweep, { xPercent: 900, duration: 2.0, ease: "power1.inOut" }, "<")
+        .to(sweep, { opacity: 0, duration: 0.3, ease: "power1.in" }, "-=0.3");
 
-      // Subtle but noticeable glitch on outline layer every 6–8s
-      const glitchTl = gsap.timeline({ repeat: -1, repeatDelay: 6.5 });
+      // Premium subtle glitch on outline layer every 6–8s (~110ms)
+      const glitchTl = gsap.timeline({ repeat: -1, repeatDelay: 7 });
       glitchTl
-        .to(frontRef.current, { x: 4, skewX: 2, duration: 0.04, ease: "steps(1)" })
-        .to(frontRef.current, { x: -5, skewX: -3, duration: 0.05, ease: "steps(1)" })
-        .to(frontRef.current, { x: 2, skewX: 1, duration: 0.04, ease: "steps(1)" })
-        .to(frontRef.current, { x: 0, skewX: 0, duration: 0.04, ease: "steps(1)" });
+        .to(frontRef.current, { x: 6, duration: 0.035, ease: "steps(1)" })
+        .to(frontRef.current, { x: -7, duration: 0.04, ease: "steps(1)" })
+        .to(frontRef.current, { x: 3, duration: 0.03, ease: "steps(1)" })
+        .to(frontRef.current, { x: 0, duration: 0.025, ease: "steps(1)" });
 
       return () => {
         stage.removeEventListener("pointermove", onMove);
