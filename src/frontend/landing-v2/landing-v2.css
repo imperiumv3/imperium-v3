@@ -159,6 +159,20 @@
 .lv2-transition .lv2-sec-title { position: sticky; top: 40vh; }
 
 /* ---------------- HERO (Section 1) — IMPERIUM poster ---------------- */
+@font-face {
+  font-family: "Excess V";
+  src: url("/__l5e/assets-v1/4a93c81c-0f5d-4e78-8483-618bfda05a10/excess-v.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Excess V Straight";
+  src: url("/__l5e/assets-v1/2ddfcd39-e3c4-4759-814e-f3e1448ae65e/excess-v-straight.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 .lv2h-hero {
   position: relative;
   height: 100vh; min-height: 100vh;
