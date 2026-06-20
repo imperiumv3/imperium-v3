@@ -22,7 +22,7 @@ export function HeroSection() {
     const link = document.createElement("link");
     link.id = id;
     link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Rubik+Mono+One&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Bungee&family=Rubik+Wet+Paint&family=Rampart+One&display=swap";
     document.head.appendChild(link);
   }, []);
 
@@ -77,12 +77,14 @@ export function HeroSection() {
       stage.addEventListener("pointermove", onMove);
       stage.addEventListener("pointerleave", onLeave);
 
-      // Scan sweep
+      // Scan sweep — slow, clear blue beam I→M
       const sweep = stage.querySelector(".lv2h-sweep");
-      const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 3.1 });
+      const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 1.6 });
       sweepTl
-        .fromTo(sweep, { xPercent: -120, opacity: 0 }, { xPercent: 120, opacity: 0.95, duration: 1.2, ease: "power2.inOut" })
-        .to(sweep, { opacity: 0, duration: 0.25 }, "-=0.2");
+        .set(sweep, { left: "-15%", opacity: 0 })
+        .to(sweep, { opacity: 1, duration: 0.35, ease: "power1.out" })
+        .to(sweep, { left: "115%", duration: 3.6, ease: "none" }, "<")
+        .to(sweep, { opacity: 0, duration: 0.35, ease: "power1.in" }, ">-0.35");
 
       // Subtle glitch on outline layer
       const glitchTl = gsap.timeline({ repeat: -1, repeatDelay: 7 });
