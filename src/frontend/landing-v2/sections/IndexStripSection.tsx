@@ -3,11 +3,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const COLS = [
+const COLS: { label: string; value: string; value2?: string }[] = [
   { label: "LOCATION", value: "India,", value2: "Hyderabad" },
   { label: "REVISIONS", value: "+15" },
   { label: "FOUNDED", value: "2026" },
-] as const;
+];
 
 /** Section 3 — three-column metrics strip. */
 export function IndexStripSection() {
