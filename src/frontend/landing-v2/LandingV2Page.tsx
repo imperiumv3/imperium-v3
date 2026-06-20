@@ -6,6 +6,8 @@ import { BottomFrame } from "./components/BottomFrame";
 import { Cursor } from "./components/Cursor";
 import { SectionPlaceholder } from "./components/SectionPlaceholder";
 import { HeroSection } from "./sections/HeroSection";
+import { ManifestoSection } from "./sections/ManifestoSection";
+import { IndexStripSection } from "./sections/IndexStripSection";
 import { HorizontalPanelSection } from "./sections/HorizontalPanelSection";
 
 export default function LandingV2Page() {
@@ -14,15 +16,19 @@ export default function LandingV2Page() {
 
   return (
     <div className="lv2-shell">
+      <div className="lv2-atmosphere" aria-hidden />
       <Cursor />
       <TopFrame />
 
       <main className="lv2-main">
         <HeroSection />
-        <SectionPlaceholder index={2} label="MANIFESTO" />
-        <SectionPlaceholder index={3} label="INDEX STRIP" />
+        <ManifestoSection />
+        <IndexStripSection />
         <SectionPlaceholder index={4} label="SECTION 04" />
-        <SectionPlaceholder index={5} label="TRANSITION" variant="dark" />
+        <section data-section={5} data-lv2-transition className="lv2-section lv2-transition">
+          <span className="lv2-sec-index">— 05 / 12</span>
+          <h2 className="lv2-sec-title">TRANSITION</h2>
+        </section>
         <SectionPlaceholder index={6} label="METHOD" />
         <HorizontalPanelSection />
         <SectionPlaceholder index={11} label="SECTION 11" />
