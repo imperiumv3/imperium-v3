@@ -822,3 +822,201 @@
   .lv2-bottom { grid-template-columns: 1fr; row-gap: 8px; text-align: center; }
   .lv2-bottom-left, .lv2-bottom-center, .lv2-bottom-right { justify-self: center; }
 }
+
+/* ---------------- SECTION 11 — THE CREATOR ---------------- */
+.lv2s11 {
+  position: relative;
+  min-height: 100vh;
+  background: #000;
+  padding: 0;
+  overflow: hidden;
+}
+.lv2s11-poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  object-fit: cover;
+  object-position: center top;
+}
+.lv2s11-cards {
+  position: absolute;
+  left: 1.4%;
+  right: 1.4%;
+  bottom: 4.5%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  z-index: 3;
+  pointer-events: auto;
+}
+.lv2s11-card {
+  position: relative;
+  height: 150px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(8,8,10,0.42);
+  padding: 16px 18px;
+  color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.lv2s11-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.55);
+}
+.lv2s11-card-red:hover { border-color: rgba(255,80,80,0.45); box-shadow: 0 14px 32px rgba(220,30,30,0.22); }
+.lv2s11-card-blue:hover { border-color: rgba(90,160,255,0.45); box-shadow: 0 14px 32px rgba(40,110,220,0.22); }
+.lv2s11-card-num {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.55);
+}
+.lv2s11-card-red .lv2s11-card-num { color: #ff5a5a; }
+.lv2s11-card-blue .lv2s11-card-num { color: #4aa8ff; }
+.lv2s11-card-title {
+  margin: 10px 0 0;
+  font-family: "Bungee", "Anton", sans-serif;
+  font-size: clamp(18px, 1.6vw, 26px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+/* ---------------- SECTION 12 — ENTER IMPERIUM ---------------- */
+.lv2s12 {
+  position: relative;
+  min-height: 100vh;
+  background: #04060a;
+  padding: 0;
+  overflow: hidden;
+}
+.lv2s12-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+}
+.lv2s12-fog {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(80,120,160,0.12), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.45) 100%);
+  pointer-events: none;
+}
+.lv2s12-ctas {
+  position: absolute;
+  left: 8.3%;
+  bottom: 21.5%;
+  display: flex;
+  gap: 14px;
+  z-index: 3;
+  align-items: center;
+}
+.lv2s12-btn {
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: clamp(11px, 0.9vw, 14px);
+  padding: 14px 22px;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,0.55);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.lv2s12-btn-secondary {
+  background: rgba(8,18,28,0.62);
+  backdrop-filter: blur(2px);
+}
+.lv2s12-btn-secondary:first-child {
+  background: #fff;
+  color: #050505;
+  border-color: #fff;
+}
+.lv2s12-btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+}
+.lv2s12-btn-primary {
+  background: #d22020;
+  border-color: #d22020;
+  padding-right: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.lv2s12-btn-primary:hover {
+  background: #ee2828;
+  border-color: #ee2828;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(220,30,30,0.4);
+}
+.lv2s12-trailers {
+  position: absolute;
+  right: 4.5%;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 3;
+}
+.lv2s12-trailer {
+  position: relative;
+  width: 320px;
+  height: 140px;
+  border-radius: 4px;
+  background: rgba(8,16,24,0.72);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.lv2s12-trailer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.5);
+}
+.lv2s12-trailer-play {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+}
+.lv2s12-trailer strong {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.lv2s12-trailer-time {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .lv2s11-cards { grid-template-columns: repeat(2, 1fr); bottom: 3%; }
+  .lv2s11-card { height: 110px; }
+  .lv2s12-ctas { left: 5%; bottom: 22%; flex-wrap: wrap; }
+  .lv2s12-trailers { position: static; padding: 80vh 5% 4%; width: 100%; }
+  .lv2s12-trailer { width: 100%; }
+}
+
