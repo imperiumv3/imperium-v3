@@ -14,6 +14,8 @@ import { JourneySection } from "./sections/JourneySection";
 import { ProfileAnalyzeSection } from "./sections/ProfileAnalyzeSection";
 import { WorkflowAgentSection } from "./sections/WorkflowAgentSection";
 import { ExecuteSection } from "./sections/ExecuteSection";
+import { CreatorSection } from "./sections/CreatorSection";
+import { EnterImperiumSection } from "./sections/EnterImperiumSection";
 
 export default function LandingV2Page() {
   useLenisScroll();
@@ -36,6 +38,8 @@ export default function LandingV2Page() {
         <ProfileAnalyzeSection />
         <WorkflowAgentSection />
         <ExecuteSection />
+        <CreatorSection />
+        <EnterImperiumSection />
       </main>
 
       <BottomFrame />
