@@ -20,7 +20,11 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: "/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      { rel: "preload", as: "image", href: "/__l5e/assets-v1/5181e530-2c62-472d-b734-ff73def486ed/hero_bg.png", fetchpriority: "high" },
+      { rel: "preload", as: "image", href: "/__l5e/assets-v1/733a0214-9ddd-4a0e-8663-7b6473a999fc/hero_character.png", fetchpriority: "high" },
+    ],
   }),
   component: Landing,
 });
