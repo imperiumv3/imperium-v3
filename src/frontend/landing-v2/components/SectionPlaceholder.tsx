@@ -9,10 +9,12 @@ interface Props {
   children?: ReactNode;
   /** Minimum height in vh. Default full viewport. */
   minVh?: number;
+  /** "dark" paints a self-contained black background (used for Transition). */
+  variant?: "default" | "dark";
 }
 
 /** Shared full-screen placeholder with fade-up reveal and subtle parallax. */
-export function SectionPlaceholder({ index, label, children, minVh = 100 }: Props) {
+export function SectionPlaceholder({ index, label, children, minVh = 100, variant = "default" }: Props) {
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -58,7 +60,7 @@ export function SectionPlaceholder({ index, label, children, minVh = 100 }: Prop
     <section
       ref={ref}
       data-section={index}
-      className="lv2-section"
+      className={`lv2-section${variant === "dark" ? " lv2-section-dark" : ""}`}
       style={{ minHeight: `${minVh}vh` }}
     >
       <span className="lv2-sec-meta lv2-sec-index">— {String(index).padStart(2, "0")} / 12</span>

@@ -53,6 +53,7 @@ export function HorizontalPanelSection() {
       <div className="lv2-hp-track">
         {PANELS.map(({ n, label }) => (
           <div key={n} className="lv2-hp-panel" data-section={n}>
+            <span className="lv2-sec-index">— {String(n).padStart(2, "0")} / 12</span>
             <h2 className="lv2-sec-title">{label}</h2>
           </div>
         ))}
