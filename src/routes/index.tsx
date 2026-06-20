@@ -22,8 +22,8 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "/" },
-      { rel: "preload", as: "image", href: "/__l5e/assets-v1/5181e530-2c62-472d-b734-ff73def486ed/hero_bg.png", fetchPriority: "high" },
-      { rel: "preload", as: "image", href: "/__l5e/assets-v1/733a0214-9ddd-4a0e-8663-7b6473a999fc/hero_character.png", fetchPriority: "high" },
+      { rel: "preload", as: "image", href: "https://id-preview--4f05bc1d-2e69-4edc-952a-395805087a34.lovable.app/__l5e/assets-v1/5181e530-2c62-472d-b734-ff73def486ed/hero_bg.png", fetchPriority: "high" },
+      { rel: "preload", as: "image", href: "https://id-preview--4f05bc1d-2e69-4edc-952a-395805087a34.lovable.app/__l5e/assets-v1/733a0214-9ddd-4a0e-8663-7b6473a999fc/hero_character.png", fetchPriority: "high" },
     ],
   }),
   component: Landing,
