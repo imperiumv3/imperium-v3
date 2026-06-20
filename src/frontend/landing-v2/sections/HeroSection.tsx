@@ -59,9 +59,9 @@ export function HeroSection() {
           const cx = r.left + r.width / 2;
           const cy = r.top + r.height / 2;
           const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-          const f = Math.max(0, 1 - dist / 220);
-          y(-3 * f); // clamped to -3px max
-          opacity(1 - 0.15 * f);
+          const f = Math.max(0, 1 - dist / 260);
+          y(-14 * f); // premium GlyphsLabs-style lift
+          opacity(1 - 0.22 * f);
         });
         if (charX && charY) {
           const nx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -77,19 +77,22 @@ export function HeroSection() {
       stage.addEventListener("pointermove", onMove);
       stage.addEventListener("pointerleave", onLeave);
 
-      // Scan sweep
+      // Scan sweep — clearly visible left → right across IMPERIUM
       const sweep = stage.querySelector(".lv2h-sweep");
-      const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 3.1 });
+      const sweepTl = gsap.timeline({ repeat: -1, repeatDelay: 2.4 });
       sweepTl
-        .fromTo(sweep, { xPercent: -120, opacity: 0 }, { xPercent: 120, opacity: 0.95, duration: 1.2, ease: "power2.inOut" })
-        .to(sweep, { opacity: 0, duration: 0.25 }, "-=0.2");
+        .set(sweep, { xPercent: -180, opacity: 0 })
+        .to(sweep, { opacity: 1, duration: 0.18, ease: "power2.out" })
+        .to(sweep, { xPercent: 520, duration: 1.6, ease: "power2.inOut" }, "<")
+        .to(sweep, { opacity: 0, duration: 0.25, ease: "power2.in" }, "-=0.25");
 
-      // Subtle glitch on outline layer
-      const glitchTl = gsap.timeline({ repeat: -1, repeatDelay: 7 });
+      // Subtle but noticeable glitch on outline layer every 6–8s
+      const glitchTl = gsap.timeline({ repeat: -1, repeatDelay: 6.5 });
       glitchTl
-        .to(frontRef.current, { x: 2, duration: 0.05, ease: "steps(1)" })
-        .to(frontRef.current, { x: -2, duration: 0.05, ease: "steps(1)" })
-        .to(frontRef.current, { x: 0, duration: 0.05, ease: "steps(1)" });
+        .to(frontRef.current, { x: 4, skewX: 2, duration: 0.04, ease: "steps(1)" })
+        .to(frontRef.current, { x: -5, skewX: -3, duration: 0.05, ease: "steps(1)" })
+        .to(frontRef.current, { x: 2, skewX: 1, duration: 0.04, ease: "steps(1)" })
+        .to(frontRef.current, { x: 0, skewX: 0, duration: 0.04, ease: "steps(1)" });
 
       return () => {
         stage.removeEventListener("pointermove", onMove);
