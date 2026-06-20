@@ -246,8 +246,8 @@
 .lv2h-front {
   z-index: 4;
   color: transparent;
-  -webkit-text-stroke: 2.5px #ffffff;
-  text-stroke: 2.5px #ffffff;
+  -webkit-text-stroke: 3px #ffffff;
+  text-stroke: 3px #ffffff;
   paint-order: stroke fill;
   max-width: none;
 }
