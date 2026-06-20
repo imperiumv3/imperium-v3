@@ -181,6 +181,16 @@ html[data-lv2-theme="dark"] .lv2-shell::after { opacity: 0.09; }
   text-align: center;
 }
 .lv2-sec-index {
+
+/* ---------------- TRANSITION (dark, self-contained) ---------------- */
+.lv2-section-dark {
+  background: #0a0a0a;
+  color: #f1ece6;
+  isolation: isolate;
+}
+.lv2-section-dark .lv2-sec-title { color: #f1ece6; }
+.lv2-section-dark .lv2-sec-index { color: rgba(241, 236, 230, 0.6); }
+
   position: absolute; top: 100px; left: 40px;
   font-family: var(--lv2-font-sans);
   font-size: 11px; letter-spacing: 0.3em;
