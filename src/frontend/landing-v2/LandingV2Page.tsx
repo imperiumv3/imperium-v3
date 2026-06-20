@@ -21,12 +21,12 @@ export default function LandingV2Page() {
         <HeroSection />
         <SectionPlaceholder index={2} label="MANIFESTO" />
         <SectionPlaceholder index={3} label="INDEX STRIP" />
-        <SectionPlaceholder index={4} />
-        <SectionPlaceholder index={5} label="TRANSITION" />
+        <SectionPlaceholder index={4} label="SECTION 04" />
+        <SectionPlaceholder index={5} label="TRANSITION" variant="dark" />
         <SectionPlaceholder index={6} label="METHOD" />
         <HorizontalPanelSection />
-        <SectionPlaceholder index={11} />
-        <SectionPlaceholder index={12} />
+        <SectionPlaceholder index={11} label="SECTION 11" />
+        <SectionPlaceholder index={12} label="SECTION 12" />
       </main>
 
       <BottomFrame />
