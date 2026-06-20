@@ -258,27 +258,27 @@
 }
 /* Scan sweep — thin diagonal light bar across the word band */
 .lv2h-sweep {
-  position: absolute; left: 0; top: 54%;
+  position: absolute; left: 0; top: 50%;
   transform: translateY(-50%);
   z-index: 5; pointer-events: none;
-  width: 28%; height: 36%;
+  width: 22%; height: 44%;
   background: linear-gradient(105deg,
     rgba(80,180,255,0) 0%,
-    rgba(80,180,255,0) 38%,
-    rgba(120,210,255,0.85) 49%,
+    rgba(80,180,255,0) 30%,
+    rgba(140,220,255,0.95) 46%,
     rgba(255,255,255,1) 50%,
-    rgba(120,210,255,0.85) 51%,
-    rgba(80,180,255,0) 62%,
+    rgba(140,220,255,0.95) 54%,
+    rgba(80,180,255,0) 70%,
     rgba(80,180,255,0) 100%);
-  filter: blur(0.5px) drop-shadow(0 0 12px rgba(80,180,255,0.7));
+  filter: blur(0.3px) drop-shadow(0 0 18px rgba(120,210,255,0.95)) drop-shadow(0 0 36px rgba(80,180,255,0.6));
   mix-blend-mode: screen;
   opacity: 0;
 }
 @media (max-width: 900px) {
-  .lv2h-word { font-size: clamp(96px, 22vw, 220px); }
+  .lv2h-word { font-size: clamp(82px, 19vw, 190px); }
   .lv2h-character { height: 88vh; }
   .lv2h-king { font-size: clamp(24px, 6vw, 48px); left: 6vw; top: 32%; }
-  .lv2h-front { -webkit-text-stroke-width: 1.5px; }
+  .lv2h-front { -webkit-text-stroke-width: 2px; }
 }
 
 
