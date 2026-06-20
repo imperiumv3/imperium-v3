@@ -1,190 +1,104 @@
-# Section 1 Hero — Full Rebuild (poster-accurate)
+# Sections 4–12 — Full UI Rebuild
 
-Scope: only `src/frontend/landing-v2/sections/HeroSection.tsx`, the `.lv2h-*` block in `src/frontend/landing-v2/landing-v2.css`, and the two hero asset pointers. Sections 2–12, top frame, bottom frame, transitions, horizontal scroll, and routing are not touched.
+Goal: Build each section's UI from scratch in pure code (HTML/CSS/GSAP). Stop using the supplied reference JPGs as background `<img>` fills. References stay as visual targets only. All sections fit between the fixed top frame and bottom frame (existing). Hero is exempt.
 
-## 1. Replace hero assets
+## Global
 
-Overwrite the existing `.asset.json` pointers via the `lovable-assets` CLI from the user-uploads mount:
+- New helper `<SectionShell>` wrapping each section in a `100vh` viewport that respects top/bottom fixed frames (`padding-top: var(--lv2-frame-h)`, `padding-bottom: var(--lv2-foot-h)`), with consistent `inner` max-width.
+- New `<ScrollProgressRail>` fixed on the right edge: vertical labeled bars for sections 4–12, active bar fills/glows based on `IntersectionObserver` — mirrors GlyphsLabs section indicator.
+- Glass utility class `.lv2-glass` — `backdrop-filter: blur(22px) saturate(140%)`, `background: linear-gradient(...rgba)`, animated border-glow that follows cursor via CSS vars `--mx/--my` (no extra JS lib).
+- Remove all `<img src=reference.webp>` background usage. Delete or stop importing the section reference WebP asset JSONs (keep `profile-character` and `hero_character` only).
 
-- `/mnt/user-uploads/file_0000000029a87209aa51bcf66f42ed12.png` → `src/frontend/landing-v2/assets/hero_bg.png.asset.json` (white / red band / white poster background with smoke corners)
-- `/mnt/user-uploads/file_000000004018720993a3238ea9e0cdfa.png` → `src/frontend/landing-v2/assets/hero_character.png.asset.json` (transparent suit character, no black bg)
+## Section 4 — Future Agents (4 glass cards, image "comes out" of card)
 
-Same filenames, so all imports keep working.
+- Layout: 4-card horizontal row, dark slate gradient bg, soft orange accent grid behind.
+- Each card: glassmorphism panel with a character SVG/illustration absolutely positioned so head/shoulders rise ABOVE the card's top edge (`top: -40px; transform-origin: bottom`).
+- Cards: Research, Coding, Job, Workflow. Number "01–04", title, 1-line description, glow ring on hover.
+- Hover: cursor-driven radial glow on glass border + lift `translateY(-8px)` + character `scale(1.04)` + parallax tilt.
+- Characters: 4 small pose illustrations generated via imagegen (transparent PNG, ~600x900) — minimalist line-art figures matching IMPERIUM tone.
 
-## 2. Hero DOM — exactly 4 layers + KING label
+## Section 5 — Transition (pure motion, no text)
+
+- 80vh dark band. No headline.
+- Background: scroll-driven horizontal light sweep + drifting particle field (Canvas or 30 CSS dots with GSAP).
+- Top edge: thin morphing gradient line that stretches and contracts with scroll.
+- Triggers next section's horizontal track.
+
+## Sections 6 → 10 — Horizontal scrolling track (single pinned wrapper)
+
+New component `HorizontalNarrative.tsx` pins one 100vh container and translates a horizontal track using GSAP ScrollTrigger pin + `xPercent` over `~5 * window.innerWidth` scroll distance. Inside the track, 5 panels:
 
 ```
-<section class="lv2h-hero">
-  <img class="lv2h-bg" src={heroBg.url} />           // Layer 1
-  <span class="lv2h-king">KING</span>                // poster label (in red band, upper-left)
-  <h1 class="lv2h-word lv2h-back">IMPERIUM</h1>      // Layer 2 (solid white)
-  <img class="lv2h-character" src={heroChar.url} />  // Layer 3 (transparent PNG)
-  <h1 class="lv2h-word lv2h-front">IMPERIUM</h1>     // Layer 4 (outline)
-  <div class="lv2h-sweep" />                         // scan sweep
-</section>
+[6 STORY] [7 JOURNEY] [8 PROFILE INTEL] [9 WORKFLOW] [10 EXECUTE]
 ```
 
-No cards, panels, gradients, grain, dark overlays, HUD, or extra typography. Both `lv2h-word` elements share identical font/size/position/transform-origin so the outline sits pixel-perfect over the solid layer.
+A fixed mini-bar (top of horizontal area) shows 5 numbered chips; active chip highlighted (driven by track progress 0–1). Each panel is full viewport width/height between frames.
 
-## 3. Static composition rules (must match poster before any animation)
+### 6 — Storytelling
 
-- `.lv2h-hero`: `position: relative; height: 100vh; overflow: hidden; background: #fff;` — break out of the top-frame padding as the current implementation does.
-- `.lv2h-bg`: `position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;` — fills entire hero, no tint/overlay.
-- `.lv2h-word` (both): Anton, `font-size: clamp(220px, 28vw, 520px); line-height: 0.85; letter-spacing: -0.01em; white-space: nowrap; width: max-content; position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%); transform-origin: 50% 50%;`
-- `.lv2h-back`: `color: #fff; z-index: 2;`
-- `.lv2h-character`: `position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); height: 105vh; width: auto; z-index: 3; pointer-events: none;` — head reaches into upper white area, arms/body overlap typography naturally because character sits between back text (z2) and outline text (z4).
-- `.lv2h-front`: `color: transparent; -webkit-text-stroke: 2.5px #fff; z-index: 4;`
-- `.lv2h-king`: Anton, `color: #fff; font-size: clamp(36px, 4.5vw, 84px); position: absolute; left: 7vw; top: 42%; z-index: 4;` — positioned inside the red band, above-left of IMPERIUM as in the reference.
-- Mobile (`max-width: 900px`): word `clamp(96px, 22vw, 220px)`, character `height: 88vh`, KING smaller.
+- Full-bleed type-driven panel: oversized layered word "STORY" with parallax color split, animated underline; supporting paragraph fading in.
+- No reference image dropped in. Built with typography + gradient bg.
 
-Checkpoint: take a Playwright screenshot at 1280×800. Only if it visibly matches the reference poster do effects in step 4 get wired up.
+### 7 — Journey (hero-style rider)
 
-## 4. Effects (added only after static passes)
+- Mirrors hero composition: large background gradient (red→black), central rider illustration (imagegen, transparent PNG), foreground glass cards with "Profile Analyze / Orchestrated / Execution" stacking at bottom.
+- Hover on rider: cursor parallax + spec glow. Cards: glass with cursor-follow glow.
 
-Inside `useGSAP` in HeroSection, cleaned up on unmount:
+### 8 — Profile Intelligence (built from scratch, not reference)
 
-- **Per-letter cursor lift**: split both words into `<span class="lv2h-char">`. On `pointermove`, compute distance from cursor to each char center; `y: -3 * falloff`, `opacity: 1 - 0.15*falloff` via `gsap.quickTo`, radius 220px. No scale/rotate/skew.
-- **Character parallax**: `x: ±8px`, `y: ±4px` via quickTo based on normalized cursor offset.
-- **Scan sweep**: thin white-gradient bar across IMPERIUM, `mix-blend-mode: screen`, low opacity, GSAP repeat every 4.5s, `xPercent -120 → 120` over 1.4s.
-- **Glitch**: every 7s, 3 × 50ms `x: ±2px` steps applied only to `.lv2h-front`. No RGB split, no flashing.
-- **Scroll**: single ScrollTrigger scrub, no pin. Typography `yPercent: -3`, character `yPercent: -2`, opacity `1 → 0.85` between `top top` and `bottom top`.
+- Two-column dashboard look: left = animated radar/score meter (SVG circle + GSAP), right = metric tiles (Strength 9.4, Readiness 8.8, ATS 92, Match 88) counting up.
+- Center: optional avatar from auth session (keep existing `useSession` swap logic) inside a circular glass ring with rotating data ticks.
+- "COMMAND UP" CTA pill (existing behaviour).
 
-## 5. CSS cleanup
+### 9 — Workflow Agent
 
-In `landing-v2.css`, replace the entire current `.lv2h-*` block (hero, bg, grain, stack, word, back, character, front, sweep, mobile) with the rules above. Remove `.lv2h-grain` and `.lv2h-stack` (no longer used). Inject Anton via `<link>` in HeroSection (existing pattern).
+- Ink yin-yang aesthetic built with CSS: split black/white diagonal, 3 glass cards (Job Discovery, Resume Studio, Application Tracker) arranged in arc. Cursor-glow on each. Connector SVG lines pulsing between them.
 
-## 6. Out of scope
+### 10 — Execute
 
-- No edits to `LandingV2Page.tsx`, `TopFrame.tsx`, `BottomFrame.tsx`, transition, sections 2–12, hooks, or routing.
-- No new dependencies.
+- Red/black panel with 4 step indicators (SEARCH→MATCH→OPTIMIZE→APPLY) as glass chips on a horizontal rail with animated progress fill. Central glass "console" panel with typed pseudo-log lines. "EXECUTE TASK" CTA routes to `/jobs` or `/auth`.
+
+## Section 11 — Creator
+
+- Vertical-scroll resumes here. Built from scratch: left column = name "DINESH" oversized red display type with stroke variant; right column = bio paragraphs + 4 numbered glass cards (Journey/Build/Vision/Future) in a 2×2 grid with cursor-glow.
+
+## Section 12 — Enter Imperium
+
+- Final cinematic CTA built from typography only.
+- Stacked headline "THE RISE OF / IMPERIUM" with shimmer.
+- 3 glass action buttons in a row: EXPLORE SYSTEM (scrolls to 3), VIEW AGENTS (scrolls to 4), ENTER IMPERIUM (routes /dashboard or /auth).
+- 2 trailer glass cards beneath linking to /jobs, /dashboard.
+
+## Files
+
+Created
+
+- `components/SectionShell.tsx`
+- `components/ScrollProgressRail.tsx`
+- `components/GlassCard.tsx` (cursor-glow)
+- `sections/HorizontalNarrative.tsx` (wraps 6–10)
+- Replace each `sections/*.tsx` body (4,5,6,7,8,9,10,11,12) with new code.
+
+Edited
+
+- `LandingV2Page.tsx`: replace 6–10 with `<HorizontalNarrative />`; add `<ScrollProgressRail />`.
+- `landing-v2.css`: append complete style blocks for new components and sections; remove now-unused poster rules.
+
+Asset cleanup
+
+- Stop importing `section-06/07/09/10/11/12` reference WebPs (files remain on disk, unused).
+- Generate small transparent character PNGs for sections 4 and 7 via imagegen.
 
 ## Verification
 
-1. Playwright screenshot of `/` at 1280×800 → confirm composition matches the reference (background fills hero, red band centered, IMPERIUM near full width, character dominant with head above type, outline aligned, KING inside red band upper-left, no black rectangle).
-2. Hover over IMPERIUM → letters lift subtly, no jumpiness.
-3. Scroll a bit → motion is gentle (~3%), section 2 still renders normally.
-4. Apply only these final changes to the existing Section 1 Hero implementation. Do not modify anything else.
-  1. Change IMPERIUM positioning:
-  ```css
-  top: 54%;
+After implementation: Playwright over `localhost:8080` to scroll through and screenshot sections 4 → 12, confirming:
 
-  ```
-  instead of:
-  ```css
-  top: 58%;
+- No raw reference image fills.
+- Horizontal scroll for 6–10 pins and advances chips.
+- Glass cards visibly glow under cursor.
+- All CTAs route correctly.
 
-  ```
-  Reason: maintain safe spacing from the fixed bottom frame while keeping the word centered in the red band.
-  ---
-  2. Change KING positioning:
-  ```css
-  left: 10vw;
-  top: 34%;
+## Out of scope
 
-  ```
-  instead of:
-  ```css
-  left: 7vw;
-  top: 42%;
-
-  ```
-  Reason: place KING correctly inside the red band above the main IMPERIUM word, matching the poster composition.
-  ---
-  3. Character sizing:
-  Keep:
-  ```css
-  height: 105vh;
-
-  ```
-  Add:
-  ```css
-  max-height: none;
-
-  ```
-  Reason: prevent responsive constraints from shrinking the character.
-  ---
-  4. IMPERIUM text layers:
-  Add:
-  ```css
-  max-width: none;
-
-  ```
-  to both:
-  ```css
-  .lv2h-back
-  .lv2h-front
-
-  ```
-  Reason: prevent layout constraints from limiting the typography width.
-  ---
-  5. Background positioning:
-  Replace:
-  ```css
-  object-position: center;
-
-  ```
-  with:
-  ```css
-  object-position: center 45%;
-
-  ```
-  Reason: align the red band perfectly with the typography and character composition.
-  ---
-  6. Outline text rendering:
-  Add to `.lv2h-front`:
-  ```css
-  paint-order: stroke fill;
-
-  ```
-  Reason: cleaner and sharper outline rendering on large typography.
-  ---
-  7. Cursor interaction:
-  Clamp letter lift.
-  Maximum movement:
-  ```css
-  translateY(-3px);
-
-  ```
-  Never exceed -3px regardless of cursor proximity.
-  ---
-  8. Character interaction:
-  Ensure character remains:
-  ```css
-  pointer-events: none;
-  user-select: none;
-
-  ```
-  Reason: character must never intercept typography hover interactions.
-  ---
-  9. Scroll behavior:
-  Remove hero opacity animation completely.
-  Delete:
-  ```css
-  opacity: 1 → 0.85
-
-  ```
-  Keep only:
-  ```css
-  Typography Y = -3%
-  Character Y = -2%
-
-  ```
-  No fading.
-  Reference composition stays visually solid while scrolling.
-  ---
-  10. Verification:
-  Capture screenshots at:
-  - 1920×1080
-  - 1366×768
-  Confirm:
-  - Red band centered
-  - IMPERIUM fills width correctly
-  - Character remains dominant
-  - KING sits inside red band
-  - Fixed frames remain untouched
-  - No overlap with top or bottom frame
-  - No black rectangle
-  - Poster composition matches reference
-  ```
-
-  ```
+- Hero, Manifesto, IndexStrip, TopFrame, BottomFrame, Cursor untouched.
+- No backend / data changes. What I'm saying complete ui build not only changes . build complete ui properly with interactive elements.all ui elements clearly work properly not reference image directly place .
