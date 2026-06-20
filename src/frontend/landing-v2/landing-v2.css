@@ -264,3 +264,31 @@ html[data-lv2-theme="dark"] .lv2-shell::after { opacity: 0.09; }
   .lv2-bottom { grid-template-columns: 1fr; row-gap: 8px; text-align: center; }
   .lv2-bottom-left, .lv2-bottom-center, .lv2-bottom-right { justify-self: center; }
 }
+
+/* ---------------- HERO CHARS ---------------- */
+.lv2-hero-word { display: inline-flex; }
+.lv2-hero-char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: 50% 100%;
+}
+
+/* ---------------- HORIZONTAL PROGRESS ---------------- */
+.lv2-hp-progress {
+  position: absolute; left: 40px; right: 40px; bottom: 90px;
+  display: flex; align-items: center; gap: 18px;
+  font-size: 10px; letter-spacing: 0.4em; color: var(--lv2-muted);
+}
+.lv2-hp-progress-track {
+  flex: 1; height: 1px; background: var(--lv2-line); position: relative; overflow: hidden;
+}
+.lv2-hp-progress-fill {
+  display: block; height: 100%; width: 100%;
+  background: var(--lv2-fg);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 0.15s linear;
+}
+.lv2-hp-progress-count { font-variant-numeric: tabular-nums; }
+
+/* slightly thicker divider for visibility */
+.lv2-top-divider { height: 1px; background: var(--lv2-line); }
