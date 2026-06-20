@@ -1,79 +1,82 @@
-import { useRef } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useSession } from "@frontend/auth/session";
-import executeAsset from "../assets/section-10-execute/execute.webp.asset.json";
+import { GlassCard } from "../components/GlassCard";
 
-const STEPS = ["SEARCH", "MATCH", "OPTIMIZE", "APPLY"] as const;
+const STEPS = [
+  { num: "01", label: "SEARCH" },
+  { num: "02", label: "MATCH" },
+  { num: "03", label: "OPTIMIZE" },
+  { num: "04", label: "APPLY" },
+] as const;
+
+const LOG = [
+  "▶ booting imperium.execute()",
+  "✓ index 4,219 fresh roles  · 12 sources",
+  "✓ filtered to 84 high-match opportunities",
+  "✓ resume tailored · keyword density 0.94",
+  "✓ cover letter generated · tone: confident",
+  "▶ dispatching applications…",
+  "✓ 18 applied · 4 follow-ups queued",
+  "■ execution complete · awaiting next directive",
+];
 
 export function ExecuteSection() {
   const ref = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const session = useSession();
+  const [step, setStep] = useState(0);
+  const [lines, setLines] = useState<string[]>([]);
 
-  useGSAP(
-    () => {
-      if (!ref.current) return;
-      const steps = ref.current.querySelectorAll(".lv2s10-step-indicator");
-      gsap.fromTo(
-        steps,
-        { opacity: 0.35 },
-        {
-          opacity: 1,
-          stagger: 0.18,
-          repeat: -1,
-          yoyo: true,
-          duration: 0.8,
-          ease: "power1.inOut",
-        },
-      );
-      const panel = ref.current.querySelector(".lv2s10-panel-glow");
-      if (panel) {
-        gsap.to(panel, {
-          opacity: 0.9,
-          duration: 1.4,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => {
-          if (t.trigger === ref.current) t.kill();
-        });
-      };
-    },
-    { scope: ref },
-  );
+  useEffect(() => {
+    const stepTimer = setInterval(() => setStep((s) => (s + 1) % STEPS.length), 1600);
+    return () => clearInterval(stepTimer);
+  }, []);
+
+  useEffect(() => {
+    let i = 0;
+    setLines([]);
+    const t = setInterval(() => {
+      setLines((prev) => (i < LOG.length ? [...prev, LOG[i++]] : prev));
+      if (i >= LOG.length) clearInterval(t);
+    }, 480);
+    return () => clearInterval(t);
+  }, []);
 
   return (
-    <section ref={ref} data-section={10} className="lv2-section lv2s10">
-      <span className="lv2-sec-index">— 10 / 12</span>
-      <div className="lv2s10-wrap">
-        <img src={executeAsset.url} alt="Execute automation poster" className="lv2s10-poster" loading="lazy" decoding="async" />
+    <section ref={ref} data-section={10} className="lv2-hpanel lv2s10">
+      <div className="lv2s10-bg" aria-hidden />
+      <div className="lv2s10-inner">
+        <header className="lv2s10-head">
+          <span className="lv2-shell-index">— 10 / 12</span>
+          <h2>EXECUTE.</h2>
+          <p>One command. Four agents move.</p>
+        </header>
 
-        <button
-          type="button"
-          className="lv2s10-execute-btn"
-          onClick={() => navigate({ to: session ? "/jobs" : "/auth" })}
-        >
-          EXECUTE TASK
-        </button>
-
-        <Link to={session ? "/jobs" : "/auth"} className="lv2s10-panel-link" aria-label="Watch automation in action">
-          <span className="lv2s10-panel-glow" aria-hidden />
-        </Link>
-
-        <div className="lv2s10-steps" aria-hidden>
-          {STEPS.map((step, index) => (
-            <div key={step} className={`lv2s10-step-indicator lv2s10-step-${index + 1}`}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{step}</strong>
+        <div className="lv2s10-steps" role="list">
+          {STEPS.map((s, i) => (
+            <div key={s.num} role="listitem" className={`lv2s10-step ${i === step ? "is-active" : ""} ${i < step ? "is-done" : ""}`}>
+              <span className="lv2s10-step-num">{s.num}</span>
+              <span className="lv2s10-step-label">{s.label}</span>
+              <span className="lv2s10-step-bar" aria-hidden />
             </div>
           ))}
         </div>
+
+        <GlassCard className="lv2s10-console" glowColor="rgba(255,80,80,0.55)">
+          <div className="lv2s10-console-bar" aria-hidden>
+            <span /><span /><span />
+            <em>imperium ~ /execute</em>
+          </div>
+          <pre className="lv2s10-log">
+            {lines.join("\n")}
+            <span className="lv2s10-caret" aria-hidden>▍</span>
+          </pre>
+        </GlassCard>
+
+        <button type="button" className="lv2s10-cta" onClick={() => navigate({ to: session ? "/jobs" : "/auth" })}>
+          EXECUTE TASK →
+        </button>
       </div>
     </section>
   );

@@ -1,51 +1,31 @@
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import storytellingAsset from "../assets/section-06-storytelling/storytelling.webp.asset.json";
+import { GlassCard } from "../components/GlassCard";
 
 export function StorytellingSection() {
-  const ref = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (!ref.current) return;
-      const poster = ref.current.querySelector(".lv2s6-poster");
-      gsap.fromTo(
-        poster,
-        { scale: 1.06, yPercent: 4 },
-        {
-          scale: 1,
-          yPercent: -4,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 0.8,
-          },
-        },
-      );
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => {
-          if (t.trigger === ref.current) t.kill();
-        });
-      };
-    },
-    { scope: ref },
-  );
-
   return (
-    <section ref={ref} data-section={6} className="lv2-section lv2s6">
-      <span className="lv2-sec-index">— 06 / 12</span>
-      <div className="lv2s6-frame">
-        <img
-          src={storytellingAsset.url}
-          alt="Storytelling poster artwork"
-          className="lv2s6-poster"
-          loading="lazy"
-          decoding="async"
-        />
+    <section data-section={6} className="lv2-hpanel lv2s6">
+      <div className="lv2s6-bg" aria-hidden />
+      <div className="lv2s6-inner">
+        <span className="lv2-shell-index">— 06 / 12</span>
+        <h2 className="lv2s6-title" data-text="STORY">
+          <span className="lv2s6-layer lv2s6-layer-a">STORY</span>
+          <span className="lv2s6-layer lv2s6-layer-b">STORY</span>
+          <span className="lv2s6-layer lv2s6-layer-c">STORY</span>
+        </h2>
+        <p className="lv2s6-kicker">TELLING</p>
+        <div className="lv2s6-grid">
+          <GlassCard className="lv2s6-card" glowColor="rgba(120,160,255,0.55)">
+            <h3>The Origin</h3>
+            <p>Every empire begins with a refusal — a refusal to accept the ordinary. IMPERIUM was forged in that refusal.</p>
+          </GlassCard>
+          <GlassCard className="lv2s6-card" glowColor="rgba(255,255,255,0.55)">
+            <h3>The Arc</h3>
+            <p>Four agents. One operator. A continuous narrative of search, craft, optimize, execute.</p>
+          </GlassCard>
+          <GlassCard className="lv2s6-card" glowColor="rgba(120,200,255,0.55)">
+            <h3>The Promise</h3>
+            <p>You write the chapters. We move the world to meet them.</p>
+          </GlassCard>
+        </div>
       </div>
     </section>
   );

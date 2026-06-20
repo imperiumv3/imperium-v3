@@ -1,14 +1,13 @@
 import { useRef } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSession } from "@frontend/auth/session";
-import enterAsset from "../assets/section-12-enter/enter-imperium.webp.asset.json";
+import { GlassCard } from "../components/GlassCard";
 
 function scrollToSection(index: number) {
-  const el = document.querySelector<HTMLElement>(`[data-section="${index}"]`);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.querySelector<HTMLElement>(`[data-section="${index}"]`)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export function EnterImperiumSection() {
@@ -19,73 +18,63 @@ export function EnterImperiumSection() {
   useGSAP(
     () => {
       if (!ref.current) return;
-      const poster = ref.current.querySelector(".lv2s12-poster");
-      const trailers = ref.current.querySelectorAll(".lv2s12-trailer");
-      gsap.fromTo(
-        poster,
-        { scale: 1.05 },
-        {
-          scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current, start: "top bottom", end: "bottom top", scrub: 0.8,
-          },
-        },
-      );
-      gsap.from(trailers, {
-        y: 24,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 75%", once: true },
+      gsap.to(ref.current.querySelectorAll(".lv2s12-fog span"), {
+        x: (i) => (i % 2 ? 80 : -80),
+        duration: 14, ease: "sine.inOut", repeat: -1, yoyo: true, stagger: 0.4,
       });
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => { if (t.trigger === ref.current) t.kill(); });
-      };
     },
     { scope: ref },
   );
 
-  function onEnter() {
-    if (session) navigate({ to: "/dashboard" });
-    else navigate({ to: "/auth" });
-  }
+  function onEnter() { navigate({ to: session ? "/dashboard" : "/auth" }); }
 
   return (
-    <section ref={ref} data-section={12} className="lv2-section lv2s12">
-      <img
-        src={enterAsset.url}
-        alt="The Rise of Imperium — cinematic hero"
-        className="lv2s12-poster"
-        loading="lazy"
-        decoding="async"
-      />
-      <div className="lv2s12-fog" aria-hidden />
-
-      <div className="lv2s12-ctas">
-        <button type="button" className="lv2s12-btn lv2s12-btn-secondary" onClick={() => scrollToSection(3)}>
-          EXPLORE SYSTEM
-        </button>
-        <button type="button" className="lv2s12-btn lv2s12-btn-secondary" onClick={() => scrollToSection(4)}>
-          VIEW AGENTS
-        </button>
-        <button type="button" className="lv2s12-btn lv2s12-btn-primary" onClick={onEnter}>
-          ENTER IMPERIUM <span aria-hidden>→</span>
-        </button>
+    <section ref={ref} data-section={12} className="lv2-shell-section lv2-tone-red lv2s12">
+      <div className="lv2s12-bg" aria-hidden />
+      <div className="lv2s12-fog" aria-hidden>
+        <span /><span /><span /><span />
       </div>
+      <div className="lv2-shell-inner">
+        <header className="lv2-shell-head">
+          <span className="lv2-shell-index">— 12 / 12</span>
+          <span className="lv2-shell-label">ENTER IMPERIUM</span>
+        </header>
 
-      <div className="lv2s12-trailers" aria-hidden>
-        <Link to={session ? "/jobs" : "/auth"} className="lv2s12-trailer">
-          <span className="lv2s12-trailer-play" aria-hidden>▶</span>
-          <strong>JOB AGENT</strong>
-          <span className="lv2s12-trailer-time">01:48</span>
-        </Link>
-        <Link to={session ? "/dashboard" : "/auth"} className="lv2s12-trailer">
-          <span className="lv2s12-trailer-play" aria-hidden>▶</span>
-          <strong>WORKFLOW AGENT</strong>
-          <span className="lv2s12-trailer-time">02:35</span>
-        </Link>
+        <div className="lv2s12-stage">
+          <h2 className="lv2s12-title">
+            <span>THE RISE OF</span>
+            <span className="lv2s12-title-imperium">
+              <span className="lv2s12-imp-solid">IMPERIUM</span>
+              <span className="lv2s12-imp-outline" aria-hidden>IMPERIUM</span>
+            </span>
+          </h2>
+          <p className="lv2s12-tagline">The empire is open. Step in.</p>
+
+          <div className="lv2s12-ctas">
+            <button type="button" className="lv2s12-btn" onClick={() => scrollToSection(3)}>EXPLORE SYSTEM</button>
+            <button type="button" className="lv2s12-btn" onClick={() => scrollToSection(4)}>VIEW AGENTS</button>
+            <button type="button" className="lv2s12-btn lv2s12-btn-primary" onClick={onEnter}>
+              ENTER IMPERIUM <span aria-hidden>→</span>
+            </button>
+          </div>
+
+          <div className="lv2s12-trailers">
+            <GlassCard className="lv2s12-trailer" glowColor="rgba(255,90,90,0.55)" onClick={() => navigate({ to: session ? "/jobs" : "/auth" })}>
+              <span className="lv2s12-trailer-play" aria-hidden>▶</span>
+              <div>
+                <strong>JOB AGENT</strong>
+                <span>01:48 · Watch in action</span>
+              </div>
+            </GlassCard>
+            <GlassCard className="lv2s12-trailer" glowColor="rgba(255,180,90,0.55)" onClick={() => navigate({ to: session ? "/dashboard" : "/auth" })}>
+              <span className="lv2s12-trailer-play" aria-hidden>▶</span>
+              <div>
+                <strong>WORKFLOW AGENT</strong>
+                <span>02:35 · Watch in action</span>
+              </div>
+            </GlassCard>
+          </div>
+        </div>
       </div>
     </section>
   );

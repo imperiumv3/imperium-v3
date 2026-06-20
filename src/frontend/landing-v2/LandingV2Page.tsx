@@ -4,16 +4,13 @@ import { useThemeScrollSync } from "./hooks/useThemeScrollSync";
 import { TopFrame } from "./components/TopFrame";
 import { BottomFrame } from "./components/BottomFrame";
 import { Cursor } from "./components/Cursor";
+import { ScrollProgressRail } from "./components/ScrollProgressRail";
 import { HeroSection } from "./sections/HeroSection";
 import { ManifestoSection } from "./sections/ManifestoSection";
 import { IndexStripSection } from "./sections/IndexStripSection";
 import { FutureAgentsSection } from "./sections/FutureAgentsSection";
 import { TransitionSection } from "./sections/TransitionSection";
-import { StorytellingSection } from "./sections/StorytellingSection";
-import { JourneySection } from "./sections/JourneySection";
-import { ProfileAnalyzeSection } from "./sections/ProfileAnalyzeSection";
-import { WorkflowAgentSection } from "./sections/WorkflowAgentSection";
-import { ExecuteSection } from "./sections/ExecuteSection";
+import { HorizontalNarrative } from "./sections/HorizontalNarrative";
 import { CreatorSection } from "./sections/CreatorSection";
 import { EnterImperiumSection } from "./sections/EnterImperiumSection";
 
@@ -26,6 +23,7 @@ export default function LandingV2Page() {
       <div className="lv2-atmosphere" aria-hidden />
       <Cursor />
       <TopFrame />
+      <ScrollProgressRail />
 
       <main className="lv2-main">
         <HeroSection />
@@ -33,11 +31,7 @@ export default function LandingV2Page() {
         <IndexStripSection />
         <FutureAgentsSection />
         <TransitionSection />
-        <StorytellingSection />
-        <JourneySection />
-        <ProfileAnalyzeSection />
-        <WorkflowAgentSection />
-        <ExecuteSection />
+        <HorizontalNarrative />
         <CreatorSection />
         <EnterImperiumSection />
       </main>
@@ -46,4 +40,3 @@ export default function LandingV2Page() {
     </div>
   );
 }
-
