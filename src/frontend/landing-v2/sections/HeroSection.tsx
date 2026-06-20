@@ -22,7 +22,7 @@ export function HeroSection() {
     const link = document.createElement("link");
     link.id = id;
     link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Rubik+Mono+One&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Bungee&family=Rubik+Wet+Paint&family=Rampart+One&display=swap";
     document.head.appendChild(link);
   }, []);
 
