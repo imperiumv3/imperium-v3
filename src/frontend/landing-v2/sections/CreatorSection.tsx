@@ -34,7 +34,6 @@ export function CreatorSection() {
   return (
     <section ref={ref} data-section={11} className="lv2s11n">
       <img src={bgAsset.url} alt="" className="lv2s11n-bg" aria-hidden loading="lazy" />
-      <div className="lv2s11n-vignette" aria-hidden />
 
       {/* corner index */}
       <span className="lv2s11n-idx">11</span>
