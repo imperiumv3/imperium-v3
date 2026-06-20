@@ -15,4 +15,17 @@ export default defineConfig({
       disableCsrfMiddlewareWarning: true,
     },
   },
+  vite: {
+    server: {
+      proxy: {
+        // Proxy Lovable CDN asset requests to the public preview in local dev,
+        // since the local dev server doesn't serve /__l5e/* itself.
+        "/__l5e": {
+          target: "https://id-preview--4f05bc1d-2e69-4edc-952a-395805087a34.lovable.app",
+          changeOrigin: true,
+          secure: true,
+        },
+      },
+    },
+  },
 });
