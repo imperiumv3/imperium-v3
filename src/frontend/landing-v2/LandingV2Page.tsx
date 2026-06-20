@@ -19,11 +19,11 @@ export default function LandingV2Page() {
 
       <main className="lv2-main">
         <HeroSection />
-        <SectionPlaceholder index={2} />
-        <SectionPlaceholder index={3} />
+        <SectionPlaceholder index={2} label="MANIFESTO" />
+        <SectionPlaceholder index={3} label="INDEX STRIP" />
         <SectionPlaceholder index={4} />
-        <SectionPlaceholder index={5} />
-        <SectionPlaceholder index={6} />
+        <SectionPlaceholder index={5} label="TRANSITION" />
+        <SectionPlaceholder index={6} label="METHOD" />
         <HorizontalPanelSection />
         <SectionPlaceholder index={11} />
         <SectionPlaceholder index={12} />

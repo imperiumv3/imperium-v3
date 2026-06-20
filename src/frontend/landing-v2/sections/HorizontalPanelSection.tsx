@@ -1,19 +1,28 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/** Sections 7–10 — pinned, horizontal scroll of 4 panels. */
+const PANELS = [
+  { n: 7, label: "Identity" },
+  { n: 8, label: "Narrative" },
+  { n: 9, label: "Digital" },
+  { n: 10, label: "Future" },
+] as const;
+
+/** Sections 7–10 — pinned horizontal scroll with progress indicator. */
 export function HorizontalPanelSection() {
   const ref = useRef<HTMLElement>(null);
+  const fillRef = useRef<HTMLSpanElement>(null);
+  const [active, setActive] = useState(1);
 
   useGSAP(
     () => {
       if (!ref.current) return;
       const track = ref.current.querySelector(".lv2-hp-track") as HTMLElement;
       if (!track) return;
-      const panels = track.querySelectorAll(".lv2-hp-panel");
-      const distance = (panels.length - 1) * 100; // % of viewport width
+      const count = PANELS.length;
+      const distance = (count - 1) * 100;
 
       const tween = gsap.to(track, {
         xPercent: -distance,
@@ -22,9 +31,16 @@ export function HorizontalPanelSection() {
           trigger: ref.current,
           pin: true,
           start: "top top",
-          end: () => `+=${window.innerHeight * panels.length}`,
+          end: () => `+=${window.innerHeight * count}`,
           scrub: 0.6,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const idx = Math.min(count, Math.floor(self.progress * count) + 1);
+            setActive(idx);
+            if (fillRef.current) {
+              fillRef.current.style.transform = `scaleX(${self.progress})`;
+            }
+          },
         },
       });
       return () => { tween.scrollTrigger?.kill(); tween.kill(); };
@@ -32,18 +48,24 @@ export function HorizontalPanelSection() {
     { scope: ref },
   );
 
-  const labels = [7, 8, 9, 10];
   return (
     <section ref={ref} data-section="7-10" className="lv2-section lv2-hp">
       <div className="lv2-hp-track">
-        {labels.map((n) => (
+        {PANELS.map(({ n, label }) => (
           <div key={n} className="lv2-hp-panel" data-section={n}>
-            <span className="lv2-sec-meta lv2-sec-index">— {String(n).padStart(2, "0")} / 12</span>
-            <h2 className="lv2-sec-title">SECTION {n}</h2>
+            <h2 className="lv2-sec-title">{label}</h2>
           </div>
         ))}
       </div>
-      <span className="lv2-hp-cue" aria-hidden>↔ HORIZONTAL</span>
+
+      <div className="lv2-hp-progress" aria-hidden>
+        <span className="lv2-hp-progress-track">
+          <span ref={fillRef} className="lv2-hp-progress-fill" />
+        </span>
+        <span className="lv2-hp-progress-count">
+          {String(active).padStart(2, "0")} / {String(PANELS.length).padStart(2, "0")}
+        </span>
+      </div>
     </section>
   );
 }
