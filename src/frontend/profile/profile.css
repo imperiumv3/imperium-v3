@@ -23,7 +23,7 @@
   padding: 24px clamp(16px, 3vw, 40px) 64px;
   background:
     linear-gradient(180deg, rgba(5,6,10,0.78) 0%, rgba(5,6,10,0.6) 40%, rgba(5,6,10,0.85) 100%),
-    url("/__l5e/assets-v1/18f01173-2b15-48be-b274-25de3fd46d01/racing-track.jpg") center/cover no-repeat fixed,
+    url("https://id-preview--4f05bc1d-2e69-4edc-952a-395805087a34.lovable.app/__l5e/assets-v1/18f01173-2b15-48be-b274-25de3fd46d01/racing-track.jpg") center/cover no-repeat fixed,
     var(--p-bg);
   background-color: var(--p-bg);
   color: var(--p-text);
