@@ -1,82 +1,145 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSession } from "@frontend/auth/session";
-import { GlassCard } from "../components/GlassCard";
+import HeroAscii from "@/components/ui/hero-ascii";
 
-const STEPS = [
-  { num: "01", label: "SEARCH" },
-  { num: "02", label: "MATCH" },
-  { num: "03", label: "OPTIMIZE" },
-  { num: "04", label: "APPLY" },
+const WORKFLOW_STEPS = [
+  { num: "01", label: "INPUT URL", desc: "Provide the target job posting URL" },
+  { num: "02", label: "NAVIGATE", desc: "Agent navigates the application workflow" },
+  { num: "03", label: "EXECUTE", desc: "Completes forms and submits applications" },
 ] as const;
 
-const LOG = [
-  "▶ booting imperium.execute()",
-  "✓ index 4,219 fresh roles  · 12 sources",
-  "✓ filtered to 84 high-match opportunities",
-  "✓ resume tailored · keyword density 0.94",
-  "✓ cover letter generated · tone: confident",
-  "▶ dispatching applications…",
-  "✓ 18 applied · 4 follow-ups queued",
-  "■ execution complete · awaiting next directive",
-];
-
+/** Section 10 — Local Agent explanation panel. */
 export function ExecuteSection() {
   const ref = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const session = useSession();
-  const [step, setStep] = useState(0);
-  const [lines, setLines] = useState<string[]>([]);
 
-  useEffect(() => {
-    const stepTimer = setInterval(() => setStep((s) => (s + 1) % STEPS.length), 1600);
-    return () => clearInterval(stepTimer);
-  }, []);
+  useGSAP(
+    () => {
+      if (!ref.current) return;
 
-  useEffect(() => {
-    let i = 0;
-    setLines([]);
-    const t = setInterval(() => {
-      setLines((prev) => (i < LOG.length ? [...prev, LOG[i++]] : prev));
-      if (i >= LOG.length) clearInterval(t);
-    }, 480);
-    return () => clearInterval(t);
-  }, []);
+      const leftContent = ref.current.querySelector(".lv2s10-left");
+      if (leftContent) {
+        gsap.from(leftContent.children, {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ref.current, start: "top 60%", once: true },
+        });
+      }
+
+      const steps = ref.current.querySelectorAll(".lv2s10-wf-step");
+      gsap.from(steps, {
+        x: 30,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ref.current, start: "top 55%", once: true },
+      });
+
+      return () => {
+        ScrollTrigger.getAll().forEach((t) => {
+          if (t.trigger === ref.current) t.kill();
+        });
+      };
+    },
+    { scope: ref },
+  );
+
+  function onWatch() {
+    navigate({ to: session ? "/jobs" : "/auth" });
+  }
+
+  function onView() {
+    navigate({ to: session ? "/dashboard" : "/auth" });
+  }
 
   return (
-    <section ref={ref} data-section={10} className="lv2-hpanel lv2s10">
-      <div className="lv2s10-bg" aria-hidden />
-      <div className="lv2s10-inner">
-        <header className="lv2s10-head">
-          <span className="lv2-shell-index">— 10 / 12</span>
-          <h2>EXECUTE.</h2>
-          <p>One command. Four agents move.</p>
-        </header>
+    <section ref={ref} data-section={10} className="lv2s10">
+      {/* ASCII background */}
+      <HeroAscii className="lv2s10-ascii" />
 
-        <div className="lv2s10-steps" role="list">
-          {STEPS.map((s, i) => (
-            <div key={s.num} role="listitem" className={`lv2s10-step ${i === step ? "is-active" : ""} ${i < step ? "is-done" : ""}`}>
-              <span className="lv2s10-step-num">{s.num}</span>
-              <span className="lv2s10-step-label">{s.label}</span>
-              <span className="lv2s10-step-bar" aria-hidden />
+      {/* Dark overlay */}
+      <div className="lv2s10-overlay" aria-hidden />
+
+      {/* Corner frame accents */}
+      <div className="lv2s10-frame lv2s10-frame-tl" aria-hidden />
+      <div className="lv2s10-frame lv2s10-frame-tr" aria-hidden />
+      <div className="lv2s10-frame lv2s10-frame-bl" aria-hidden />
+      <div className="lv2s10-frame lv2s10-frame-br" aria-hidden />
+
+      {/* Technical divider lines */}
+      <div className="lv2s10-divider-top" aria-hidden />
+      <div className="lv2s10-divider-bottom" aria-hidden />
+
+      {/* Left content */}
+      <div className="lv2s10-left">
+        <span className="lv2s10-label">LOCAL AGENT</span>
+
+        <h2 className="lv2s10-heading">
+          EXECUTE TASKS<br />AUTONOMOUSLY
+        </h2>
+
+        <p className="lv2s10-desc">
+          The Local Agent operates directly on the user's machine. Provide a job
+          URL and the agent automatically navigates the application workflow,
+          extracts information, interacts with web elements, and executes
+          predefined actions.
+        </p>
+
+        <div className="lv2s10-btns">
+          <button
+            type="button"
+            className="lv2s10-btn lv2s10-btn-primary"
+            onClick={onWatch}
+          >
+            WATCH LOCAL AGENT
+          </button>
+          <button
+            type="button"
+            className="lv2s10-btn lv2s10-btn-secondary"
+            onClick={onView}
+          >
+            VIEW WORKFLOW
+          </button>
+        </div>
+      </div>
+
+      {/* Right workflow visualization */}
+      <div className="lv2s10-right">
+        <div className="lv2s10-wf">
+          {WORKFLOW_STEPS.map((s, i) => (
+            <div key={s.num} className="lv2s10-wf-step">
+              <div className="lv2s10-wf-num">{s.num}</div>
+              <div className="lv2s10-wf-content">
+                <span className="lv2s10-wf-label">{s.label}</span>
+                <span className="lv2s10-wf-desc">{s.desc}</span>
+              </div>
+              {i < WORKFLOW_STEPS.length - 1 && (
+                <div className="lv2s10-wf-line" aria-hidden />
+              )}
             </div>
           ))}
         </div>
 
-        <GlassCard className="lv2s10-console" glowColor="rgba(255,80,80,0.55)">
-          <div className="lv2s10-console-bar" aria-hidden>
-            <span /><span /><span />
-            <em>imperium ~ /execute</em>
-          </div>
-          <pre className="lv2s10-log">
-            {lines.join("\n")}
-            <span className="lv2s10-caret" aria-hidden>▍</span>
-          </pre>
-        </GlassCard>
+        <p className="lv2s10-secondary-desc">
+          Transforms decisions into action through browser automation,
+          intelligent form completion, and workflow execution.
+        </p>
+      </div>
 
-        <button type="button" className="lv2s10-cta" onClick={() => navigate({ to: session ? "/jobs" : "/auth" })}>
-          EXECUTE TASK →
-        </button>
+      {/* Section indicator */}
+      <div className="lv2s10-indicator">
+        <span className="lv2s10-indicator-num">10</span>
+        <span className="lv2s10-indicator-sep">/</span>
+        <span className="lv2s10-indicator-total">12</span>
       </div>
     </section>
   );

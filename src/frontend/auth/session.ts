@@ -9,6 +9,7 @@
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@backend/database/SupabaseClient";
+import { setAiCacheUser } from "@frontend/resume/ai/AiCache";
 
 export interface Session {
   userId: string;
@@ -34,10 +35,18 @@ export function useSession(): Session | null {
     let active = true;
     // Initial fetch — getUser revalidates with auth server.
     void supabase.auth.getUser().then(({ data }) => {
-      if (active) setSession(toSession(data.user ?? null));
+      if (active) {
+        const s = toSession(data.user ?? null);
+        setSession(s);
+        setAiCacheUser(s?.userId ?? null);
+      }
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      if (active) setSession(toSession(s?.user ?? null));
+      if (active) {
+        const sess = toSession(s?.user ?? null);
+        setSession(sess);
+        setAiCacheUser(sess?.userId ?? null);
+      }
     });
     return () => {
       active = false;
@@ -53,5 +62,14 @@ export function useUserId(): string | null {
 }
 
 export async function signOut(): Promise<void> {
+  // Clear resume-related localStorage to prevent cross-user data leakage
+  try {
+    localStorage.removeItem("imperium-resume-studio-v1");
+    localStorage.removeItem("imperium-resume-current");
+    localStorage.removeItem("imperium-resume-versions");
+    localStorage.removeItem("imperium-ai-cache-v1");
+  } catch {
+    /* noop — SSR or quota */
+  }
   await supabase.auth.signOut();
 }

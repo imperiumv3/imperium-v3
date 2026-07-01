@@ -236,18 +236,42 @@ export function ActionBar({
               toast.message("Local agent offline — start it on 127.0.0.1:8000 to auto-apply");
               return;
             }
+
+            // Generate resume PDF for the agent to upload
+            let resumeBase64 = "";
+            let resumeFilename = "";
+            if (printHandleRef?.current?.node) {
+              try {
+                const { renderResumeToPdfBlob } = await import("@frontend/resume/export/pdf");
+                const pdfResult = await renderResumeToPdfBlob(printHandleRef.current.node, resume);
+                resumeBase64 = pdfResult.base64;
+                resumeFilename = pdfResult.filename;
+              } catch (e) {
+                console.warn("[ActionBar] Could not generate resume PDF:", e);
+              }
+            }
+
             const profile = {
               name: resume.personal.name,
               email: resume.personal.email,
               phone: resume.personal.phone,
               location: resume.personal.location,
-              links: resume.personal.links,
+              city: resume.personal.location,
+              linkedin_url: resume.personal.links?.linkedin ?? "",
+              github_url: resume.personal.links?.github ?? "",
+              portfolio_url: resume.personal.links?.website ?? "",
+              headline: resume.personal.title ?? "",
               summary: resume.summary,
               skills: resume.skills.flatMap((g) => g.items),
+              experience: resume.experience.map((e) => `${e.title} at ${e.company}`).join("; "),
+              degree: resume.education.map((e) => e.degree).join(", "),
+              university: resume.education.map((e) => e.school).join(", "),
             };
             const res = await localAgentDispatch({
               job_url: jobUrl,
               profile,
+              resume_base64: resumeBase64,
+              resume_filename: resumeFilename,
               job: {
                 title: selectedJob.title,
                 company: selectedJob.company,

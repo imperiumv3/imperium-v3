@@ -22,6 +22,7 @@ import { withIntelligence } from "../intelligence/ApplicationIntelligenceEngine"
 
 const VALID_STATUS: ReadonlySet<ApplicationStatus> = new Set([
   "applied",
+  "submitted",
   "viewed",
   "under_review",
   "assessment",

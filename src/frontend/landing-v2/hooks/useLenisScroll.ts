@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 /** Mount Lenis once and bridge it into ScrollTrigger. */
 export function useLenisScroll() {
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 1 });
+    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true, wheelMultiplier: 1.2 });
     lenis.on("scroll", ScrollTrigger.update);
 
     let raf = 0;

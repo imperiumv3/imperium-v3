@@ -636,5 +636,3423 @@
         "url": ""
       }
     ]
+  },
+  "6a89aba3-968a-4de1-aecc-678db1a4fe82": {
+    "id": "6a89aba3-968a-4de1-aecc-678db1a4fe82",
+    "job_url": "https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Message: session not created: cannot connect to chrome at 127.0.0.1:59227\nfrom session not created: This version of ChromeDriver only supports Chrome version 150\nCurrent browser version is 149.0.7827.54\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0x1134e43+107c3]\n\tundetected_chromedriver!GetHandleVerifier [0x1134e84+10804]\n\tundetected_chromedriver!(No symbol) [0xf290e0]\n\tundetected_chromedriver!(No symbol) [0xf65a82]\n\tundetected_chromedriver!(No symbol) [0xf64aac]\n\tundetected_chromedriver!(No symbol) [0xf5ad05]\n\tundetected_chromedriver!(No symbol) [0xf5ab26]\n\tundetected_chromedriver!(No symbol) [0xfa141f]\n\tundetected_chromedriver!(No symbol) [0xfa0c37]\n\tundetected_chromedriver!(No symbol) [0xf953e6]\n\tundetected_chromedriver!(No symbol) [0xf68679]\n\tundetected_chromedriver!(No symbol) [0xf69444]\n\tundetected_chromedriver!GetHandleVerifier [0x13bb8a6+297226]\n\tundetected_chromedriver!GetHandleVerifier [0x13b7199+292b19]\n\tundetected_chromedriver!GetHandleVerifier [0x13d770b+2b308b]\n\tundetected_chromedriver!GetHandleVerifier [0x114f816+2b196]\n\tundetected_chromedriver!GetHandleVerifier [0x115655d+31edd]\n\tundetected_chromedriver!GetHandleVerifier [0x113d9b8+19338]\n\tundetected_chromedriver!GetHandleVerifier [0x113db65+194e5]\n\tundetected_chromedriver!GetHandleVerifier [0x112674f+20cf]\n\tKERNEL32!BaseThreadInitThunk [0x75be5d49+19]\n\tntdll!RtlInitializeExceptionChain [0x770ce12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x770ce0b1+231]\n",
+    "created_at": "2026-06-19T07:11:15.903276+00:00",
+    "updated_at": "2026-06-19T07:11:46.052315+00:00",
+    "events": [
+      {
+        "ts": "2026-06-19T07:11:15.909660+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:11:15.968627+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:11:16.121809+00:00",
+        "step": "brain",
+        "action": "Ollama brain AVAILABLE",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:11:46.046634+00:00",
+        "step": "boot",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:11:46.052277+00:00",
+        "step": "error",
+        "action": "Unhandled error: Message: session not created: cannot connect to chrome at 127.0.0.1:59227\nfrom session not created: This version of ChromeDriver only supports Chrome version 150\nCurrent browser version is 149.0.7827.54\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0x1134e43+107c3]\n\tundetected_chromedriver!GetHandleVerifier [0x1134e84+10804]\n\tundetected_chromedriver!(No symbol) [0xf290e0]\n\tundetected_chromedriver!(No symbol) [0xf65a82]\n\tundetected_chromedriver!(No symbol) [0xf64aac]\n\tundetected_chromedriver!(No symbol) [0xf5ad05]\n\tundetected_chromedriver!(No symbol) [0xf5ab26]\n\tundetected_chromedriver!(No symbol) [0xfa141f]\n\tundetected_chromedriver!(No symbol) [0xfa0c37]\n\tundetected_chromedriver!(No symbol) [0xf953e6]\n\tundetected_chromedriver!(No symbol) [0xf68679]\n\tundetected_chromedriver!(No symbol) [0xf69444]\n\tundetected_chromedriver!GetHandleVerifier [0x13bb8a6+297226]\n\tundetected_chromedriver!GetHandleVerifier [0x13b7199+292b19]\n\tundetected_chromedriver!GetHandleVerifier [0x13d770b+2b308b]\n\tundetected_chromedriver!GetHandleVerifier [0x114f816+2b196]\n\tundetected_chromedriver!GetHandleVerifier [0x115655d+31edd]\n\tundetected_chromedriver!GetHandleVerifier [0x113d9b8+19338]\n\tundetected_chromedriver!GetHandleVerifier [0x113db65+194e5]\n\tundetected_chromedriver!GetHandleVerifier [0x112674f+20cf]\n\tKERNEL32!BaseThreadInitThunk [0x75be5d49+19]\n\tntdll!RtlInitializeExceptionChain [0x770ce12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x770ce0b1+231]\n",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "8b646dbd-e5bb-4da3-af63-b6a57b052a0f": {
+    "id": "8b646dbd-e5bb-4da3-af63-b6a57b052a0f",
+    "job_url": "https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Message: session not created: cannot connect to chrome at 127.0.0.1:49929\nfrom session not created: This version of ChromeDriver only supports Chrome version 150\nCurrent browser version is 149.0.7827.156\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0x674e43+107c3]\n\tundetected_chromedriver!GetHandleVerifier [0x674e84+10804]\n\tundetected_chromedriver!(No symbol) [0x4690e0]\n\tundetected_chromedriver!(No symbol) [0x4a5a82]\n\tundetected_chromedriver!(No symbol) [0x4a4aac]\n\tundetected_chromedriver!(No symbol) [0x49ad05]\n\tundetected_chromedriver!(No symbol) [0x49ab26]\n\tundetected_chromedriver!(No symbol) [0x4e141f]\n\tundetected_chromedriver!(No symbol) [0x4e0c37]\n\tundetected_chromedriver!(No symbol) [0x4d53e6]\n\tundetected_chromedriver!(No symbol) [0x4a8679]\n\tundetected_chromedriver!(No symbol) [0x4a9444]\n\tundetected_chromedriver!GetHandleVerifier [0x8fb8a6+297226]\n\tundetected_chromedriver!GetHandleVerifier [0x8f7199+292b19]\n\tundetected_chromedriver!GetHandleVerifier [0x91770b+2b308b]\n\tundetected_chromedriver!GetHandleVerifier [0x68f816+2b196]\n\tundetected_chromedriver!GetHandleVerifier [0x69655d+31edd]\n\tundetected_chromedriver!GetHandleVerifier [0x67d9b8+19338]\n\tundetected_chromedriver!GetHandleVerifier [0x67db65+194e5]\n\tundetected_chromedriver!GetHandleVerifier [0x66674f+20cf]\n\tKERNEL32!BaseThreadInitThunk [0x75be5d49+19]\n\tntdll!RtlInitializeExceptionChain [0x770ce12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x770ce0b1+231]\n",
+    "created_at": "2026-06-19T07:17:54.036121+00:00",
+    "updated_at": "2026-06-19T07:18:00.706265+00:00",
+    "events": [
+      {
+        "ts": "2026-06-19T07:17:54.037789+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:17:54.042322+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:17:54.062552+00:00",
+        "step": "brain",
+        "action": "Ollama brain AVAILABLE",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:18:00.702293+00:00",
+        "step": "boot",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:18:00.706247+00:00",
+        "step": "error",
+        "action": "Unhandled error: Message: session not created: cannot connect to chrome at 127.0.0.1:49929\nfrom session not created: This version of ChromeDriver only supports Chrome version 150\nCurrent browser version is 149.0.7827.156\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0x674e43+107c3]\n\tundetected_chromedriver!GetHandleVerifier [0x674e84+10804]\n\tundetected_chromedriver!(No symbol) [0x4690e0]\n\tundetected_chromedriver!(No symbol) [0x4a5a82]\n\tundetected_chromedriver!(No symbol) [0x4a4aac]\n\tundetected_chromedriver!(No symbol) [0x49ad05]\n\tundetected_chromedriver!(No symbol) [0x49ab26]\n\tundetected_chromedriver!(No symbol) [0x4e141f]\n\tundetected_chromedriver!(No symbol) [0x4e0c37]\n\tundetected_chromedriver!(No symbol) [0x4d53e6]\n\tundetected_chromedriver!(No symbol) [0x4a8679]\n\tundetected_chromedriver!(No symbol) [0x4a9444]\n\tundetected_chromedriver!GetHandleVerifier [0x8fb8a6+297226]\n\tundetected_chromedriver!GetHandleVerifier [0x8f7199+292b19]\n\tundetected_chromedriver!GetHandleVerifier [0x91770b+2b308b]\n\tundetected_chromedriver!GetHandleVerifier [0x68f816+2b196]\n\tundetected_chromedriver!GetHandleVerifier [0x69655d+31edd]\n\tundetected_chromedriver!GetHandleVerifier [0x67d9b8+19338]\n\tundetected_chromedriver!GetHandleVerifier [0x67db65+194e5]\n\tundetected_chromedriver!GetHandleVerifier [0x66674f+20cf]\n\tKERNEL32!BaseThreadInitThunk [0x75be5d49+19]\n\tntdll!RtlInitializeExceptionChain [0x770ce12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x770ce0b1+231]\n",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "5544360e-e98f-48e3-93dc-ebc4f7e33be2": {
+    "id": "5544360e-e98f-48e3-93dc-ebc4f7e33be2",
+    "job_url": "https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "status": "failed",
+    "progress": 25,
+    "current_step": "job_detail",
+    "current_action": "Page detected: job_detail",
+    "current_url": "https://www.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089/?refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+    "approved": null,
+    "error": "Message: no such window: target window already closed\nfrom unknown error: web view not found\n  (Session info: chrome=149.0.7827.156)\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0x55a543+103f3]\n\tundetected_chromedriver!GetHandleVerifier [0x55a584+10434]\n\tundetected_chromedriver!(No symbol) [0x35a700]\n\tundetected_chromedriver!(No symbol) [0x339603]\n\tundetected_chromedriver!(No symbol) [0x3cc45b]\n\tundetected_chromedriver!(No symbol) [0x3e2df9]\n\tundetected_chromedriver!(No symbol) [0x3c5e66]\n\tundetected_chromedriver!(No symbol) [0x399159]\n\tundetected_chromedriver!(No symbol) [0x399f24]\n\tundetected_chromedriver!GetHandleVerifier [0x7e4bba+29aa6a]\n\tundetected_chromedriver!GetHandleVerifier [0x7e0119+295fc9]\n\tundetected_chromedriver!GetHandleVerifier [0x80103e+2b6eee]\n\tundetected_chromedriver!GetHandleVerifier [0x5737f6+296a6]\n\tundetected_chromedriver!GetHandleVerifier [0x57a91d+307cd]\n\tundetected_chromedriver!GetHandleVerifier [0x562d18+18bc8]\n\tundetected_chromedriver!GetHandleVerifier [0x562ec5+18d75]\n\tundetected_chromedriver!GetHandleVerifier [0x54c05f+1f0f]\n\tKERNEL32!BaseThreadInitThunk [0x75be5d49+19]\n\tntdll!RtlInitializeExceptionChain [0x770ce12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x770ce0b1+231]\n",
+    "created_at": "2026-06-19T07:31:15.456126+00:00",
+    "updated_at": "2026-06-19T07:32:02.930564+00:00",
+    "events": [
+      {
+        "ts": "2026-06-19T07:31:15.457769+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:31:15.462553+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:31:15.481051+00:00",
+        "step": "brain",
+        "action": "Ollama brain AVAILABLE",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:31:21.688353+00:00",
+        "step": "profile",
+        "action": "Using dedicated agent profile: Default (C:\\Users\\dinesh\\.imperium_chrome_profile)",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-19T07:31:21.694830+00:00",
+        "step": "navigate",
+        "action": "Opening https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D",
+        "level": "info",
+        "url": "https://in.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089?position=5&amp;pageNum=2&amp;refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&amp;trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D"
+      },
+      {
+        "ts": "2026-06-19T07:31:43.792603+00:00",
+        "step": "classify",
+        "action": "Page \u2192 job_detail",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/software-developer-full-stack-at-bristol-myers-squibb-4428867089/?refId=pfCCZyf9iBpom3%2BJAQJQDQ%3D%3D&trackingId=AKV%2BOaafgXYI26Kwz4u%2Btw%3D%3D"
+      },
+      {
+        "ts": "2026-06-19T07:31:57.481110+00:00",
+        "step": "external_apply",
+        "action": "Opened external application tab",
+        "level": "success",
+        "url": "https://tnl2.jometer.com/v2/job?jz=5tptp08d3068d4d2666c6bfbde373360cc42eYYADOAIAAABQ&utm_source=Joveo_LinkedIn+Organic&utm_campaign=Enabling+Functions_Enabling+Functions+Hyderabad&source=jobboard_LinkedIn+Organic_auto&source=LinkedIn_Slots"
+      },
+      {
+        "ts": "2026-06-19T07:31:57.552343+00:00",
+        "step": "external_apply",
+        "action": "Routing into external ATS at https://tnl2.jometer.com/v2/job?jz=5tptp08d3068d4d2666c6bfbde373360cc42eYYADOAIAAABQ&utm_source=Joveo_LinkedIn+Organic&utm_campaign=Enabling+Functions_Enabling+Functions+Hyderabad&source=jobboard_LinkedIn+Organic_auto&source=LinkedIn_Slots",
+        "level": "info",
+        "url": "https://tnl2.jometer.com/v2/job?jz=5tptp08d3068d4d2666c6bfbde373360cc42eYYADOAIAAABQ&utm_source=Joveo_LinkedIn+Organic&utm_campaign=Enabling+Functions_Enabling+Functions+Hyderabad&source=jobboard_LinkedIn+Organic_auto&source=LinkedIn_Slots"
+      },
+      {
+        "ts": "2026-06-19T07:32:02.930536+00:00",
+        "step": "error",
+        "action": "Unhandled error: Message: no such window: target window already closed\nfrom unknown error: web view not found\n  (Session info: chrome=149.0.7827.156)\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0x55a543+103f3]\n\tundetected_chromedriver!GetHandleVerifier [0x55a584+10434]\n\tundetected_chromedriver!(No symbol) [0x35a700]\n\tundetected_chromedriver!(No symbol) [0x339603]\n\tundetected_chromedriver!(No symbol) [0x3cc45b]\n\tundetected_chromedriver!(No symbol) [0x3e2df9]\n\tundetected_chromedriver!(No symbol) [0x3c5e66]\n\tundetected_chromedriver!(No symbol) [0x399159]\n\tundetected_chromedriver!(No symbol) [0x399f24]\n\tundetected_chromedriver!GetHandleVerifier [0x7e4bba+29aa6a]\n\tundetected_chromedriver!GetHandleVerifier [0x7e0119+295fc9]\n\tundetected_chromedriver!GetHandleVerifier [0x80103e+2b6eee]\n\tundetected_chromedriver!GetHandleVerifier [0x5737f6+296a6]\n\tundetected_chromedriver!GetHandleVerifier [0x57a91d+307cd]\n\tundetected_chromedriver!GetHandleVerifier [0x562d18+18bc8]\n\tundetected_chromedriver!GetHandleVerifier [0x562ec5+18d75]\n\tundetected_chromedriver!GetHandleVerifier [0x54c05f+1f0f]\n\tKERNEL32!BaseThreadInitThunk [0x75be5d49+19]\n\tntdll!RtlInitializeExceptionChain [0x770ce12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x770ce0b1+231]\n",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "90a80f9a-9b4d-4d0c-bf8f-68b3166f0b95": {
+    "id": "90a80f9a-9b4d-4d0c-bf8f-68b3166f0b95",
+    "job_url": "https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T03:42:42.948616+00:00",
+    "updated_at": "2026-06-21T03:42:53.762340+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T03:42:42.950880+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:42:42.953237+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:42:53.762315+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "b753d570-f3bb-4e09-9045-7e9826b48df6": {
+    "id": "b753d570-f3bb-4e09-9045-7e9826b48df6",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T03:46:47.301048+00:00",
+    "updated_at": "2026-06-21T03:47:00.508404+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T03:46:47.302981+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:46:47.304624+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:47:00.508372+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "b702c751-44c1-4c32-a3e3-708ba1622c4f": {
+    "id": "b702c751-44c1-4c32-a3e3-708ba1622c4f",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T03:51:55.286027+00:00",
+    "updated_at": "2026-06-21T03:52:03.849926+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T03:51:55.288121+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:51:55.289954+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:52:03.849895+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "9c85559a-cf0b-4e81-b17c-01208a75048c": {
+    "id": "9c85559a-cf0b-4e81-b17c-01208a75048c",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T03:55:50.373991+00:00",
+    "updated_at": "2026-06-21T03:56:03.571372+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T03:55:50.376118+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:55:50.378615+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T03:56:03.571340+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "ad75cf0a-bc78-4380-a226-04ae46dc28fb": {
+    "id": "ad75cf0a-bc78-4380-a226-04ae46dc28fb",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T04:08:09.309988+00:00",
+    "updated_at": "2026-06-21T04:08:18.078758+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:08:09.311917+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:08:09.313643+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:08:18.078694+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "f529ad00-11f0-4e9f-b005-738b8404309c": {
+    "id": "f529ad00-11f0-4e9f-b005-738b8404309c",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T04:08:56.304347+00:00",
+    "updated_at": "2026-06-21T04:09:05.916000+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:08:56.306498+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:08:56.308873+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:09:05.915963+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "ebd1f61a-0046-4de1-a8f6-f3fe6c1edc4d": {
+    "id": "ebd1f61a-0046-4de1-a8f6-f3fe6c1edc4d",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T04:09:28.371008+00:00",
+    "updated_at": "2026-06-21T04:09:40.763254+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:09:28.372737+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:09:28.374572+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:09:40.763221+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "3ca31520-bd71-4b36-afe5-f7153240724c": {
+    "id": "3ca31520-bd71-4b36-afe5-f7153240724c",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T04:11:17.893345+00:00",
+    "updated_at": "2026-06-21T04:11:30.727352+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:11:17.895047+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:11:17.896867+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:11:30.727334+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "3a4c04c1-df15-4c50-99a8-a493e78771f1": {
+    "id": "3a4c04c1-df15-4c50-99a8-a493e78771f1",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 5,
+    "current_step": "boot",
+    "current_action": "Starting Chrome",
+    "current_url": "",
+    "approved": null,
+    "error": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+    "error_code": "CHROME_NOT_REACHABLE",
+    "result": null,
+    "created_at": "2026-06-21T04:18:23.351469+00:00",
+    "updated_at": "2026-06-21T04:18:33.128497+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:18:23.353938+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=rLBLLV3vWs1Dw1m%2F8lDeGA%3D%3D&amp;trackingId=QOSeLRUdxVB4mduLgG14gA%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:18:23.355890+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:18:33.128467+00:00",
+        "step": "error",
+        "action": "Chrome failed to start. Close every Chrome window (tray included) or unset USE_REAL_CHROME.",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "dddf34ff-f679-4e5d-9b4a-4f4f05af360e": {
+    "id": "dddf34ff-f679-4e5d-9b4a-4f4f05af360e",
+    "job_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=ie%2BqrY%2BQiujn1XxzB0TIyA%3D%3D&amp;trackingId=RtmoMQl83VyV1UgQYQJCSQ%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "awaiting_approval",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent is stuck. Take over in Chrome, then click Approve to submit or Reject to abort.",
+    "current_url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=ie%2BqrY%2BQiujn1XxzB0TIyA%3D%3D&amp;trackingId=RtmoMQl83VyV1UgQYQJCSQ%3D%3D",
+    "approved": null,
+    "error": "",
+    "error_code": "",
+    "result": null,
+    "created_at": "2026-06-21T04:23:20.194000+00:00",
+    "updated_at": "2026-06-21T04:25:35.385741+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:23:20.195898+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=ie%2BqrY%2BQiujn1XxzB0TIyA%3D%3D&amp;trackingId=RtmoMQl83VyV1UgQYQJCSQ%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:23:20.197575+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome with Selenium",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:23:28.218955+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:23:28.220346+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=ie%2BqrY%2BQiujn1XxzB0TIyA%3D%3D&amp;trackingId=RtmoMQl83VyV1UgQYQJCSQ%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T04:23:28.220992+00:00",
+        "step": "navigate",
+        "action": "Opening https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=ie%2BqrY%2BQiujn1XxzB0TIyA%3D%3D&amp;trackingId=RtmoMQl83VyV1UgQYQJCSQ%3D%3D",
+        "level": "info",
+        "url": "https://in.linkedin.com/jobs/view/web-developer-at-accenture-in-india-4392264928?position=1&amp;pageNum=5&amp;refId=ie%2BqrY%2BQiujn1XxzB0TIyA%3D%3D&amp;trackingId=RtmoMQl83VyV1UgQYQJCSQ%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T04:23:37.938255+00:00",
+        "step": "login",
+        "action": "Login required for Linkedin. Please log in manually.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:25:29.165304+00:00",
+        "step": "easy_apply",
+        "action": "Clicked Apply but no modal opened",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:25:35.384895+00:00",
+        "step": "needs_human",
+        "action": "No Easy Apply or external apply link found. Finish manually in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:25:35.385734+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish manually in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      }
+    ]
+  },
+  "7e74813b-2a32-49f9-a983-4be324546cc0": {
+    "id": "7e74813b-2a32-49f9-a983-4be324546cc0",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 0,
+    "current_step": "queued",
+    "current_action": "Waiting to start",
+    "current_url": "",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T04:28:15.275470+00:00",
+    "updated_at": "2026-06-21T04:28:20.281674+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:28:15.277261+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:28:20.281651+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "e63841e0-9d8c-465f-b04b-717a65e8165a": {
+    "id": "e63841e0-9d8c-465f-b04b-717a65e8165a",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 0,
+    "current_step": "queued",
+    "current_action": "Waiting to start",
+    "current_url": "",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T04:28:45.910845+00:00",
+    "updated_at": "2026-06-21T04:28:50.921960+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:28:45.912687+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:28:50.921933+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "0875562b-e5af-4f32-bf40-eb46ed13a5b3": {
+    "id": "0875562b-e5af-4f32-bf40-eb46ed13a5b3",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 0,
+    "current_step": "queued",
+    "current_action": "Waiting to start",
+    "current_url": "",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T04:33:15.694757+00:00",
+    "updated_at": "2026-06-21T04:33:20.706856+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:33:15.696882+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:33:20.706809+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "a00cc6e5-041e-4132-92d4-5c53410287f8": {
+    "id": "a00cc6e5-041e-4132-92d4-5c53410287f8",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "",
+    "status": "failed",
+    "progress": 0,
+    "current_step": "queued",
+    "current_action": "Waiting to start",
+    "current_url": "",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T04:33:38.405185+00:00",
+    "updated_at": "2026-06-21T04:33:43.426787+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:33:38.407434+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:33:43.426735+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "48a51af1-d4f7-405f-87c0-ba89fda16108": {
+    "id": "48a51af1-d4f7-405f-87c0-ba89fda16108",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "failed",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "approved": null,
+    "error": "Approval timeout",
+    "error_code": "APPROVAL_TIMEOUT",
+    "result": null,
+    "created_at": "2026-06-21T04:34:43.979485+00:00",
+    "updated_at": "2026-06-21T04:45:26.525287+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:34:43.981439+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:34:43.983876+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:34:52.451884+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:34:52.452877+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T04:34:52.453422+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T04:35:26.130740+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:45:26.525247+00:00",
+        "step": "timeout",
+        "action": "Timed out waiting for approval",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "c1679c63-4264-46d0-bcda-53f567c201f8": {
+    "id": "c1679c63-4264-46d0-bcda-53f567c201f8",
+    "job_url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "naukri",
+    "status": "failed",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+    "approved": null,
+    "error": "Approval timeout",
+    "error_code": "APPROVAL_TIMEOUT",
+    "result": null,
+    "created_at": "2026-06-21T04:36:32.084599+00:00",
+    "updated_at": "2026-06-21T04:47:06.084110+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:36:32.087309+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:36:42.095025+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached. Closing stale sessions...",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:36:42.096947+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:36:43.528726+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:36:43.529131+00:00",
+        "step": "detect",
+        "action": "Platform detected: naukri",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1"
+      },
+      {
+        "ts": "2026-06-21T04:36:43.529467+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1"
+      },
+      {
+        "ts": "2026-06-21T04:36:56.497432+00:00",
+        "step": "listing",
+        "action": "Opened first Naukri job",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:37:05.679232+00:00",
+        "step": "needs_human",
+        "action": "No Apply button found on Naukri. Finish manually in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:37:05.681114+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:47:06.084084+00:00",
+        "step": "timeout",
+        "action": "Timed out waiting for approval",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "defa5710-9efa-4df7-bc9b-1a66197801cd": {
+    "id": "defa5710-9efa-4df7-bc9b-1a66197801cd",
+    "job_url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "naukri",
+    "status": "failed",
+    "progress": 20,
+    "current_step": "login",
+    "current_action": "Please log in to Naukri in Chrome.",
+    "current_url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+    "approved": null,
+    "error": "Message: invalid session id\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0xf5a543+103f3]\n\tundetected_chromedriver!GetHandleVerifier [0xf5a584+10434]\n\tundetected_chromedriver!(No symbol) [0xd5a53e]\n\tundetected_chromedriver!(No symbol) [0xd983e7]\n\tundetected_chromedriver!(No symbol) [0xdc5f86]\n\tundetected_chromedriver!(No symbol) [0xdc1192]\n\tundetected_chromedriver!(No symbol) [0xdc0b71]\n\tundetected_chromedriver!(No symbol) [0xd2db2e]\n\tundetected_chromedriver!(No symbol) [0xd2e0ce]\n\tundetected_chromedriver!(No symbol) [0xd2e5ad]\n\tundetected_chromedriver!GetHandleVerifier [0x11e4bba+29aa6a]\n\tundetected_chromedriver!GetHandleVerifier [0x11e0119+295fc9]\n\tundetected_chromedriver!GetHandleVerifier [0x120103e+2b6eee]\n\tundetected_chromedriver!GetHandleVerifier [0xf737f6+296a6]\n\tundetected_chromedriver!GetHandleVerifier [0xf7a91d+307cd]\n\tundetected_chromedriver!(No symbol) [0xd2d6a6]\n\tundetected_chromedriver!(No symbol) [0xd2cd02]\n\tundetected_chromedriver!GetHandleVerifier [0x134be1f+401ccf]\n\tKERNEL32!BaseThreadInitThunk [0x75f15d49+19]\n\tntdll!RtlInitializeExceptionChain [0x7706e12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x7706e0b1+231]\n",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T04:37:57.594026+00:00",
+    "updated_at": "2026-06-21T04:39:26.241569+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T04:37:57.596658+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:38:07.614611+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached. Closing stale sessions...",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:38:07.615748+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:39:12.521981+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:39:12.523085+00:00",
+        "step": "detect",
+        "action": "Platform detected: naukri",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1"
+      },
+      {
+        "ts": "2026-06-21T04:39:12.523543+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1"
+      },
+      {
+        "ts": "2026-06-21T04:39:23.234057+00:00",
+        "step": "login",
+        "action": "Login required for Naukri. Please log in manually.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T04:39:26.241537+00:00",
+        "step": "error",
+        "action": "Unhandled error: Message: invalid session id\nStacktrace:\n\tundetected_chromedriver!GetHandleVerifier [0xf5a543+103f3]\n\tundetected_chromedriver!GetHandleVerifier [0xf5a584+10434]\n\tundetected_chromedriver!(No symbol) [0xd5a53e]\n\tundetected_chromedriver!(No symbol) [0xd983e7]\n\tundetected_chromedriver!(No symbol) [0xdc5f86]\n\tundetected_chromedriver!(No symbol) [0xdc1192]\n\tundetected_chromedriver!(No symbol) [0xdc0b71]\n\tundetected_chromedriver!(No symbol) [0xd2db2e]\n\tundetected_chromedriver!(No symbol) [0xd2e0ce]\n\tundetected_chromedriver!(No symbol) [0xd2e5ad]\n\tundetected_chromedriver!GetHandleVerifier [0x11e4bba+29aa6a]\n\tundetected_chromedriver!GetHandleVerifier [0x11e0119+295fc9]\n\tundetected_chromedriver!GetHandleVerifier [0x120103e+2b6eee]\n\tundetected_chromedriver!GetHandleVerifier [0xf737f6+296a6]\n\tundetected_chromedriver!GetHandleVerifier [0xf7a91d+307cd]\n\tundetected_chromedriver!(No symbol) [0xd2d6a6]\n\tundetected_chromedriver!(No symbol) [0xd2cd02]\n\tundetected_chromedriver!GetHandleVerifier [0x134be1f+401ccf]\n\tKERNEL32!BaseThreadInitThunk [0x75f15d49+19]\n\tntdll!RtlInitializeExceptionChain [0x7706e12b+6b]\n\tntdll!RtlGetAppContainerNamedObjectPath [0x7706e0b1+231]\n",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "66b65d81-560f-422f-a903-ef82cb0acf8a": {
+    "id": "66b65d81-560f-422f-a903-ef82cb0acf8a",
+    "job_url": "https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "city": "Hyderabad, Telangana",
+      "linkedin_url": "",
+      "github_url": "",
+      "portfolio_url": "",
+      "headline": "Full Stack & AI Engineer",
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ],
+      "experience": "",
+      "degree": "Master of Computer Applications (MCA), Bachelor of Science, Intermediate",
+      "university": "Loyola College, Pragathi Degree College, Sri Gayatri Junior College"
+    },
+    "resume_path": "C:\\Users\\dinesh\\.imperium\\resumes\\arjun-classic-ats.pdf",
+    "platform": "naukri",
+    "status": "failed",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1",
+    "approved": null,
+    "error": "Approval timeout",
+    "error_code": "APPROVAL_TIMEOUT",
+    "result": null,
+    "created_at": "2026-06-21T05:53:26.171759+00:00",
+    "updated_at": "2026-06-21T06:03:51.022643+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T05:53:26.173854+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T05:53:26.174929+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T05:53:34.315245+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T05:53:34.316781+00:00",
+        "step": "detect",
+        "action": "Platform detected: naukri",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1"
+      },
+      {
+        "ts": "2026-06-21T05:53:34.317421+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-software-developer-highradius-hyderabad-0-to-1-years-190626006622?xp=1"
+      },
+      {
+        "ts": "2026-06-21T05:53:47.056031+00:00",
+        "step": "listing",
+        "action": "Opened first Naukri job",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T05:53:50.638691+00:00",
+        "step": "needs_human",
+        "action": "No Apply button found on Naukri. Finish manually in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T05:53:50.641376+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:03:51.022616+00:00",
+        "step": "timeout",
+        "action": "Timed out waiting for approval",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "2565d68f-c89a-416e-b70b-bf4faa77d595": {
+    "id": "2565d68f-c89a-416e-b70b-bf4faa77d595",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "awaiting_approval",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T06:02:00.380164+00:00",
+    "updated_at": "2026-06-21T06:02:35.118397+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T06:02:00.380779+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:02:10.387473+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached. Closing stale sessions...",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:02:10.388472+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:02:11.353903+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:02:11.356204+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T06:02:11.359033+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T06:02:35.118384+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      }
+    ]
+  },
+  "bc17cffe-6f4c-4373-9d82-4b79c9c3d8e7": {
+    "id": "bc17cffe-6f4c-4373-9d82-4b79c9c3d8e7",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "awaiting_approval",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "approved": null,
+    "error": "",
+    "error_code": "",
+    "result": null,
+    "created_at": "2026-06-21T06:09:44.325061+00:00",
+    "updated_at": "2026-06-21T06:10:02.034583+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T06:09:44.325947+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:09:44.326775+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:09:45.299808+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:09:45.300945+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T06:09:45.302332+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T06:10:02.034573+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      }
+    ]
+  },
+  "fbfe9501-de63-4433-9d2d-1dc9c2e0875e": {
+    "id": "fbfe9501-de63-4433-9d2d-1dc9c2e0875e",
+    "job_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "submitted",
+    "progress": 100,
+    "current_step": "submitted",
+    "current_action": "Application submitted",
+    "current_url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+    "approved": null,
+    "error": "",
+    "error_code": "",
+    "result": null,
+    "created_at": "2026-06-21T06:11:03.393863+00:00",
+    "updated_at": "2026-06-21T06:14:47.739928+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T06:11:03.395682+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:11:03.397566+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:11:09.505696+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:11:09.506256+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T06:11:09.506465+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/?alternateChannel=search&eBP=CwEAAAGe6G86jCIkOAoJHDCiSloUMPxtAR7k-eYHeNdDhgACuGszvPrlcPQa7Upw2vVEluWqQKW7E6I2hG_jI3R2zTM5XoC62udhf6jEwiylu9FxltETpBsRGIlGViX8ugy8ZINl1J8S-rddj8-Q55rjpcU5zazpEWOyVGU41I7IxCAvgx5EXsdQ-GAC11t-FIbO_LizdOgfpbUNAf1g7xQCJMZtlFNj6T-EZ3GzVkl2vLzUpFi7SRHrD9b_ygdOQEjxgUv-S7S9iS7F0SXRQYFS_AzAErMv0AAOgl-59LIPDOO0e6BBj5lI7U4K4G5G5pss1Ertf2ersAYS2adMXGevMajmzLIU6FLI_vDrkQn-Exldgci1v-7lGnnt0kQwsuBizlq6dtFhvWv2eyfS-gs4TKF6WE5NBL7u0zi2q1lKDnsg2gqBjWe_0ZCSSTrjuTaNfJaFqEtZmOV0ng-FfRxwdpTiEi75P99q9-OeewI7j6bGKTc1C2Dt_DcZHAVFnPDSgHRm1w&refId=E%2B4bA9g0IDJHaFzbi0OMYA%3D%3D&trackingId=uvFK36QmjAOBmyZcujRGhg%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T06:11:16.600259+00:00",
+        "step": "easy_apply",
+        "action": "Navigating to apply URL",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426221786/apply/?openSDUIApplyFlow=true&refId=E%2B4bA9g0IDJHaFzb"
+      },
+      {
+        "ts": "2026-06-21T06:11:27.236912+00:00",
+        "step": "easy_apply",
+        "action": "Opened Easy Apply modal",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:11:29.276932+00:00",
+        "step": "easy_apply",
+        "action": "Step 1: section='Contact info', progress='0%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:11:35.954573+00:00",
+        "step": "easy_apply",
+        "action": "Step 2: section='Resume', progress='25%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:12:06.964499+00:00",
+        "step": "fill",
+        "action": "Selected 'jobsDocumentCardToggle-ember227' = jobsDocumentCardToggle-ember227",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:12:38.273489+00:00",
+        "step": "fill",
+        "action": "Selected 'jobsDocumentCardToggle-ember225' = jobsDocumentCardToggle-ember225",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:12:51.526372+00:00",
+        "step": "easy_apply",
+        "action": "Step 3: section='Additional Questions', progress='75%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:14:28.902012+00:00",
+        "step": "easy_apply",
+        "action": "Step 4: section='Additional Questions', progress='75%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:14:39.091888+00:00",
+        "step": "easy_apply",
+        "action": "Page did not advance \u2014 retrying (attempt 1)",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:14:41.893591+00:00",
+        "step": "easy_apply",
+        "action": "Step 5: section='Review your application', progress='100%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:14:44.265687+00:00",
+        "step": "easy_apply",
+        "action": "Submit clicked",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:14:47.738544+00:00",
+        "step": "submitted",
+        "action": "Application submitted successfully",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T06:14:47.739915+00:00",
+        "step": "submitted",
+        "action": "Application submitted successfully",
+        "level": "success",
+        "url": ""
+      }
+    ]
+  },
+  "6050175b-1128-4e43-9806-06815f70ce27": {
+    "id": "6050175b-1128-4e43-9806-06815f70ce27",
+    "job_url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "city": "Hyderabad, Telangana",
+      "linkedin_url": "",
+      "github_url": "",
+      "portfolio_url": "",
+      "headline": "Full Stack & AI Engineer",
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ],
+      "experience": "",
+      "degree": "Master of Computer Applications (MCA), Bachelor of Science, Intermediate",
+      "university": "Loyola College, Pragathi Degree College, Sri Gayatri Junior College"
+    },
+    "resume_path": "C:\\Users\\dinesh\\.imperium\\resumes\\arjun-classic-ats.pdf",
+    "platform": "naukri",
+    "status": "awaiting_approval",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+    "approved": null,
+    "error": "",
+    "error_code": "",
+    "result": null,
+    "created_at": "2026-06-21T17:24:05.754882+00:00",
+    "updated_at": "2026-06-21T17:24:32.991567+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T17:24:05.755866+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:24:05.756611+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:24:14.555788+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:24:14.556865+00:00",
+        "step": "detect",
+        "action": "Platform detected: naukri",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1"
+      },
+      {
+        "ts": "2026-06-21T17:24:14.557263+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-web-developer-ti-steps-hyderabad-chennai-bengaluru-0-to-1-years-181125022472?xp=1"
+      },
+      {
+        "ts": "2026-06-21T17:24:20.885068+00:00",
+        "step": "apply",
+        "action": "Clicked Naukri Apply button",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:24:26.934556+00:00",
+        "step": "naukri_form",
+        "action": "Step 1: filled 0 field(s)",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:24:32.990433+00:00",
+        "step": "needs_human",
+        "action": "Naukri form could not be completed automatically. Finish manually, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:24:32.991554+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      }
+    ]
+  },
+  "21af0060-f98f-4271-b292-6dafa6aca00f": {
+    "id": "21af0060-f98f-4271-b292-6dafa6aca00f",
+    "job_url": "https://www.linkedin.com/jobs/view/4427958337/?alternateChannel=search&eBP=CwEAAAGe6zdOKZEfLBaeBdKNVbw2oUUeHJFckMMKWTrZkDXrgO0_sx1mtoTuW3Ic3LupN4ni6L9_bR3g9PN6y7yzmVXCP6wpyhTIBTzG4oC0Bj_mNp1Gq3iYNQMxr_vd6SzUHeo2vTBQzf-q7xWZ56n4sBHZK8I8B4BXYIwJvPCsG86NJzJAY7EPk4gxcqQUhGkfn0j75Ms6BiTiBK4ohPN_cJQDHWflon32GjQqKSp2P-8a9EIFxK-Lu0t0PSLh9XvxtRFCi9Jny66pW9WM6cIZ3vfMgojJiHVkysTBhlsjukdKQrHfAFQH&refId=wKTOK87QCdi2UYKJsjlV1A%3D%3D&trackingId=Teqn6t%2BuYPbkSCX05aNZ4A%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "submitted",
+    "progress": 100,
+    "current_step": "submitted",
+    "current_action": "Application submitted",
+    "current_url": "https://www.linkedin.com/jobs/view/4427958337/?alternateChannel=search&eBP=CwEAAAGe6zdOKZEfLBaeBdKNVbw2oUUeHJFckMMKWTrZkDXrgO0_sx1mtoTuW3Ic3LupN4ni6L9_bR3g9PN6y7yzmVXCP6wpyhTIBTzG4oC0Bj_mNp1Gq3iYNQMxr_vd6SzUHeo2vTBQzf-q7xWZ56n4sBHZK8I8B4BXYIwJvPCsG86NJzJAY7EPk4gxcqQUhGkfn0j75Ms6BiTiBK4ohPN_cJQDHWflon32GjQqKSp2P-8a9EIFxK-Lu0t0PSLh9XvxtRFCi9Jny66pW9WM6cIZ3vfMgojJiHVkysTBhlsjukdKQrHfAFQH&refId=wKTOK87QCdi2UYKJsjlV1A%3D%3D&trackingId=Teqn6t%2BuYPbkSCX05aNZ4A%3D%3D",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-21T17:25:52.573868+00:00",
+    "updated_at": "2026-06-21T17:28:55.362157+00:00",
+    "events": [
+      {
+        "ts": "2026-06-21T17:25:52.576251+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4427958337/?alternateChannel=search&eBP=CwEAAAGe6zdOKZEfLBaeBdKNVbw2oUUeHJFckMMKWTrZkDXrgO0_sx1mtoTuW3Ic3LupN4ni6L9_bR3g9PN6y7yzmVXCP6wpyhTIBTzG4oC0Bj_mNp1Gq3iYNQMxr_vd6SzUHeo2vTBQzf-q7xWZ56n4sBHZK8I8B4BXYIwJvPCsG86NJzJAY7EPk4gxcqQUhGkfn0j75Ms6BiTiBK4ohPN_cJQDHWflon32GjQqKSp2P-8a9EIFxK-Lu0t0PSLh9XvxtRFCi9Jny66pW9WM6cIZ3vfMgojJiHVkysTBhlsjukdKQrHfAFQH&refId=wKTOK87QCdi2UYKJsjlV1A%3D%3D&trackingId=Teqn6t%2BuYPbkSCX05aNZ4A%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:26:02.589842+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached. Closing stale sessions...",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:26:02.590817+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:26:04.257918+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:26:04.258326+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4427958337/?alternateChannel=search&eBP=CwEAAAGe6zdOKZEfLBaeBdKNVbw2oUUeHJFckMMKWTrZkDXrgO0_sx1mtoTuW3Ic3LupN4ni6L9_bR3g9PN6y7yzmVXCP6wpyhTIBTzG4oC0Bj_mNp1Gq3iYNQMxr_vd6SzUHeo2vTBQzf-q7xWZ56n4sBHZK8I8B4BXYIwJvPCsG86NJzJAY7EPk4gxcqQUhGkfn0j75Ms6BiTiBK4ohPN_cJQDHWflon32GjQqKSp2P-8a9EIFxK-Lu0t0PSLh9XvxtRFCi9Jny66pW9WM6cIZ3vfMgojJiHVkysTBhlsjukdKQrHfAFQH&refId=wKTOK87QCdi2UYKJsjlV1A%3D%3D&trackingId=Teqn6t%2BuYPbkSCX05aNZ4A%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T17:26:04.258671+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.linkedin.com/jobs/view/4427958337/?alternateChannel=search&eBP=CwEAAAGe6zdOKZEfLBaeBdKNVbw2oUUeHJFckMMKWTrZkDXrgO0_sx1mtoTuW3Ic3LupN4ni6L9_bR3g9PN6y7yzmVXCP6wpyhTIBTzG4oC0Bj_mNp1Gq3iYNQMxr_vd6SzUHeo2vTBQzf-q7xWZ56n4sBHZK8I8B4BXYIwJvPCsG86NJzJAY7EPk4gxcqQUhGkfn0j75Ms6BiTiBK4ohPN_cJQDHWflon32GjQqKSp2P-8a9EIFxK-Lu0t0PSLh9XvxtRFCi9Jny66pW9WM6cIZ3vfMgojJiHVkysTBhlsjukdKQrHfAFQH&refId=wKTOK87QCdi2UYKJsjlV1A%3D%3D&trackingId=Teqn6t%2BuYPbkSCX05aNZ4A%3D%3D",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4427958337/?alternateChannel=search&eBP=CwEAAAGe6zdOKZEfLBaeBdKNVbw2oUUeHJFckMMKWTrZkDXrgO0_sx1mtoTuW3Ic3LupN4ni6L9_bR3g9PN6y7yzmVXCP6wpyhTIBTzG4oC0Bj_mNp1Gq3iYNQMxr_vd6SzUHeo2vTBQzf-q7xWZ56n4sBHZK8I8B4BXYIwJvPCsG86NJzJAY7EPk4gxcqQUhGkfn0j75Ms6BiTiBK4ohPN_cJQDHWflon32GjQqKSp2P-8a9EIFxK-Lu0t0PSLh9XvxtRFCi9Jny66pW9WM6cIZ3vfMgojJiHVkysTBhlsjukdKQrHfAFQH&refId=wKTOK87QCdi2UYKJsjlV1A%3D%3D&trackingId=Teqn6t%2BuYPbkSCX05aNZ4A%3D%3D"
+      },
+      {
+        "ts": "2026-06-21T17:26:10.141672+00:00",
+        "step": "easy_apply",
+        "action": "Navigating to apply URL",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4427958337/apply/?openSDUIApplyFlow=true&refId=wKTOK87QCdi2UYKJsj"
+      },
+      {
+        "ts": "2026-06-21T17:26:22.257699+00:00",
+        "step": "easy_apply",
+        "action": "Opened Easy Apply modal",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:26:25.031921+00:00",
+        "step": "easy_apply",
+        "action": "Step 1: section='Contact info', progress='0%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:26:33.918746+00:00",
+        "step": "easy_apply",
+        "action": "Step 2: section='Resume', progress='25%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:27:05.543868+00:00",
+        "step": "fill",
+        "action": "Selected 'jobsDocumentCardToggle-ember218' = jobsDocumentCardToggle-ember218",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:27:42.583349+00:00",
+        "step": "easy_apply",
+        "action": "Step 3: section='Additional Questions', progress='75%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:28:13.908982+00:00",
+        "step": "fill",
+        "action": "Selected 'Have you completed the following level of educatio' = urn:li:fsd_formElement:urn:li:jobs_apply",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:28:46.600923+00:00",
+        "step": "easy_apply",
+        "action": "Submit clicked",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:28:55.359412+00:00",
+        "step": "submitted",
+        "action": "Application submitted successfully",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-21T17:28:55.362142+00:00",
+        "step": "submitted",
+        "action": "Application submitted successfully",
+        "level": "success",
+        "url": ""
+      }
+    ]
+  },
+  "0efaa046-03ca-41b1-878c-e360f157d1bf": {
+    "id": "0efaa046-03ca-41b1-878c-e360f157d1bf",
+    "job_url": "https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "city": "Hyderabad, Telangana",
+      "linkedin_url": "",
+      "github_url": "",
+      "portfolio_url": "",
+      "headline": "Full Stack & AI Engineer",
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ],
+      "experience": "",
+      "degree": "Master of Computer Applications (MCA), Bachelor of Science, Intermediate",
+      "university": "Loyola College, Pragathi Degree College, Sri Gayatri Junior College"
+    },
+    "resume_path": "C:\\Users\\dinesh\\.imperium\\resumes\\arjun-classic-ats.pdf",
+    "platform": "linkedin",
+    "status": "failed",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D",
+    "approved": null,
+    "error": "Approval timeout",
+    "error_code": "APPROVAL_TIMEOUT",
+    "result": null,
+    "created_at": "2026-06-22T04:41:43.401344+00:00",
+    "updated_at": "2026-06-22T04:52:27.211738+00:00",
+    "events": [
+      {
+        "ts": "2026-06-22T04:41:43.402469+00:00",
+        "step": "queued",
+        "action": "Queued application for https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:41:43.404828+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:41:53.059240+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:41:53.061156+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D"
+      },
+      {
+        "ts": "2026-06-22T04:41:53.061922+00:00",
+        "step": "navigate",
+        "action": "Opening https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D",
+        "level": "info",
+        "url": "https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D"
+      },
+      {
+        "ts": "2026-06-22T04:41:59.433721+00:00",
+        "step": "navigate",
+        "action": "Re-navigating to job URL",
+        "level": "info",
+        "url": "https://in.linkedin.com/jobs/view/ui-engineer-front-end-engineer-intern-specialist-at-pwc-acceleration-center-india-4428281018?position=10&amp;pageNum=5&amp;refId=a5CFTxOmtA0cW3syANq%2F%2Fg%3D%3D&amp;trackingId=ah1Zv4RR6KrKINsnQrdkug%3D%3D"
+      },
+      {
+        "ts": "2026-06-22T04:42:19.113055+00:00",
+        "step": "easy_apply",
+        "action": "No Easy Apply button found",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:42:26.727579+00:00",
+        "step": "needs_human",
+        "action": "No Easy Apply or external apply link found. Finish manually in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:42:26.729165+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:52:27.211718+00:00",
+        "step": "timeout",
+        "action": "Timed out waiting for approval",
+        "level": "error",
+        "url": ""
+      }
+    ]
+  },
+  "ff2ce9ad-aace-4316-901d-ce9bb0e8cef4": {
+    "id": "ff2ce9ad-aace-4316-901d-ce9bb0e8cef4",
+    "job_url": "https://www.linkedin.com/jobs/view/4426456771/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&trackingId=9VG6HYowd%2F8cW4bmMHWLAw%3D%3D",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "url": "https://linkedin.com/in/arjunsharma"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/arjun"
+        },
+        {
+          "label": "Portfolio",
+          "url": "https://arjun-imperium.vercel.app"
+        }
+      ],
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ]
+    },
+    "resume_path": "",
+    "platform": "linkedin",
+    "status": "submitted",
+    "progress": 100,
+    "current_step": "submitted",
+    "current_action": "Application submitted",
+    "current_url": "https://www.linkedin.com/jobs/view/4426456771/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&trackingId=9VG6HYowd%2F8cW4bmMHWLAw%3D%3D",
+    "approved": null,
+    "error": "Too many concurrent sessions",
+    "error_code": "UNKNOWN_ERROR",
+    "result": null,
+    "created_at": "2026-06-22T04:45:31.802908+00:00",
+    "updated_at": "2026-06-22T04:49:08.168533+00:00",
+    "events": [
+      {
+        "ts": "2026-06-22T04:45:31.804871+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.linkedin.com/jobs/view/4426456771/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&trackingId=9VG6HYowd%2F8cW4bmMHWLAw%3D%3D",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:45:41.808959+00:00",
+        "step": "error",
+        "action": "Max concurrent browser sessions reached. Closing stale sessions...",
+        "level": "error",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:45:41.810226+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:45:43.290725+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:45:43.292002+00:00",
+        "step": "detect",
+        "action": "Platform detected: linkedin",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426456771/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&trackingId=9VG6HYowd%2F8cW4bmMHWLAw%3D%3D"
+      },
+      {
+        "ts": "2026-06-22T04:45:43.292496+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.linkedin.com/jobs/view/4426456771/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&trackingId=9VG6HYowd%2F8cW4bmMHWLAw%3D%3D",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426456771/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&trackingId=9VG6HYowd%2F8cW4bmMHWLAw%3D%3D"
+      },
+      {
+        "ts": "2026-06-22T04:45:48.889933+00:00",
+        "step": "easy_apply",
+        "action": "Navigating to apply URL",
+        "level": "info",
+        "url": "https://www.linkedin.com/jobs/view/4426456771/apply/?openSDUIApplyFlow=true&trackingId=9VG6HYowd%2F8"
+      },
+      {
+        "ts": "2026-06-22T04:45:57.874906+00:00",
+        "step": "easy_apply",
+        "action": "Opened Easy Apply modal",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:46:00.856500+00:00",
+        "step": "easy_apply",
+        "action": "Step 1: section='Contact info', progress='0%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:46:09.455302+00:00",
+        "step": "easy_apply",
+        "action": "Step 2: section='Resume', progress='25%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:46:41.065276+00:00",
+        "step": "fill",
+        "action": "Selected 'jobsDocumentCardToggle-ember241' = jobsDocumentCardToggle-ember241",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:47:12.117555+00:00",
+        "step": "fill",
+        "action": "Selected 'jobsDocumentCardToggle-ember239' = jobsDocumentCardToggle-ember239",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:47:18.766973+00:00",
+        "step": "easy_apply",
+        "action": "Step 3: section='', progress='50%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:47:26.884921+00:00",
+        "step": "easy_apply",
+        "action": "Step 4: section='Additional Questions', progress='75%'",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:48:28.321290+00:00",
+        "step": "fill",
+        "action": "Selected 'Have you completed the following level of educatio' = urn:li:fsd_formElement:urn:li:jobs_apply",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:49:01.064420+00:00",
+        "step": "easy_apply",
+        "action": "Submit clicked",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:49:08.166739+00:00",
+        "step": "submitted",
+        "action": "Application submitted successfully",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T04:49:08.168521+00:00",
+        "step": "submitted",
+        "action": "Application submitted successfully",
+        "level": "success",
+        "url": ""
+      }
+    ]
+  },
+  "86ca6384-0d88-4a64-8073-a15b3179fe66": {
+    "id": "86ca6384-0d88-4a64-8073-a15b3179fe66",
+    "job_url": "https://www.naukri.com/job-listings-software-engineer-developer-programmer-2026-graduate-can-apply-creative-hands-hr-hyderabad-chennai-bengaluru-0-to-5-years-220626001838?xp=1",
+    "profile": {
+      "name": "Arjun",
+      "email": "arjun@imperium.dev",
+      "phone": "+91 9000111222",
+      "location": "Hyderabad, Telangana",
+      "city": "Hyderabad, Telangana",
+      "linkedin_url": "",
+      "github_url": "",
+      "portfolio_url": "",
+      "headline": "Full Stack & AI Engineer",
+      "summary": "MCA student with strong foundations in Software Engineering, AI, Full Stack Development, and Business Automation. Skilled in building scalable web applications with React, TypeScript, Node.js, Python, and PostgreSQL. Experience designing AI-powered systems, workflow automation platforms, and knowledge management tools.",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "TypeScript",
+        "Java",
+        "React.js",
+        "Next.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Docker",
+        "AI Agents",
+        "Git",
+        "GitHub",
+        "Postman",
+        "VS Code",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "System Design",
+        "Problem Solving",
+        "Communication",
+        "Team Collaboration",
+        "Adaptability",
+        "Ownership",
+        "Time Management"
+      ],
+      "experience": "",
+      "degree": "Master of Computer Applications (MCA), Bachelor of Science, Intermediate",
+      "university": "Loyola College, Pragathi Degree College, Sri Gayatri Junior College"
+    },
+    "resume_path": "C:\\Users\\dinesh\\.imperium\\resumes\\arjun-classic-ats.pdf",
+    "platform": "naukri",
+    "status": "failed",
+    "progress": 70,
+    "current_step": "needs_human",
+    "current_action": "Agent stuck. Finish in Chrome, then Approve/Reject.",
+    "current_url": "https://www.naukri.com/job-listings-software-engineer-developer-programmer-2026-graduate-can-apply-creative-hands-hr-hyderabad-chennai-bengaluru-0-to-5-years-220626001838?xp=1",
+    "approved": null,
+    "error": "Approval timeout",
+    "error_code": "APPROVAL_TIMEOUT",
+    "result": null,
+    "created_at": "2026-06-22T07:13:32.151353+00:00",
+    "updated_at": "2026-06-22T07:23:59.296070+00:00",
+    "events": [
+      {
+        "ts": "2026-06-22T07:13:32.152438+00:00",
+        "step": "queued",
+        "action": "Queued application for https://www.naukri.com/job-listings-software-engineer-developer-programmer-2026-graduate-can-apply-creative-hands-hr-hyderabad-chennai-bengaluru-0-to-5-years-220626001838?xp=1",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:13:32.153435+00:00",
+        "step": "boot",
+        "action": "Launching local Chrome",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:13:40.560999+00:00",
+        "step": "profile",
+        "action": "undetected-chromedriver | profile=C:\\Users\\dinesh\\.imperium_chrome_profile_uc",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:13:40.561997+00:00",
+        "step": "detect",
+        "action": "Platform detected: naukri",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-software-engineer-developer-programmer-2026-graduate-can-apply-creative-hands-hr-hyderabad-chennai-bengaluru-0-to-5-years-220626001838?xp=1"
+      },
+      {
+        "ts": "2026-06-22T07:13:40.562439+00:00",
+        "step": "navigate",
+        "action": "Opening https://www.naukri.com/job-listings-software-engineer-developer-programmer-2026-graduate-can-apply-creative-hands-hr-hyderabad-chennai-bengaluru-0-to-5-years-220626001838?xp=1",
+        "level": "info",
+        "url": "https://www.naukri.com/job-listings-software-engineer-developer-programmer-2026-graduate-can-apply-creative-hands-hr-hyderabad-chennai-bengaluru-0-to-5-years-220626001838?xp=1"
+      },
+      {
+        "ts": "2026-06-22T07:13:47.766996+00:00",
+        "step": "apply",
+        "action": "Clicked Naukri Apply button",
+        "level": "success",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:13:53.294598+00:00",
+        "step": "naukri_form",
+        "action": "Step 1: filled 0 field(s)",
+        "level": "info",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:13:58.848343+00:00",
+        "step": "needs_human",
+        "action": "Naukri form could not be completed automatically. Finish manually, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:13:58.850150+00:00",
+        "step": "needs_human",
+        "action": "Agent paused \u2014 finish in Chrome, then Approve/Reject.",
+        "level": "warn",
+        "url": ""
+      },
+      {
+        "ts": "2026-06-22T07:23:59.296022+00:00",
+        "step": "timeout",
+        "action": "Timed out waiting for approval",
+        "level": "error",
+        "url": ""
+      }
+    ]
   }
 }

@@ -107,5 +107,8 @@ def build_driver() -> Tuple[object, str]:
         kind = "REAL Chrome profile" if USE_REAL_CHROME else "dedicated agent profile"
         profile_desc = f"Using {kind}: {CHROME_PROFILE_DIR} ({CHROME_USER_DATA_DIR})"
 
-    driver = uc.Chrome(options=opts)
+    driver = uc.Chrome(
+    options=opts,
+    version_main=149,
+    use_subprocess=True)
     return driver, profile_desc

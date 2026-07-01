@@ -200,8 +200,9 @@
   background: rgba(255,255,255,0.7);
 }
 /* Column tints */
-.pipeline-col[data-status="applied"]      .pipeline-col-header { background: #eef2ff; color: #4338ca; }
-.pipeline-col[data-status="viewed"]       .pipeline-col-header { background: #fffbeb; color: #b45309; }
+  .pipeline-col[data-status="applied"]      .pipeline-col-header { background: #eef2ff; color: #4338ca; }
+  .pipeline-col[data-status="submitted"]    .pipeline-col-header { background: #ecfdf5; color: #047857; }
+  .pipeline-col[data-status="viewed"]       .pipeline-col-header { background: #fffbeb; color: #b45309; }
 .pipeline-col[data-status="under_review"] .pipeline-col-header { background: #fff7ed; color: #c2410c; }
 .pipeline-col[data-status="assessment"]   .pipeline-col-header { background: #ecfeff; color: #0e7490; }
 .pipeline-col[data-status="interview"]    .pipeline-col-header { background: #eff6ff; color: #1d4ed8; }

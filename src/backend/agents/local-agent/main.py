@@ -1,23 +1,25 @@
 """
-main.py — entrypoint shim.
+main.py -- entrypoint shim.
 
-Kept so the documented ``python main.py`` command still works after the
-refactor. All real logic lives in ``api/agent_server.py``.
+Keeps the documented ``python main.py`` command working.
+All real logic lives in ``api/agent_server.py``.
 
-Layout (see README.md for the diagram):
-
+Layout:
     local_agent/
-    ├── main.py              <- you are here (3-line shim)
+    ├── main.py              <- you are here
     ├── api/agent_server.py  <- HTTP server
-    ├── agents/              <- run orchestrator(s)
-    ├── automation/          <- Selenium + form mechanics
-    ├── shared/              <- state + Ollama LLM client
+    ├── core/                <- config, logging, errors, retry, concurrency
+    ├── browser/             <- Chrome lifecycle + session management
+    ├── classifiers/         <- platform + page classification
+    ├── executors/           <- LinkedIn, Naukri, ATS executors + submit verifier
+    ├── engine/              <- profile memory, question engine, form engine, resume
+    ├── tracking/            <- run state + event persistence
+    ├── shared/              <- LLM brain (Ollama client)
     └── storage/             <- application_history.json (persisted runs)
 """
 import os
 import sys
 
-# Make absolute imports work when run as `python main.py` from any CWD.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from api.agent_server import main  # noqa: E402

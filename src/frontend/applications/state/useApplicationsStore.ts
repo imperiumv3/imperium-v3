@@ -258,6 +258,7 @@ export function selectPipelineBuckets(
 ): Record<ApplicationStatus, Application[]> {
   const out: Record<ApplicationStatus, Application[]> = {
     applied: [],
+    submitted: [],
     viewed: [],
     under_review: [],
     assessment: [],

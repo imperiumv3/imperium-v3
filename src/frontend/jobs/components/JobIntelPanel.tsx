@@ -2,6 +2,21 @@ import type { NormalizedJob } from "@backend/jobs/JobNormalizationService.server
 import { CompanyLogo } from "./JobCard";
 import { INTELLIGENCE_LABEL, postedAgo } from "../jobs.logic";
 
+const SOURCE_LABELS: Record<string, string> = {
+  linkedin: "LinkedIn",
+  naukri: "Naukri",
+  remoteok: "RemoteOK",
+  remotive: "Remotive",
+  arbeitnow: "Arbeitnow",
+  foundit: "Foundit",
+  instahyre: "Instahyre",
+  hirist: "Hirist",
+  wellfound: "Wellfound",
+  yc: "YC Jobs",
+  adzuna: "Adzuna",
+  jooble: "Jooble",
+};
+
 interface Props {
   job: NormalizedJob | null;
   onApply: (id: string) => void;
@@ -18,6 +33,7 @@ export function JobIntelPanel({ job, onApply, applying }: Props) {
     );
   }
   const intel = INTELLIGENCE_LABEL[job.intelligence];
+  const sourceLabel = SOURCE_LABELS[job.source] ?? job.source;
   return (
     <aside className="jobs-intel">
       <div className="jobs-intel-eyebrow">SELECTED JOB</div>
@@ -26,14 +42,25 @@ export function JobIntelPanel({ job, onApply, applying }: Props) {
         <div>
           <div className="jobs-intel-company">{job.company}</div>
           <div className="jobs-intel-title">{job.title}</div>
-          <div className={`jobs-tag ${intel?.tone ?? ""}`}>{Math.round(job.matchScore * 100)}% Match</div>
+          <div className={`jobs-tag ${intel?.tone ?? ""}`}>
+            {Math.round(job.matchScore * 100)}% Match
+          </div>
         </div>
       </div>
 
       <div className="jobs-intel-meta">
-        <div><strong>💰 {job.salary}</strong><span>Estimated CTC</span></div>
-        <div><strong>📍 {job.location || "—"}</strong><span>Location</span></div>
-        <div><strong>🕒 {postedAgo(job.postedAt)}</strong><span>Posted</span></div>
+        <div>
+          <strong>💰 {job.salary}</strong>
+          <span>Estimated CTC</span>
+        </div>
+        <div>
+          <strong>📍 {job.location || "—"}</strong>
+          <span>Location</span>
+        </div>
+        <div>
+          <strong>🕒 {postedAgo(job.postedAt)}</strong>
+          <span>Posted</span>
+        </div>
       </div>
 
       <button
@@ -48,20 +75,27 @@ export function JobIntelPanel({ job, onApply, applying }: Props) {
       <CompanyBanner logo={job.companyLogo} name={job.company} />
 
       {job.url && (
-        <a href={job.url} target="_blank" rel="noreferrer" className="jobs-btn-ghost jobs-intel-link">
+        <a
+          href={job.url}
+          target="_blank"
+          rel="noreferrer"
+          className="jobs-btn-ghost jobs-intel-link"
+        >
           Open Original Job Posting ↗
         </a>
       )}
 
       <div className="jobs-intel-source">
-        <span>Source: {job.source}</span>
-        {job.companyWebsite && <a href={job.companyWebsite} target="_blank" rel="noreferrer">{job.companyDomain}</a>}
+        <span>Source: {sourceLabel}</span>
+        {job.companyWebsite && (
+          <a href={job.companyWebsite} target="_blank" rel="noreferrer">
+            {job.companyDomain}
+          </a>
+        )}
       </div>
 
       {job.intelligence === "long_shot" && job.missingSkills.length > 0 && (
-        <div className="jobs-intel-note">
-          Missing: {job.missingSkills.slice(0, 5).join(", ")}
-        </div>
+        <div className="jobs-intel-note">Missing: {job.missingSkills.slice(0, 5).join(", ")}</div>
       )}
 
       <details className="jobs-intel-jd" open>

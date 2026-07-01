@@ -1,30 +1,34 @@
-import { GlassCard } from "../components/GlassCard";
+import { CpuArchitecture } from "@/components/ui/cpu-architecture";
 
 export function StorytellingSection() {
   return (
     <section data-section={6} className="lv2-hpanel lv2s6">
       <div className="lv2s6-bg" aria-hidden />
       <div className="lv2s6-inner">
-        <span className="lv2-shell-index">— 06 / 12</span>
-        <h2 className="lv2s6-title" data-text="STORY">
-          <span className="lv2s6-layer lv2s6-layer-a">STORY</span>
-          <span className="lv2s6-layer lv2s6-layer-b">STORY</span>
-          <span className="lv2s6-layer lv2s6-layer-c">STORY</span>
-        </h2>
-        <p className="lv2s6-kicker">TELLING</p>
-        <div className="lv2s6-grid">
-          <GlassCard className="lv2s6-card" glowColor="rgba(120,160,255,0.55)">
-            <h3>The Origin</h3>
-            <p>Every empire begins with a refusal — a refusal to accept the ordinary. IMPERIUM was forged in that refusal.</p>
-          </GlassCard>
-          <GlassCard className="lv2s6-card" glowColor="rgba(255,255,255,0.55)">
-            <h3>The Arc</h3>
-            <p>Four agents. One operator. A continuous narrative of search, craft, optimize, execute.</p>
-          </GlassCard>
-          <GlassCard className="lv2s6-card" glowColor="rgba(120,200,255,0.55)">
-            <h3>The Promise</h3>
-            <p>You write the chapters. We move the world to meet them.</p>
-          </GlassCard>
+        <div className="lv2s6-content">
+          <span className="lv2-shell-index">— 06 / 12</span>
+          <span className="lv2s6-label">06 JOURNEY</span>
+          <h2 className="lv2s6-heading">Start Your Journey</h2>
+          <p className="lv2s6-desc">
+            Every successful application begins with a single step. Set up your
+            profile, define your goals, and let IMPERIUM guide your path toward
+            the right opportunities.
+          </p>
+          <p className="lv2s6-supporting">
+            Your profile becomes the foundation for intelligent job matching,
+            resume optimization, and application automation throughout the
+            platform.
+          </p>
+        </div>
+        <div className="lv2s6-visual">
+          <CpuArchitecture
+            text="JOURNEY"
+            showCpuConnections={true}
+            animateText={true}
+            animateLines={true}
+            animateMarkers={true}
+            className="lv2s6-cpu"
+          />
         </div>
       </div>
     </section>

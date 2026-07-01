@@ -12,9 +12,20 @@
  *   - never pad
  */
 import type { RawJob } from "@backend/jobs/JobSources.server";
-import { rankJob, type CandidateContext, type IntelligenceLabel, type MatchBreakdown, type ExperienceBucket, type LocationTier } from "@backend/jobs/JobRankingService.server";
+import {
+  rankJob,
+  type CandidateContext,
+  type IntelligenceLabel,
+  type MatchBreakdown,
+  type ExperienceBucket,
+  type LocationTier,
+} from "@backend/jobs/JobRankingService.server";
 import { getCompanyInfo } from "@backend/jobs/CompanyInfoService.server";
-import { validateJob, type QualityStatus, type DescriptionSource } from "@backend/jobs/JobValidationService.server";
+import {
+  validateJob,
+  type QualityStatus,
+  type DescriptionSource,
+} from "@backend/jobs/JobValidationService.server";
 
 export interface NormalizedJob {
   id: string;
@@ -82,7 +93,11 @@ export function normalizeJob(raw: RawJob, ctx: CandidateContext): NormalizedJob 
     companyWebsite: company.website,
     location: raw.location || (raw.remote ? "Remote" : ""),
     remote: raw.remote,
-    workMode: raw.remote ? "Remote" : "On-site",
+    workMode: raw.remote
+      ? "Remote"
+      : /hybrid/i.test(`${raw.title} ${raw.location} ${raw.description}`)
+        ? "Hybrid"
+        : "On-site",
     salary: formatSalary(raw.salary_min, raw.salary_max, raw.salary_currency),
     salaryMin: raw.salary_min,
     salaryMax: raw.salary_max,
@@ -103,13 +118,16 @@ export function normalizeJob(raw: RawJob, ctx: CandidateContext): NormalizedJob 
 }
 
 export function normalizeMany(raws: RawJob[], ctx: CandidateContext): NormalizedJob[] {
-  return raws.map((r) => normalizeJob(r, ctx)).sort((a, b) => {
-    if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
-    if (a.freshnessDays !== b.freshnessDays) return a.freshnessDays - b.freshnessDays;
-    if (b.qualityScore !== a.qualityScore) return b.qualityScore - a.qualityScore;
-    if (b.matchedSkills.length !== a.matchedSkills.length) return b.matchedSkills.length - a.matchedSkills.length;
-    return (b.salaryMin ?? 0) - (a.salaryMin ?? 0);
-  });
+  return raws
+    .map((r) => normalizeJob(r, ctx))
+    .sort((a, b) => {
+      if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
+      if (a.freshnessDays !== b.freshnessDays) return a.freshnessDays - b.freshnessDays;
+      if (b.qualityScore !== a.qualityScore) return b.qualityScore - a.qualityScore;
+      if (b.matchedSkills.length !== a.matchedSkills.length)
+        return b.matchedSkills.length - a.matchedSkills.length;
+      return (b.salaryMin ?? 0) - (a.salaryMin ?? 0);
+    });
 }
 
 /** Top-5 selector (relaxed): keep strong matches even when the JD is short or
@@ -118,12 +136,13 @@ export function normalizeMany(raws: RawJob[], ctx: CandidateContext): Normalized
 export function selectTop5(jobs: NormalizedJob[]): NormalizedJob[] {
   const allowedTiers: LocationTier[] = ["same_city", "same_state", "remote", "same_country"];
   return jobs
-    .filter((j) =>
-      j.qualityStatus !== "invalid_url" &&
-      !j.titleMismatch &&
-      j.matchScore >= 0.4 &&
-      j.freshnessDays <= 30 &&
-      allowedTiers.includes(j.locationTier),
+    .filter(
+      (j) =>
+        j.qualityStatus !== "invalid_url" &&
+        !j.titleMismatch &&
+        j.matchScore >= 0.4 &&
+        j.freshnessDays <= 30 &&
+        allowedTiers.includes(j.locationTier),
     )
     .slice(0, 5);
 }

@@ -2,6 +2,21 @@ import { useState } from "react";
 import type { NormalizedJob } from "@backend/jobs/JobNormalizationService.server";
 import { INTELLIGENCE_LABEL, companyInitials, postedAgo } from "../jobs.logic";
 
+const SOURCE_LABELS: Record<string, string> = {
+  linkedin: "LinkedIn",
+  naukri: "Naukri",
+  remoteok: "RemoteOK",
+  remotive: "Remotive",
+  arbeitnow: "Arbeitnow",
+  foundit: "Foundit",
+  instahyre: "Instahyre",
+  hirist: "Hirist",
+  wellfound: "Wellfound",
+  yc: "YC Jobs",
+  adzuna: "Adzuna",
+  jooble: "Jooble",
+};
+
 interface Props {
   job: NormalizedJob;
   selected?: boolean;
@@ -12,13 +27,19 @@ interface Props {
 
 export function JobCard({ job, selected, variant = "grid", onView, onApply }: Props) {
   const intel = INTELLIGENCE_LABEL[job.intelligence];
+  const sourceLabel = SOURCE_LABELS[job.source] ?? job.source;
   return (
     <div
       role="button"
       tabIndex={0}
       className={`jobs-card jobs-card-${variant}${selected ? " is-selected" : ""}`}
       onClick={() => onView(job.id)}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onView(job.id); } }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onView(job.id);
+        }
+      }}
     >
       <div className="jobs-card-head">
         <CompanyLogo logo={job.companyLogo} name={job.company} />
@@ -35,13 +56,18 @@ export function JobCard({ job, selected, variant = "grid", onView, onApply }: Pr
         <span>💰 {job.salary}</span>
         <span>📍 {job.location || "—"}</span>
         <span>🕒 {postedAgo(job.postedAt)}</span>
+        <span className="jobs-card-source">🔗 {sourceLabel}</span>
       </div>
       <div className={`jobs-tag ${intel?.tone ?? ""}`}>{intel?.text ?? "—"}</div>
       {variant === "grid" && (
         <div className="jobs-card-actions" onClick={(e) => e.stopPropagation()}>
-          <button type="button" className="jobs-btn-ghost-sm" onClick={() => onView(job.id)}>View Details</button>
+          <button type="button" className="jobs-btn-ghost-sm" onClick={() => onView(job.id)}>
+            View Details
+          </button>
           {onApply && (
-            <button type="button" className="jobs-btn-primary-sm" onClick={() => onApply(job.id)}>Apply</button>
+            <button type="button" className="jobs-btn-primary-sm" onClick={() => onApply(job.id)}>
+              Apply
+            </button>
           )}
         </div>
       )}
@@ -62,7 +88,9 @@ export function CompanyLogo({ logo, name }: { logo: string; name: string }) {
     return (
       <div
         className="jobs-logo jobs-logo-fallback"
-        style={{ background: `linear-gradient(135deg, hsl(${hue} 70% 55%), hsl(${(hue + 40) % 360} 70% 45%))` }}
+        style={{
+          background: `linear-gradient(135deg, hsl(${hue} 70% 55%), hsl(${(hue + 40) % 360} 70% 45%))`,
+        }}
       >
         {companyInitials(name)}
       </div>

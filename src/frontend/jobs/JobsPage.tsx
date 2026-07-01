@@ -1,6 +1,6 @@
 import "./jobs.css";
-import { useState } from "react";
 import { useDiscovery, useJobDetails, useSelectJob } from "./jobs.logic";
+import { useJobSearchStore } from "./state/useJobSearchStore";
 import { ProfileMetricsRail } from "./components/ProfileMetricsRail";
 import { JobSearchBar } from "./components/JobSearchBar";
 import { TopMatchesRow } from "./components/TopMatchesRow";
@@ -10,17 +10,15 @@ import { AllJobsGrid } from "./components/AllJobsGrid";
 
 export function JobsPage() {
   const { search, refresh, data, lastFilters } = useDiscovery();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const details = useJobDetails(selectedId);
+  const { selectedJobId, setSelectedJobId } = useJobSearchStore();
+  const details = useJobDetails(selectedJobId);
   const select = useSelectJob();
 
   const all = data?.all ?? [];
   const top5 = data?.top5 ?? [];
-  // Prefer the in-memory list (already has the canonical matchScore + breakdown
-  // from the original search context). The fetched details are a fallback.
-  const selectedJob = all.find((j) => j.id === selectedId) ?? details.data ?? null;
+  const selectedJob = all.find((j) => j.id === selectedJobId) ?? details.data ?? null;
 
-  const handleView = (id: string) => setSelectedId(id);
+  const handleView = (id: string) => setSelectedJobId(id);
   const handleApply = (id: string) => select.mutate(id);
 
   return (
@@ -28,7 +26,7 @@ export function JobsPage() {
       <header className="jobs-header">
         <div>
           <h1 className="jobs-title">JOB <span>DISCOVERY ENGINE</span></h1>
-          <div className="jobs-subtitle">✨ AI-Powered Job Matching</div>
+          <div className="jobs-subtitle">AI-Powered Job Matching</div>
         </div>
       </header>
 
@@ -39,7 +37,7 @@ export function JobsPage() {
           <JobSearchBar
             initial={lastFilters ?? undefined}
             loading={search.isPending}
-            onSearch={(f) => { setSelectedId(null); search.mutate(f); }}
+            onSearch={(f) => { setSelectedJobId(null); search.mutate(f); }}
             onRefresh={refresh}
             canRefresh={!!lastFilters}
           />
@@ -48,14 +46,14 @@ export function JobsPage() {
             <div className="jobs-error">Search failed. Try again or adjust filters.</div>
           )}
 
-          <TopMatchesRow jobs={top5} selectedId={selectedId} onSelect={handleView} />
+          <TopMatchesRow jobs={top5} selectedId={selectedJobId} onSelect={handleView} />
           <SelectedJobSummary job={selectedJob} />
         </div>
 
         <JobIntelPanel job={selectedJob} onApply={handleApply} applying={select.isPending} />
       </div>
 
-      <AllJobsGrid jobs={all} selectedId={selectedId} onView={handleView} onApply={handleApply} />
+      <AllJobsGrid jobs={all} selectedId={selectedJobId} onView={handleView} onApply={handleApply} />
     </div>
   );
 }

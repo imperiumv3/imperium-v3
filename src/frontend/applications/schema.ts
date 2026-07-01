@@ -6,6 +6,7 @@
 
 export type ApplicationStatus =
   | "applied"
+  | "submitted"
   | "viewed"
   | "under_review"
   | "assessment"
@@ -92,6 +93,7 @@ export interface ApplicationEvent {
 
 export const STATUS_LABEL: Record<ApplicationStatus, string> = {
   applied: "Applied",
+  submitted: "Submitted",
   viewed: "Viewed",
   under_review: "Under Review",
   assessment: "Assessment",
@@ -103,6 +105,7 @@ export const STATUS_LABEL: Record<ApplicationStatus, string> = {
 
 export const PIPELINE_COLUMNS: ApplicationStatus[] = [
   "applied",
+  "submitted",
   "viewed",
   "under_review",
   "assessment",

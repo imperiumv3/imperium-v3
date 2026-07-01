@@ -1,70 +1,45 @@
 """
 api/agent_server.py
-===================
+==================
 
-Purpose
--------
-Pure-stdlib HTTP server exposing the local agent on
-``http://127.0.0.1:8000``. Routes incoming requests to the orchestrator
-(``agents.automation_agent.run_job``) and to the shared run registry.
-
-Inputs
-------
-- ``HOST``, ``PORT`` env vars (default 127.0.0.1:8000).
-- JSON request bodies: ``{ job_url, profile }`` for /apply,
-  ``{ job_id }`` for /approve and /reject.
-
-Outputs
--------
-- JSON responses for /health, /apply, /approve, /reject, /status/{id},
-  /events/{id}, /runs.
-
-Responsibility
---------------
-HTTP transport + CORS only. No Selenium, no LLM, no auth, no cloud calls.
-The agent is loopback-only (127.0.0.1), so no token authentication is
-needed. All state lives in ``shared.models``; all run logic lives in
-``agents.automation_agent``.
+HTTP server exposing the local agent on http://127.0.0.1:8000.
+Routes incoming requests to the orchestrator and shared run registry.
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
+import signal
+import sys
+import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from typing import Any, Dict
 from urllib.parse import urlparse
 
 try:
     from dotenv import load_dotenv
     load_dotenv()
-except Exception:  # noqa: BLE001
+except Exception:
     pass
 
-from shared import models
-from automation.selenium_driver import SELENIUM_OK, HEADLESS
+from core.config import CFG
+from core.logging import log, setup_logging
+from core.concurrency import browser_semaphore
+from tracking import run_tracker as models
+from browser.browser_manager import SELENIUM_OK
 from agents.automation_agent import run_job
 
 
-HOST = os.environ.get("HOST", "127.0.0.1")
-PORT = int(os.environ.get("PORT", "8000"))
-
-# Loopback-only invariant — never bind to 0.0.0.0 even if env says so.
-if HOST not in ("127.0.0.1", "localhost", "::1"):
-    print(f"[agent] WARNING: HOST={HOST!r} is not loopback; forcing 127.0.0.1")
-    HOST = "127.0.0.1"
-
-
 class Handler(BaseHTTPRequestHandler):
-    server_version = "ImperiumLocalAgent/4.0"
+    server_version = "ImperiumLocalAgent/5.0"
 
-    def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
+    def log_message(self, format: str, *args: Any) -> None:
         return
 
-    # ---- helpers ----
     def _cors_headers(self) -> Dict[str, str]:
-        # Loopback-only agent + no credentials → wildcard CORS is safe and
-        # works for any local web app origin (Vite, Next, Lovable preview).
         headers = {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -97,55 +72,45 @@ class Handler(BaseHTTPRequestHandler):
             return {}
         return data if isinstance(data, dict) else {}
 
-    # ---- CORS ----
-    def do_OPTIONS(self) -> None:  # noqa: N802
+    def do_OPTIONS(self) -> None:
         self.send_response(204)
         for k, v in self._cors_headers().items():
             self.send_header(k, v)
         self.send_header("Access-Control-Max-Age", "600")
         self.end_headers()
 
-    # ---- routing ----
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         path = urlparse(self.path).path.rstrip("/") or "/"
 
         if path == "/health":
             return self._send_json(200, {
                 "ok": True,
-                "chrome": SELENIUM_OK,
-                "headless": HEADLESS,
+                "selenium": SELENIUM_OK,
+                "headless": CFG.headless,
                 "runs": len(models.RUNS),
-                "version": "4.0.0",
+                "version": "5.0.0",
             })
 
         if path == "/runs":
-            items = list(models.RUNS.values())
-            items.sort(key=lambda r: r.get("created_at", ""), reverse=True)
-            return self._send_json(200, [
-                {k: v for k, v in r.items() if k != "events"} for r in items
-            ])
+            return self._send_json(200, models.get_all_runs())
 
         if path.startswith("/status/"):
             job_id = path[len("/status/"):]
-            run = models.RUNS.get(job_id)
+            run = models.get_run(job_id)
             if not run:
                 return self._send_json(404, {"error": "job not found"})
             return self._send_json(200, run)
 
         if path.startswith("/events/"):
             job_id = path[len("/events/"):]
-            run = models.RUNS.get(job_id)
-            if not run:
+            events = models.get_events(job_id)
+            if not events:
                 return self._send_json(404, {"error": "job not found"})
-            return self._send_json(200, {
-                "events": run["events"],
-                "status": run["status"],
-                "progress": run["progress"],
-            })
+            return self._send_json(200, events)
 
         self._send_json(404, {"error": "not found"})
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         path = urlparse(self.path).path.rstrip("/") or "/"
         body = self._read_json()
 
@@ -156,9 +121,28 @@ class Handler(BaseHTTPRequestHandler):
             profile = body.get("profile") or {}
             if not isinstance(profile, dict):
                 return self._send_json(400, {"error": "profile must be an object"})
-            if not profile.get("resume_path") and os.environ.get("RESUME_PATH"):
-                profile["resume_path"] = os.environ["RESUME_PATH"]
-            job_id = models.new_run(job_url, profile)
+            resume_path = body.get("resume_path") or ""
+            if not resume_path and CFG.resume_path:
+                resume_path = CFG.resume_path
+            if not resume_path and os.environ.get("RESUME_PATH"):
+                resume_path = os.environ["RESUME_PATH"]
+
+            # Handle resume PDF sent as base64 from the frontend
+            resume_base64 = body.get("resume_base64") or ""
+            resume_filename = body.get("resume_filename") or "resume.pdf"
+            if resume_base64 and not resume_path:
+                try:
+                    resume_dir = Path.home() / ".imperium" / "resumes"
+                    resume_dir.mkdir(parents=True, exist_ok=True)
+                    resume_path = str(resume_dir / resume_filename)
+                    with open(resume_path, "wb") as f:
+                        f.write(base64.b64decode(resume_base64))
+                    log.info(f"Resume saved to: {resume_path}")
+                except Exception as exc:
+                    log.warn(f"Failed to save resume PDF: {exc}")
+                    resume_path = ""
+
+            job_id = models.new_run(job_url, profile, resume_path)
             models.emit(job_id, "queued", f"Queued application for {job_url}")
             threading.Thread(target=run_job, args=(job_id,), daemon=True).start()
             return self._send_json(200, {"job_id": job_id})
@@ -180,18 +164,45 @@ class Handler(BaseHTTPRequestHandler):
         self._send_json(404, {"error": "not found"})
 
 
+_server: ThreadingHTTPServer | None = None
+
+
+def _shutdown_handler(signum, frame):
+    global _server
+    log.info("Shutting down...")
+    models.force_save()
+    if _server:
+        _server.shutdown()
+    sys.exit(0)
+
+
 def main() -> None:
+    global _server
+    setup_logging()
+
+    if CFG.host not in ("127.0.0.1", "localhost", "::1"):
+        log.warn(f"HOST={CFG.host!r} is not loopback; forcing 127.0.0.1")
+
     models.load_state()
-    print(f"[agent] Imperium Local Agent (offline, stdlib) -- http://{HOST}:{PORT}")
-    print(f"[agent] Chrome ready: {SELENIUM_OK} | headless={HEADLESS} | state={models.STATE_FILE}")
-    print("[agent] Loopback-only, no auth, no cloud callbacks.")
-    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    browser_semaphore.force_reset()
+
+    log.info(f"Imperium Local Agent (v5.0) -- http://{CFG.host}:{CFG.port}")
+    log.info(f"Selenium ready: {SELENIUM_OK} | headless={CFG.headless}")
+    log.info(f"State file: {CFG.state_file}")
+    log.info(f"Max concurrent runs: {CFG.max_concurrent_runs}")
+    log.info("Loopback-only, no auth, no cloud callbacks.")
+
+    signal.signal(signal.SIGINT, _shutdown_handler)
+    signal.signal(signal.SIGTERM, _shutdown_handler)
+
+    _server = ThreadingHTTPServer(("127.0.0.1", CFG.port), Handler)
     try:
-        server.serve_forever()
+        _server.serve_forever()
     except KeyboardInterrupt:
-        print("\n[agent] shutting down")
+        log.info("Interrupted")
     finally:
-        server.server_close()
+        models.force_save()
+        _server.server_close()
 
 
 if __name__ == "__main__":

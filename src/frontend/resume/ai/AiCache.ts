@@ -3,9 +3,18 @@
  * Memory cache for the session; localStorage cache survives reloads. AI
  * responses are deterministic enough that caching saves substantial time on
  * Ollama (Qwen3:8B) on modest hardware.
+ *
+ * IMPORTANT: The cache key is scoped by userId to prevent cross-user data
+ * leakage. Each user gets their own cache namespace.
  */
 
-const STORE_KEY = "imperium-ai-cache-v1";
+let STORE_KEY = "imperium-ai-cache-v1";
+
+export function setAiCacheUser(userId: string | null): void {
+  STORE_KEY = userId ? `imperium-ai-cache-${userId}` : "imperium-ai-cache-anon";
+  // Clear stale cross-user cache on user switch
+  memory.clear();
+}
 const MAX_ENTRIES = 80;
 
 export interface AiCacheEntry<T = unknown> {
@@ -37,7 +46,9 @@ function loadPersisted(): Record<string, AiCacheEntry> {
   try {
     const raw = localStorage.getItem(STORE_KEY);
     return raw ? (JSON.parse(raw) as Record<string, AiCacheEntry>) : {};
-  } catch { return {}; }
+  } catch {
+    return {};
+  }
 }
 
 function savePersisted(map: Record<string, AiCacheEntry>): void {
@@ -50,7 +61,9 @@ function savePersisted(map: Record<string, AiCacheEntry>): void {
     } else {
       localStorage.setItem(STORE_KEY, JSON.stringify(map));
     }
-  } catch { /* quota ignored */ }
+  } catch {
+    /* quota ignored */
+  }
 }
 
 export function aiCacheGet<T>(key: string): AiCacheEntry<T> | null {
@@ -64,7 +77,12 @@ export function aiCacheGet<T>(key: string): AiCacheEntry<T> | null {
   return null;
 }
 
-export function aiCacheSet<T>(key: string, feature: string, result: T, model?: string): AiCacheEntry<T> {
+export function aiCacheSet<T>(
+  key: string,
+  feature: string,
+  result: T,
+  model?: string,
+): AiCacheEntry<T> {
   const entry: AiCacheEntry<T> = { key, feature, model, createdAt: Date.now(), result };
   memory.set(key, entry);
   const persisted = loadPersisted();
@@ -75,5 +93,9 @@ export function aiCacheSet<T>(key: string, feature: string, result: T, model?: s
 
 export function aiCacheClear(): void {
   memory.clear();
-  try { localStorage.removeItem(STORE_KEY); } catch { /* noop */ }
+  try {
+    localStorage.removeItem(STORE_KEY);
+  } catch {
+    /* noop */
+  }
 }

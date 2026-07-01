@@ -12,7 +12,7 @@ export function DashboardPage() {
   return (
     <div className="dash-root">
       <TopBar />
-      <div style={{ padding: "0 24px" }}><AnnouncementBanner /></div>
+      <AnnouncementBanner />
       <div className="dash-grid">
         <LeftPanel data={data} />
         <CenterPanel data={data} />
@@ -24,4 +24,3 @@ export function DashboardPage() {
 }
 
 export default DashboardPage;
-

@@ -2,10 +2,10 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ImperiumNavbar } from "./ImperiumNavbar";
-import { supabase } from "@backend/database/SupabaseClient";
 import { getMaintenanceStatus, getMyStatus } from "@/lib/user-system.functions";
 import { getAdminSession } from "@frontend/admin/adminSession";
 import { MaintenancePage } from "@frontend/admin/MaintenancePage";
+import { signOut } from "@frontend/auth/session";
 
 /** App shell used by the _authenticated layout.
  *  - Maintenance mode blocks non-admin users.
@@ -31,12 +31,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         const isAdmin = !!getAdminSession();
         const maint = await getMaintenanceStatus().catch(() => null);
         if (!cancelled && maint?.is_enabled && !isAdmin) {
-          setGateState({ kind: "maintenance", message: maint.message, expected_return: maint.expected_return });
+          setGateState({
+            kind: "maintenance",
+            message: maint.message,
+            expected_return: maint.expected_return,
+          });
           return;
         }
         const status = await getMyStatus().catch(() => ({ status: "ACTIVE" }));
         if (!cancelled && status.status === "DISABLED") {
-          await supabase.auth.signOut().catch(() => {});
+          await signOut().catch(() => {});
           window.location.href = "/auth?disabled=1";
           return;
         }
@@ -45,12 +49,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         if (!cancelled) setGateState({ kind: "ok" }); // fail open
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [pathname]);
 
   if (gateState.kind === "loading") return null;
   if (gateState.kind === "maintenance") {
-    return <MaintenancePage message={gateState.message} expectedReturn={gateState.expected_return} />;
+    return (
+      <MaintenancePage message={gateState.message} expectedReturn={gateState.expected_return} />
+    );
   }
   if (gateState.kind === "disabled") return null;
 

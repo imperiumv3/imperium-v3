@@ -2,6 +2,21 @@ import type { NormalizedJob } from "@backend/jobs/JobNormalizationService.server
 import { CompanyLogo } from "./JobCard";
 import { INTELLIGENCE_LABEL, postedAgo } from "../jobs.logic";
 
+const SOURCE_LABELS: Record<string, string> = {
+  linkedin: "LinkedIn",
+  naukri: "Naukri",
+  remoteok: "RemoteOK",
+  remotive: "Remotive",
+  arbeitnow: "Arbeitnow",
+  foundit: "Foundit",
+  instahyre: "Instahyre",
+  hirist: "Hirist",
+  wellfound: "Wellfound",
+  yc: "YC Jobs",
+  adzuna: "Adzuna",
+  jooble: "Jooble",
+};
+
 export function SelectedJobSummary({ job }: { job: NormalizedJob | null }) {
   if (!job) {
     return (
@@ -11,13 +26,16 @@ export function SelectedJobSummary({ job }: { job: NormalizedJob | null }) {
     );
   }
   const intel = INTELLIGENCE_LABEL[job.intelligence];
+  const sourceLabel = SOURCE_LABELS[job.source] ?? job.source;
   return (
     <section className="jobs-summary">
       <div className="jobs-summary-head">
         <CompanyLogo logo={job.companyLogo} name={job.company} />
         <div>
           <h3>{job.title}</h3>
-          <div className="jobs-summary-sub">{job.company} · {job.workMode}</div>
+          <div className="jobs-summary-sub">
+            {job.company} · {job.workMode}
+          </div>
           <div className={`jobs-tag ${intel?.tone ?? ""}`}>
             {Math.round(job.matchScore * 100)}% Match · {intel?.text ?? "—"}
           </div>
@@ -29,7 +47,7 @@ export function SelectedJobSummary({ job }: { job: NormalizedJob | null }) {
         <Meta icon="📍" label="Location" value={job.location || "—"} />
         <Meta icon="🧭" label="Work Mode" value={job.workMode} />
         <Meta icon="🕒" label="Posted" value={postedAgo(job.postedAt)} />
-        <Meta icon="🌐" label="Source" value={job.source} />
+        <Meta icon="🔗" label="Source" value={sourceLabel} />
       </div>
 
       <div className="jobs-breakdown">
@@ -47,7 +65,9 @@ export function SelectedJobSummary({ job }: { job: NormalizedJob | null }) {
           <h4>KEY SKILLS</h4>
           <div className="jobs-skill-pills">
             {job.skills.slice(0, 12).map((s) => (
-              <span key={s} className="jobs-skill-pill">{s}</span>
+              <span key={s} className="jobs-skill-pill">
+                {s}
+              </span>
             ))}
           </div>
         </div>
@@ -73,7 +93,9 @@ function Bar({ label, value }: { label: string; value: number }) {
   return (
     <div className="jobs-bar-row">
       <div className="jobs-bar-label">{label}</div>
-      <div className="jobs-bar"><span style={{ width: `${pct}%` }} /></div>
+      <div className="jobs-bar">
+        <span style={{ width: `${pct}%` }} />
+      </div>
       <div className="jobs-bar-pct">{pct}%</div>
     </div>
   );

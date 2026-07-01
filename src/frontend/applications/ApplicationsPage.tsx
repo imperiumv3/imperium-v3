@@ -1,6 +1,7 @@
 import "./applications.css";
 import { useApplicationsStore } from "./state/useApplicationsStore";
 import { useApplicationsSync } from "./data/useApplicationsData";
+import { useAgentStatusSync } from "./data/useAgentStatusSync";
 import { KpiRow } from "./components/KpiRow";
 import { PipelineBoard } from "./components/PipelineBoard";
 import { ApplicationsTable } from "./components/ApplicationsTable";
@@ -25,6 +26,8 @@ export function ApplicationsPage() {
   const session = useSession();
   // Hydrates the store from Supabase + runs one-time localStorage migration.
   useApplicationsSync();
+  // Polls local agent and syncs submitted applications back to tracker.
+  useAgentStatusSync();
 
   const initials = (session?.fullName || session?.email || "?")
     .split(/\s+|@/)

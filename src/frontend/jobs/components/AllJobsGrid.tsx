@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { NormalizedJob } from "@backend/jobs/JobNormalizationService.server";
+import { useJobSearchStore } from "../state/useJobSearchStore";
 import { JobCard } from "./JobCard";
 
 interface Props {
@@ -9,10 +10,8 @@ interface Props {
   onApply: (id: string) => void;
 }
 
-type SortKey = "match" | "recent" | "salary";
-
 export function AllJobsGrid({ jobs, selectedId, onView, onApply }: Props) {
-  const [sort, setSort] = useState<SortKey>("match");
+  const { sort, setSort } = useJobSearchStore();
   const sorted = useMemo(() => {
     const arr = [...jobs];
     if (sort === "match") arr.sort((a, b) => b.matchScore - a.matchScore);
@@ -29,7 +28,7 @@ export function AllJobsGrid({ jobs, selectedId, onView, onApply }: Props) {
         <h2>ALL JOBS <span className="jobs-count">({jobs.length} results)</span></h2>
         <label className="jobs-sort">
           Sort by:&nbsp;
-          <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+          <select value={sort} onChange={(e) => setSort(e.target.value as "match" | "recent" | "salary")}>
             <option value="match">Best Match</option>
             <option value="recent">Most Recent</option>
             <option value="salary">Salary</option>

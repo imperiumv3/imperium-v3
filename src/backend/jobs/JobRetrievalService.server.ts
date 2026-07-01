@@ -7,7 +7,9 @@
  */
 import { SOURCES, enrichDescriptions, type RawJob } from "@backend/jobs/JobSources.server";
 
-const DISCOVERY_SOURCE_IDS = new Set(["naukri", "linkedin"]);
+// Use all available sources. Sources requiring API keys (adzuna, jooble) are
+// automatically skipped by their isAvailable() check when the key is missing.
+// Sources that are flaky can be kill-switched via DISABLE_<SOURCE>=true env vars.
 
 export interface SourceStatus {
   id: string;
@@ -77,7 +79,7 @@ export async function retrieveJobs(
 ): Promise<RetrievalResult> {
   const threshold = opts.expansionThreshold ?? 5;
   const levels = expansionLevels(location);
-  const sources = SOURCES.filter((src) => DISCOVERY_SOURCE_IDS.has(src.id));
+  const sources = SOURCES;
   const jobs: RawJob[] = [];
   const seen = new Set<string>();
   const expansionsUsed: string[] = [];
@@ -122,7 +124,11 @@ export async function retrieveJobs(
   }
 
   // Best-effort JD enrichment for sources that ship short snippets.
-  try { await enrichDescriptions(jobs, 12); } catch { /* never break retrieval */ }
+  try {
+    await enrichDescriptions(jobs, 12);
+  } catch {
+    /* never break retrieval */
+  }
 
   return { jobs, perSource: Array.from(sourceAgg.values()), expansionsUsed };
 }

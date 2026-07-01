@@ -15,7 +15,6 @@ import "./resume.css";
 import { useResumeStore } from "./state/useResumeStore";
 import { categorizeResumeSkills } from "./utils/skillCategorizer";
 
-
 interface ResumePageProps {
   jobId?: string;
 }
@@ -41,77 +40,78 @@ export function ResumePage({ jobId }: ResumePageProps) {
   const [loadingJob, setLoadingJob] = useState(false);
   const [profileFetched, setProfileFetched] = useState(false);
 
-  // Load profile once if resume is empty
+  // Always load profile on mount — no localStorage persistence means we
+  // always start from the server-side profile data for the current user.
   useEffect(() => {
-    if (!profileFetched && resume.personal.name === "") {
-      setProfileFetched(true);
-      getProfileFn()
-        .then((result) => {
-          if (result?.profile) {
-            const profile = result.profile as any;
-            setResume({
-              ...resume,
-              personal: {
-                name: profile.name || "",
-                title: profile.headline || "",
-                email: profile.email || "",
-                phone: profile.phone || "",
-                location: profile.location || "",
-                links: [
-                  profile.linkedin_url && { label: "LinkedIn", url: profile.linkedin_url },
-                  profile.github_url && { label: "GitHub", url: profile.github_url },
-                  profile.portfolio_url && { label: "Portfolio", url: profile.portfolio_url },
-                ].filter(Boolean) as { label: string; url: string }[],
-              },
-              summary: profile.summary || "",
-              skills: profile.skills?.length ? categorizeResumeSkills(profile.skills) : [],
-              languages: (profile.languages ?? []).map((l: { name: string; proficiency?: string }) => ({
+    if (profileFetched) return;
+    setProfileFetched(true);
+    getProfileFn()
+      .then((result) => {
+        if (result?.profile) {
+          const profile = result.profile as any;
+          setResume({
+            ...resume,
+            personal: {
+              name: profile.name || "",
+              title: profile.headline || "",
+              email: profile.email || "",
+              phone: profile.phone || "",
+              location: profile.location || "",
+              links: [
+                profile.linkedin_url && { label: "LinkedIn", url: profile.linkedin_url },
+                profile.github_url && { label: "GitHub", url: profile.github_url },
+                profile.portfolio_url && { label: "Portfolio", url: profile.portfolio_url },
+              ].filter(Boolean) as { label: string; url: string }[],
+            },
+            summary: profile.summary || "",
+            skills: profile.skills?.length ? categorizeResumeSkills(profile.skills) : [],
+            languages: (profile.languages ?? []).map(
+              (l: { name: string; proficiency?: string }) => ({
                 name: l.name,
                 proficiency: l.proficiency,
-              })),
-              interests: profile.interests ?? [],
-              experience: (profile.experience || []).map((e: any, idx: number) => ({
-                id: `exp_${Date.now()}_${idx}`,
-                company: e.company || "",
-                title: e.title || "",
-                location: e.location || "",
-                start: e.start || "",
-                end: e.current ? "" : (e.end || ""),
-                bullets: e.highlights || (e.description ? [e.description] : []),
-              })),
-              projects: (profile.projects || []).map((p: any, idx: number) => ({
-                id: `prj_${Date.now()}_${idx}`,
-                name: p.name || "",
-                stack: p.stack || [],
-                url: p.url || "",
-                bullets: p.highlights || (p.description ? [p.description] : []),
-              })),
-              education: (profile.education || []).map((e: any, idx: number) => ({
-                id: `edu_${Date.now()}_${idx}`,
-                school: e.school || "",
-                degree: e.degree || "",
-                field: e.field || "",
-                start: e.start || "",
-                end: e.end || "",
-                gpa: e.gpa || "",
-              })),
-              certifications: (profile.certifications || []).map((c: any, idx: number) => ({
-                id: `cert_${Date.now()}_${idx}`,
-                name: c.name || "",
-                issuer: c.issuer || "",
-                date: c.year || "",
-                url: c.url || "",
-              })),
-            });
-          }
-        })
-        .catch((err) => {
-          console.error("[ResumePage] Failed to load profile:", err);
-        });
-    }
+              }),
+            ),
+            interests: profile.interests ?? [],
+            experience: (profile.experience || []).map((e: any, idx: number) => ({
+              id: `exp_${Date.now()}_${idx}`,
+              company: e.company || "",
+              title: e.title || "",
+              location: e.location || "",
+              start: e.start || "",
+              end: e.current ? "" : e.end || "",
+              bullets: e.highlights || (e.description ? [e.description] : []),
+            })),
+            projects: (profile.projects || []).map((p: any, idx: number) => ({
+              id: `prj_${Date.now()}_${idx}`,
+              name: p.name || "",
+              stack: p.stack || [],
+              url: p.url || "",
+              bullets: p.highlights || (p.description ? [p.description] : []),
+            })),
+            education: (profile.education || []).map((e: any, idx: number) => ({
+              id: `edu_${Date.now()}_${idx}`,
+              school: e.school || "",
+              degree: e.degree || "",
+              field: e.field || "",
+              start: e.start || "",
+              end: e.end || "",
+              gpa: e.gpa || "",
+            })),
+            certifications: (profile.certifications || []).map((c: any, idx: number) => ({
+              id: `cert_${Date.now()}_${idx}`,
+              name: c.name || "",
+              issuer: c.issuer || "",
+              date: c.year || "",
+              url: c.url || "",
+            })),
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("[ResumePage] Failed to load profile:", err);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileFetched]);
-
 
   // Load job when jobId present in URL
   useEffect(() => {
@@ -151,7 +151,10 @@ export function ResumePage({ jobId }: ResumePageProps) {
 
   if (loadingJob) {
     return (
-      <div className="rs-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <div
+        className="rs-root"
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}
+      >
         <div>Loading job details...</div>
       </div>
     );
@@ -159,7 +162,10 @@ export function ResumePage({ jobId }: ResumePageProps) {
 
   if (jobId && !selectedJob && !loadingJob) {
     return (
-      <div className="rs-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <div
+        className="rs-root"
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}
+      >
         <div>
           <p>Job not found</p>
           <button onClick={() => navigate({ to: "/jobs" })}>← Back to Jobs</button>
@@ -184,20 +190,29 @@ export function ResumePage({ jobId }: ResumePageProps) {
 
         <div className="rs-topbar-center">
           <div className="rs-job-chip">
-            <div className="rs-job-logo" aria-hidden>{initials}</div>
+            <div className="rs-job-logo" aria-hidden>
+              {initials}
+            </div>
             <div className="rs-job-meta">
               <div className="rs-job-company">
-                {company} <span className="rs-job-link" aria-hidden>↗</span>
+                {company}{" "}
+                <span className="rs-job-link" aria-hidden>
+                  ↗
+                </span>
               </div>
               <div className="rs-job-role">{role}</div>
             </div>
-            <span className="rs-job-caret" aria-hidden>▾</span>
+            <span className="rs-job-caret" aria-hidden>
+              ▾
+            </span>
           </div>
 
           {selectedJob && (
             <div className="rs-stat">
               <div className="rs-stat-label">Match Score</div>
-              <div className={`rs-stat-value ${matchScore >= 70 ? "rs-stat-good" : matchScore >= 40 ? "rs-stat-mid" : "rs-stat-low"}`}>
+              <div
+                className={`rs-stat-value ${matchScore >= 70 ? "rs-stat-good" : matchScore >= 40 ? "rs-stat-mid" : "rs-stat-low"}`}
+              >
                 ● {selectedJob.description ? `${matchScore}%` : "No JD"}
               </div>
             </div>
@@ -206,22 +221,25 @@ export function ResumePage({ jobId }: ResumePageProps) {
           <div className="rs-stat">
             <div className="rs-stat-label">Resume Version</div>
             <div className="rs-stat-value">
-              {latest?.label ?? "V1"} <span className="rs-job-caret" aria-hidden>▾</span>
+              {latest?.label ?? "V1"}{" "}
+              <span className="rs-job-caret" aria-hidden>
+                ▾
+              </span>
             </div>
           </div>
         </div>
 
         <div className="rs-topbar-right">
-          <button className="rs-icon-btn" aria-label="Previous">‹</button>
-          <button className="rs-icon-btn" aria-label="Next">›</button>
-          <button
-            type="button"
-            className="rs-jd-btn"
-            onClick={() => setJdOpen(true)}
-          >
-            <FileText size={14} aria-hidden /> {selectedJob?.description ? "View / Edit JD" : "Paste Job Description"}
+          <button className="rs-icon-btn" aria-label="Previous">
+            ‹
           </button>
-
+          <button className="rs-icon-btn" aria-label="Next">
+            ›
+          </button>
+          <button type="button" className="rs-jd-btn" onClick={() => setJdOpen(true)}>
+            <FileText size={14} aria-hidden />{" "}
+            {selectedJob?.description ? "View / Edit JD" : "Paste Job Description"}
+          </button>
         </div>
       </header>
 
@@ -242,7 +260,12 @@ export function ResumePage({ jobId }: ResumePageProps) {
       <ActionBar printHandleRef={printHandleRef} />
 
       {/* hidden full-size renderer for PDF export */}
-      <PrintRenderer resume={resume} registerHandle={(h) => { printHandleRef.current = h; }} />
+      <PrintRenderer
+        resume={resume}
+        registerHandle={(h) => {
+          printHandleRef.current = h;
+        }}
+      />
 
       {/* ============ JD MODAL — editable: drives ATS/keyword scoring ============ */}
       {jdOpen && (
@@ -251,7 +274,10 @@ export function ResumePage({ jobId }: ResumePageProps) {
           company={company}
           initial={selectedJob?.description ?? ""}
           onClose={() => setJdOpen(false)}
-          onSave={(text) => { updateSelectedJob(text); setJdOpen(false); }}
+          onSave={(text) => {
+            updateSelectedJob(text);
+            setJdOpen(false);
+          }}
         />
       )}
     </div>
@@ -278,7 +304,9 @@ function JdEditorModal({
         <div className="rs-modal-head">
           <div>
             <div className="rs-modal-title">{role || "Job Description"}</div>
-            <div className="rs-modal-sub">{company || "Paste the JD below to tailor your resume"}</div>
+            <div className="rs-modal-sub">
+              {company || "Paste the JD below to tailor your resume"}
+            </div>
           </div>
           <button className="rs-icon-btn" onClick={onClose} aria-label="Close">
             <X size={16} aria-hidden />
@@ -293,7 +321,9 @@ function JdEditorModal({
           />
         </div>
         <div className="rs-modal-foot">
-          <button className="rs-btn rs-btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="rs-btn rs-btn-ghost" onClick={onClose}>
+            Cancel
+          </button>
           <button className="rs-btn rs-btn-primary" onClick={() => onSave(text)}>
             <FileText size={14} aria-hidden /> Save JD &amp; rescore
           </button>
@@ -302,6 +332,5 @@ function JdEditorModal({
     </div>
   );
 }
-
 
 export default ResumePage;

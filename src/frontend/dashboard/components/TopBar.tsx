@@ -42,17 +42,36 @@ export function TopBar() {
         </div>
       </div>
 
-      <div /> {/* center slot intentionally empty after gamification removal */}
-
       <div className="dash-gear-wrap" ref={ref}>
         <button className="dash-gear" aria-label="Settings" onClick={() => setOpen((v) => !v)}>
           <IconGear width={20} height={20} />
         </button>
         {open && (
           <div className="dash-settings-pop" role="menu">
-            <button onClick={() => { setOpen(false); navigate({ to: "/profile" }); }}>Profile</button>
-            <button onClick={() => { setOpen(false); navigate({ to: "/settings" }); }}>Account</button>
-            <button onClick={() => { setOpen(false); handleLogout(); }}>Logout</button>
+            <button
+              onClick={() => {
+                setOpen(false);
+                navigate({ to: "/profile" });
+              }}
+            >
+              Profile
+            </button>
+            <button
+              onClick={() => {
+                setOpen(false);
+                navigate({ to: "/settings" });
+              }}
+            >
+              Account
+            </button>
+            <button
+              onClick={() => {
+                setOpen(false);
+                handleLogout();
+              }}
+            >
+              Logout
+            </button>
           </div>
         )}
       </div>

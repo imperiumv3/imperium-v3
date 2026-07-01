@@ -1,5 +1,4 @@
 /** Jobs page logic — TanStack Query hooks for discovery + selection. */
-import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,24 +9,10 @@ import {
   getProfileMetrics,
 } from "@backend/api/jobs.api";
 import { useResumeStore } from "@frontend/resume/state/useResumeStore";
+import { useJobSearchStore, type SearchFiltersUI, EMPTY_FILTERS } from "./state/useJobSearchStore";
 
-export interface SearchFiltersUI {
-  title: string;
-  skills: string;
-  location: string;
-  experience: string;
-  workMode: string;
-  salaryMin: string;
-}
-
-export const EMPTY_FILTERS: SearchFiltersUI = {
-  title: "",
-  skills: "",
-  location: "",
-  experience: "",
-  workMode: "",
-  salaryMin: "",
-};
+export type { SearchFiltersUI };
+export { EMPTY_FILTERS };
 
 export function useProfileMetrics() {
   const fn = useServerFn(getProfileMetrics);
@@ -43,7 +28,7 @@ type DiscoveryData = Awaited<ReturnType<typeof discoverJobs>>;
 export function useDiscovery() {
   const qc = useQueryClient();
   const fn = useServerFn(discoverJobs);
-  const [lastFilters, setLastFilters] = useState<SearchFiltersUI | null>(null);
+  const { lastFilters, setLastFilters } = useJobSearchStore();
 
   const search = useMutation({
     mutationFn: (filters: SearchFiltersUI) => {

@@ -2,32 +2,11 @@
 shared/llm_brain.py
 ===================
 
-Purpose
--------
-Thin client for a locally-running Ollama server. Provides three primitives
-used by the rest of the agent:
+Thin client for a locally-running Ollama server. Provides primitives
+for page classification and form field answering.
 
-- ``llm_available()`` — is the local model reachable?
-- ``classify_page(snapshot)`` — what kind of page are we on?
-- ``answer_question(question, profile, ...)`` — answer a form field.
-
-If Ollama is not installed/running, every call silently falls back to
-deterministic heuristics so the agent keeps working offline.
-
-Inputs
-------
-- ``OLLAMA_URL`` (default http://127.0.0.1:11434)
-- ``OLLAMA_MODEL`` (default qwen2.5:7b)
-- DOM ``snapshot`` dict produced by ``automation/form_parser.page_snapshot``.
-
-Outputs
--------
-- A string label (one of ``PAGE_KINDS``) for ``classify_page``.
-- A short string or ``None`` for ``answer_question``.
-
-Responsibility
---------------
-LLM I/O only. No Selenium, no state mutation.
+If Ollama is not installed/running, all calls silently return None
+so the agent keeps working with profile memory + heuristics only.
 """
 from __future__ import annotations
 
@@ -36,31 +15,36 @@ import os
 import re
 from typing import Any, Dict, List, Optional
 
+from core.config import CFG
+from core.logging import log
+
 try:
     import requests
-except ImportError:  # noqa: BLE001
+except ImportError:
     requests = None  # type: ignore
-
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5:7b")
-LLM_TIMEOUT = float(os.environ.get("OLLAMA_TIMEOUT", "30"))
 
 
 def llm_available() -> bool:
     if requests is None:
         return False
     try:
-        r = requests.get(f"{OLLAMA_URL}/api/tags", timeout=2)
+        r = requests.get(f"{CFG.ollama_url}/api/tags", timeout=2)
         return r.ok
     except Exception:
         return False
 
 
-def _chat(messages: List[Dict[str, str]], *, force_json: bool = False) -> Optional[str]:
+def chat_with_llm(
+    messages: List[Dict[str, str]],
+    *,
+    force_json: bool = False,
+    run_id: str = "",
+) -> Optional[str]:
+    """Send a chat completion request to Ollama."""
     if requests is None:
         return None
     body: Dict[str, Any] = {
-        "model": OLLAMA_MODEL,
+        "model": CFG.ollama_model,
         "messages": messages,
         "stream": False,
         "options": {"temperature": 0.1},
@@ -68,7 +52,7 @@ def _chat(messages: List[Dict[str, str]], *, force_json: bool = False) -> Option
     if force_json:
         body["format"] = "json"
     try:
-        r = requests.post(f"{OLLAMA_URL}/api/chat", json=body, timeout=LLM_TIMEOUT)
+        r = requests.post(f"{CFG.ollama_url}/api/chat", json=body, timeout=CFG.ollama_timeout)
         if not r.ok:
             return None
         data = r.json()
@@ -77,39 +61,12 @@ def _chat(messages: List[Dict[str, str]], *, force_json: bool = False) -> Option
         return None
 
 
-def _parse_json(text: str) -> Optional[Dict[str, Any]]:
-    if not text:
-        return None
-    m = re.search(r"\{.*\}", text, re.S)
-    if not m:
-        return None
-    try:
-        return json.loads(m.group(0))
-    except Exception:
-        return None
-
-
-# -------------------- page classification --------------------
-
-PAGE_KINDS = [
-    "job_listing",       # search results, pick a card
-    "job_detail",        # one job, has Apply / Easy Apply button
-    "easy_apply_step",   # LinkedIn modal wizard step
-    "external_form",     # generic application form (Greenhouse, Lever, etc.)
-    "resume_upload",     # one-shot resume drop
-    "success",           # submitted
-    "captcha",
-    "login_wall",
-    "unknown",
-]
-
-
 def classify_page(snapshot: Dict[str, Any]) -> str:
-    """Rule-first classifier. Hard URL/page-structure rules beat the LLM."""
+    """Rule-first classifier with LLM fallback."""
+    from classifiers.job_classifier import PAGE_KINDS
+
     url = (snapshot.get("url") or "").lower()
-    title = (snapshot.get("title") or "").lower()
     text = (snapshot.get("body_text") or "").lower()[:4000]
-    dialog_text = (snapshot.get("dialog_text") or "").lower()[:3000]
     buttons = [b.lower() for b in snapshot.get("buttons", [])]
     has_dialog = bool(snapshot.get("has_dialog"))
     job_cards = int(snapshot.get("job_cards") or 0)
@@ -124,6 +81,7 @@ def classify_page(snapshot: Dict[str, Any]) -> str:
     )):
         return "success"
 
+    dialog_text = (snapshot.get("dialog_text") or "").lower()[:3000]
     if "linkedin.com" in url:
         modal_source = dialog_text if has_dialog else ""
         has_modal = bool(modal_source) and any(s in modal_source for s in (
@@ -141,48 +99,45 @@ def classify_page(snapshot: Dict[str, Any]) -> str:
             return "easy_apply_step"
         if "linkedin.com/jobs/view" in url:
             return "job_detail"
-
-    is_linkedin_jobs_search = (
-        "linkedin.com/jobs/search" in url
-        or "linkedin.com/jobs/collections" in url
-        or ("linkedin.com/jobs" in url and job_cards >= 2 and not has_dialog)
-        or ("linkedin.com/jobs" in url
-            and any(q in url for q in ("keywords=", "f_al=", "geoid=", "currentjobid=", "start="))
-            and not has_dialog)
-    )
-    if is_linkedin_jobs_search:
-        return "job_listing"
+        is_search = (
+            "linkedin.com/jobs/search" in url
+            or "linkedin.com/jobs/collections" in url
+            or ("linkedin.com/jobs" in url and job_cards >= 2 and not has_dialog)
+        )
+        if is_search:
+            return "job_listing"
 
     host = url.split("/")[2] if "://" in url else url
-    if any(d in host for d in (
+    ats_domains = (
         "greenhouse.io", "lever.co", "ashbyhq.com", "workday",
-        "smartrecruiters.com", "icims.com", "bamboohr.com",
-        "jobvite.com", "myworkdayjobs.com",
-    )):
+        "smartrecruiters.com", "icims.com", "bamboohr.com", "jobvite.com",
+    )
+    if any(d in host for d in ats_domains):
         return "external_form"
 
     if snapshot.get("input_count", 0) >= 2:
         return "external_form"
 
-    out = _chat([
+    out = chat_with_llm([
         {"role": "system", "content":
             "Classify the web page into exactly one label: " + ", ".join(PAGE_KINDS) +
             ". Return JSON: {\"kind\": \"...\"}."},
         {"role": "user", "content": json.dumps({
-            "url": url, "title": title,
-            "buttons": buttons[:20], "text": text[:1500],
+            "url": url,
+            "title": snapshot.get("title", ""),
+            "buttons": buttons[:20],
+            "text": text[:1500],
         })},
     ], force_json=True)
+
     parsed = _parse_json(out or "")
     kind = (parsed or {}).get("kind", "unknown")
     return kind if kind in PAGE_KINDS else "unknown"
 
 
-# -------------------- field answering --------------------
-
-def answer_question(question: str, profile: Dict[str, Any],
-                    job_context: str = "", choices: Optional[List[str]] = None) -> Optional[str]:
-    """Answer a free-text or single-choice application question."""
+def answer_question(question: str, profile: dict, job_context: str = "",
+                    choices: Optional[List[str]] = None) -> Optional[str]:
+    """Legacy answer_question for backward compatibility with form_parser."""
     if not llm_available():
         return _heuristic_answer(question, profile, choices)
 
@@ -199,7 +154,7 @@ def answer_question(question: str, profile: Dict[str, Any],
         "job_context": job_context[:1500],
         "choices": choices or [],
     }
-    out = _chat(
+    out = chat_with_llm(
         [{"role": "system", "content": sys_prompt},
          {"role": "user", "content": json.dumps(user)}],
         force_json=True,
@@ -217,8 +172,19 @@ def answer_question(question: str, profile: Dict[str, Any],
     return _heuristic_answer(question, profile, choices)
 
 
-def _heuristic_answer(q: str, profile: Dict[str, Any],
-                      choices: Optional[List[str]]) -> Optional[str]:
+def _parse_json(text: str) -> Optional[Dict[str, Any]]:
+    if not text:
+        return None
+    m = re.search(r"\{.*\}", text, re.S)
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(0))
+    except Exception:
+        return None
+
+
+def _heuristic_answer(q: str, profile: dict, choices: Optional[List[str]]) -> Optional[str]:
     q = q.lower()
     if choices:
         neg = any(k in q for k in ("sponsor", "visa", "disabil", "felony", "convicted", "veteran"))
@@ -229,12 +195,29 @@ def _heuristic_answer(q: str, profile: Dict[str, Any],
             if neg and cl in ("no", "n", "false"):
                 return c
         return choices[0]
+
     if "years" in q and "experience" in q:
-        return "3"
+        val = profile.get("experience") or profile.get("total_experience")
+        return str(val) if val else None
+
     if "salary" in q or "compensation" in q:
-        return "Negotiable"
+        val = profile.get("expected_ctc") or profile.get("expected_salary")
+        return str(val) if val else None
+
     if "notice" in q or "start" in q:
-        return "2 weeks"
+        val = profile.get("notice_period")
+        return str(val) if val else None
+
+    if "relocat" in q:
+        val = profile.get("relocation")
+        return str(val) if val else None
+
+    if "authoriz" in q or "permit" in q:
+        val = profile.get("work_authorization")
+        return str(val) if val else None
+
     if "why" in q:
-        return profile.get("summary") or "Excited about the role and a strong fit for my skills."
+        val = profile.get("summary")
+        return str(val) if val else None
+
     return None

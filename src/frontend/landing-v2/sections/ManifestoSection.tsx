@@ -1,96 +1,125 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSession } from "@frontend/auth/session";
+import { SplineScene } from "@/components/ui/spline-scene";
+import { TextScramble } from "@/components/ui/text-scramble";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
-const LINES = [
-  "VISUAL SYSTEMS WHERE",
-  "MULTIPLE AI AGENTS",
-  "OPERATE AS A SINGLE",
-  "INTELLIGENT SYSTEM.",
+const STEPS = [
+  "Create and configure your profile",
+  "Discover jobs matched to your skills",
+  "Generate ATS-optimized resumes",
+  "Track applications from one dashboard",
 ];
 
-/** Section 2 — manifesto headline + abstract 3D object. */
+/** Section 2 — What IMPERIUM is (left text + right Spline model). */
 export function ManifestoSection() {
   const ref = useRef<HTMLElement>(null);
-  const objRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const session = useSession();
+  const [scrambleTrigger, setScrambleTrigger] = useState(false);
 
   useGSAP(
     () => {
       if (!ref.current) return;
-      const lines = ref.current.querySelectorAll(".lv2-mf-line");
-      gsap.from(lines, {
-        y: 60,
-        opacity: 0,
-        filter: "blur(10px)",
-        duration: 1.1,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ref.current, start: "top 70%", once: true },
-      });
-      gsap.from(ref.current.querySelector(".lv2-mf-cta"), {
-        y: 20,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ref.current, start: "top 60%", once: true },
+
+      ScrollTrigger.create({
+        trigger: ref.current,
+        start: "top 70%",
+        once: true,
+        onEnter: () => setScrambleTrigger(true),
       });
 
-      // Subtle parallax + scroll-linked rotation on the 3D-ish object.
-      if (objRef.current) {
-        gsap.to(objRef.current, {
-          rotateX: 25,
-          rotateY: 35,
-          yPercent: -15,
-          ease: "none",
-          scrollTrigger: { trigger: ref.current, start: "top bottom", end: "bottom top", scrub: 0.6 },
+      const leftContent = ref.current.querySelector(".lv2-mf2-left");
+      if (leftContent) {
+        const children = leftContent.children;
+        gsap.from(children, {
+          y: 40,
+          opacity: 0,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ref.current, start: "top 65%", once: true },
         });
       }
 
-      // Pointer parallax
-      const onMove = (e: PointerEvent) => {
-        if (!ref.current || !objRef.current) return;
-        const r = ref.current.getBoundingClientRect();
-        const nx = (e.clientX - r.left) / r.width - 0.5;
-        const ny = (e.clientY - r.top) / r.height - 0.5;
-        gsap.to(objRef.current, { rotateY: nx * 18, rotateX: -ny * 14, duration: 0.6, ease: "power3.out", overwrite: "auto" });
-      };
-      ref.current.addEventListener("pointermove", onMove);
       return () => {
-        ref.current?.removeEventListener("pointermove", onMove);
-        ScrollTrigger.getAll().forEach((t) => { if (t.trigger === ref.current) t.kill(); });
+        ScrollTrigger.getAll().forEach((t) => {
+          if (t.trigger === ref.current) t.kill();
+        });
       };
     },
     { scope: ref },
   );
 
+  function handleExplore() {
+    navigate({ to: session ? "/jobs" : "/auth" });
+  }
+
   return (
-    <section ref={ref} data-section={2} className="lv2-section lv2-manifesto">
-      <div className="lv2-mf-grid">
-        <div className="lv2-mf-left">
+    <section ref={ref} data-section={2} className="lv2-section lv2-manifesto2">
+      <DottedSurface className="lv2-mf2-dots" />
+
+      <div className="lv2-mf2-grid">
+        {/* Left content */}
+        <div className="lv2-mf2-left">
           <span className="lv2-sec-index">— 02 / 12</span>
-          <h2 className="lv2-mf-headline">
-            {LINES.map((l, i) => (
-              <span key={i} className="lv2-mf-line">{l}</span>
-            ))}
+
+          <h2 className="lv2-mf2-heading">
+            <TextScramble
+              as="span"
+              trigger={scrambleTrigger}
+              duration={1.2}
+              speed={0.03}
+              className="lv2-mf2-heading-line"
+            >
+              One Platform.
+            </TextScramble>
+            <br />
+            <TextScramble
+              as="span"
+              trigger={scrambleTrigger}
+              duration={1.2}
+              speed={0.03}
+              className="lv2-mf2-heading-line"
+            >
+              Multiple Possibilities.
+            </TextScramble>
           </h2>
-          <a className="lv2-mf-cta" href="#explore">
-            <span>EXPLORE IMPERIUM</span>
-            <span className="lv2-mf-cta-arrow" aria-hidden>→</span>
-          </a>
+
+          <p className="lv2-mf2-desc">
+            IMPERIUM provides a foundation for building and orchestrating
+            specialized AI agents. The current implementation focuses on an
+            intelligent Job Agent for career automation.
+          </p>
+
+          <ul className="lv2-mf2-steps">
+            {STEPS.map((s) => (
+              <li key={s} className="lv2-mf2-step">
+                <span className="lv2-mf2-step-check" aria-hidden>✓</span>
+                {s}
+              </li>
+            ))}
+          </ul>
+
+          <button
+            type="button"
+            className="lv2-mf2-btn lv2-mf2-btn-primary"
+            onClick={handleExplore}
+          >
+            Explore the Job Agent →
+          </button>
         </div>
-        <div className="lv2-mf-right">
-          <div className="lv2-mf-stage">
-            <div ref={objRef} className="lv2-mf-object" aria-hidden>
-              <span className="lv2-mf-face lv2-mf-face-1" />
-              <span className="lv2-mf-face lv2-mf-face-2" />
-              <span className="lv2-mf-face lv2-mf-face-3" />
-              <span className="lv2-mf-face lv2-mf-face-4" />
-              <span className="lv2-mf-face lv2-mf-face-5" />
-              <span className="lv2-mf-face lv2-mf-face-6" />
-            </div>
-            <span className="lv2-mf-stage-floor" aria-hidden />
-          </div>
+
+        {/* Right Spline model */}
+        <div className="lv2-mf2-right">
+          <SplineScene
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="lv2-mf2-spline"
+          />
         </div>
       </div>
     </section>

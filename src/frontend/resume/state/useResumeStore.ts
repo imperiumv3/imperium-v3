@@ -1,28 +1,37 @@
 /**
  * Resume Studio store — Zustand. Holds the canonical ResumeJSON, the
  * selected job description (optimization target), and version snapshots.
- * 
- * NOTE: No persistence middleware. Each user loads fresh from their profile.
- * This prevents User A from seeing User B's resume data.
+ *
+ * IMPORTANT: No persistence middleware. Each user loads fresh from their
+ * profile on every session. This prevents User A from seeing User B's
+ * resume data — localStorage is NOT used for resume state.
  */
 import type { ImperiumProfile } from "@backend/profile/ProfileTypes";
 import { EMPTY_PROFILE } from "@backend/profile/ProfileTypes";
-import {
-  type ResumeJSON,
-  type ResumeVersion,
-  EMPTY_RESUME,
-  uid,
-} from "@frontend/resume/schema";
+import { type ResumeJSON, type ResumeVersion, EMPTY_RESUME, uid } from "@frontend/resume/schema";
 import { categorizeResumeSkills } from "@frontend/resume/utils/skillCategorizer";
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 
-function seedFromProfile(p: Pick<
-  ImperiumProfile,
-  "name" | "email" | "phone" | "location" | "headline" | "summary" | "skills"
-  | "experience" | "projects" | "education" | "certifications" | "languages"
-  | "linkedin_url" | "github_url" | "portfolio_url"
->): ResumeJSON {
+function seedFromProfile(
+  p: Pick<
+    ImperiumProfile,
+    | "name"
+    | "email"
+    | "phone"
+    | "location"
+    | "headline"
+    | "summary"
+    | "skills"
+    | "experience"
+    | "projects"
+    | "education"
+    | "certifications"
+    | "languages"
+    | "linkedin_url"
+    | "github_url"
+    | "portfolio_url"
+  >,
+): ResumeJSON {
   return {
     ...EMPTY_RESUME,
     personal: {
@@ -76,7 +85,6 @@ function seedFromProfile(p: Pick<
   };
 }
 
-
 interface SelectedJob {
   id?: string;
   company: string;
@@ -107,68 +115,51 @@ interface ResumeStore {
 
 const INITIAL_FROM_EMPTY = seedFromProfile(EMPTY_PROFILE);
 
-export const useResumeStore = create<ResumeStore>()(
-  persist(
-    (set, get) => ({
-      resume: INITIAL_FROM_EMPTY,
-      selectedJob: null,
+export const useResumeStore = create<ResumeStore>()((set, get) => ({
+  resume: INITIAL_FROM_EMPTY,
+  selectedJob: null,
+  versions: [
+    {
+      id: uid("v"),
+      label: "V1",
+      createdAt: Date.now(),
+      json: INITIAL_FROM_EMPTY,
+      templateId: INITIAL_FROM_EMPTY.meta.templateId,
+      themeId: INITIAL_FROM_EMPTY.meta.themeId,
+    },
+  ],
+  setResume: (r) => set({ resume: r }),
+  patch: (fn) =>
+    set((s) => {
+      const next = structuredClone(s.resume);
+      fn(next);
+      return { resume: next };
+    }),
+  setTemplate: (id) =>
+    set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, templateId: id } } })),
+  setTheme: (id) =>
+    set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, themeId: id } } })),
+  setSelectedJob: (j) => set({ selectedJob: j }),
+  saveVersion: (label, scores) =>
+    set((s) => ({
       versions: [
+        ...s.versions,
         {
           id: uid("v"),
-          label: "V1",
+          label: label ?? `V${s.versions.length + 1}`,
           createdAt: Date.now(),
-          json: INITIAL_FROM_EMPTY,
-          templateId: INITIAL_FROM_EMPTY.meta.templateId,
-          themeId: INITIAL_FROM_EMPTY.meta.themeId,
+          json: structuredClone(s.resume),
+          templateId: s.resume.meta.templateId,
+          themeId: s.resume.meta.themeId,
+          atsScore: scores?.atsScore,
+          resumeHealth: scores?.resumeHealth,
+          jdMatch: scores?.jdMatch,
         },
       ],
-      setResume: (r) => set({ resume: r }),
-      patch: (fn) =>
-        set((s) => {
-          const next = structuredClone(s.resume);
-          fn(next);
-          return { resume: next };
-        }),
-      setTemplate: (id) =>
-        set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, templateId: id } } })),
-      setTheme: (id) =>
-        set((s) => ({ resume: { ...s.resume, meta: { ...s.resume.meta, themeId: id } } })),
-      setSelectedJob: (j) => set({ selectedJob: j }),
-      saveVersion: (label, scores) =>
-        set((s) => ({
-          versions: [
-            ...s.versions,
-            {
-              id: uid("v"),
-              label: label ?? `V${s.versions.length + 1}`,
-              createdAt: Date.now(),
-              json: structuredClone(s.resume),
-              templateId: s.resume.meta.templateId,
-              themeId: s.resume.meta.themeId,
-              atsScore: scores?.atsScore,
-              resumeHealth: scores?.resumeHealth,
-              jdMatch: scores?.jdMatch,
-            },
-          ],
-        })),
-      restoreVersion: (id) => {
-        const v = get().versions.find((x) => x.id === id);
-        if (v) set({ resume: structuredClone(v.json) });
-      },
-      reset: () => set({ resume: INITIAL_FROM_EMPTY, selectedJob: null }),
-    }),
-    {
-      name: "imperium-resume-studio-v1",
-      storage: createJSONStorage(() => localStorage),
-      // Persist selected job + resume content + saved versions so the studio
-      // survives refresh, navigation, and tab switches. Profile re-hydration
-      // still wins on first load when resume.personal.name is empty.
-      partialize: (s) => ({
-        resume: s.resume,
-        selectedJob: s.selectedJob,
-        versions: s.versions,
-      }),
-      version: 1,
-    },
-  ),
-);
+    })),
+  restoreVersion: (id) => {
+    const v = get().versions.find((x) => x.id === id);
+    if (v) set({ resume: structuredClone(v.json) });
+  },
+  reset: () => set({ resume: INITIAL_FROM_EMPTY, selectedJob: null }),
+}));
